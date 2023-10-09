@@ -1,0 +1,112 @@
+#content {
+    padding: 10px;
+    width: 50%;
+    min-width: 320px;
+    margin: auto;
+    background-color: #a5d4ff;
+    border: 1px solid black;
+
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: #0084ff;
+}
+
+
+h1 {
+    background-color: #fff34f;
+    position: relative;
+    left: -10%;
+    width: 110%;
+    padding: 5px;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 4px 4px 2px;
+    border-radius: 5px 0px;
+}
+
+h2 {
+    background-color: #ff8181;
+    position: relative;
+    left: -5%;
+    width: 105%;
+    padding: 5px;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 4px 4px 2px;
+    border-radius: 5px 0px;
+}
+
+h3 {
+    font-size: 1.08em;
+    background-color: #0084ff;
+    position: relative;
+    left: -5%;
+    width: 105%;
+    padding: 5px;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 4px 4px 2px;
+    border-radius: 5px 0px;
+}
+
+ol,
+ul {
+    padding-left: 20px;
+}
+
+p,
+li {
+    text-align: justify;
+}
+
+.note {
+    font-style: italic;
+}
+
+.rule {
+    font-weight: bold;
+}
+
+.rule li {
+    font-weight: normal;
+}
+
+.desc {
+    font-style: italic;
+}
+
+.pucktype {
+    font-style: italic;
+    font-weight: bold;
+}
+
+#navBar {
+    z-index: 99;
+    background-color: #0084ff;
+    position: -webkit-sticky;
+    /* Safari */
+    position: sticky;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    margin: 0px 0px 10px 0px;
+    flex-wrap: wrap;
+}
+
+.button {
+    margin: 5px;
+    background-color: #fff34f;
+    padding: 5px;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 4px 4px 2px;
+    border-radius: 5px 0px;
+}
+
+.clickable {
+    cursor: pointer;
+}
