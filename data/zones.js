@@ -253,12 +253,12 @@ const Zones = [
     },
     {
         name: "Bill's House",
-        description: "The House of Bill is a modest structure on Route 25 northeast of Kanto.",
+        description: "Bill, the renown Pokemon Data Scientists, known for his invention of the Pokemon Box system, lives quietly in a luxury home in the north of Kanto.",
         type: "location",
         mart: [],
-        poi: [],
+        poi: ["Bill"],
         discoveries: [],
-        pkmn: ["Eevee"]
+        pkmn: []
     },
     {
         name: "Celadon Department Store",
@@ -299,7 +299,7 @@ const Zones = [
     {
         name: "Indigo Plateau",
         description: "Pokémon Trainers who have earned badges arrive at this last location to face the Elite Four after defeating all eight of Kanto's gym leaders.",
-        type: "location",
+        type: "city",
         mart: [],
         poi: [],
         discoveries: [],
@@ -317,15 +317,6 @@ const Zones = [
     {
         name: "Pokemon Mansion",
         description: "Cinnabar Island's Pokémon Mansion, a four-story structure, is where you can find the secret key that unlocks Cinnabar Gym.",
-        type: "location",
-        mart: [],
-        poi: [],
-        discoveries: [],
-        pkmn: []
-    },
-    {
-        name: "Pokemon Stadium",
-        description: "Intense Pokémon bouts can be witnessed by trainers right here in the arena.",
         type: "location",
         mart: [],
         poi: [],
@@ -358,6 +349,15 @@ const Zones = [
         poi: [],
         discoveries: [],
         pkmn: ["Onix"]
+    },
+    {
+        name: "Rocket Hideout",
+        description: "A hidden base in the basement of the Celadon Game Corner where Team Rocket organizes their operations.",
+        type: "location",
+        mart: [],
+        poi: [],
+        discoveries: [],
+        pkmn: []
     },
     {
         name: "Safari Zone",
@@ -415,8 +415,8 @@ const Zones = [
     },
     {
         name: "Victory Road",
-        description: "",
-        type: "city",
+        description: "The final stretch before reaching the Indigo Plateau. Only the most prepared trainers can make it through this dangerous terrain.",
+        type: "location",
         mart: [],
         poi: [],
         discoveries: [],
