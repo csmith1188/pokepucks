@@ -1,3 +1,5 @@
+// All pucks that can be bought at a PokeMart
+
 const Mart = [
     {
         name: "Berry", // Puck name

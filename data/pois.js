@@ -1,3 +1,5 @@
+// All points of interest contained by any Zone
+
 const Pois = [
     {
         name: "Pokegenics Lab",
