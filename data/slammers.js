@@ -60,7 +60,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 3, // 1 is baby, 5 is masterball
+        ballStrength: 2, // 1 is baby, 5 is masterball
         notes: ""
     },
 
@@ -88,7 +88,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 4, // 1 is baby, 5 is masterball
+        ballStrength: 2, // 1 is baby, 5 is masterball
         notes: ""
     },
 
@@ -116,7 +116,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 5, // 1 is baby, 5 is masterball
+        ballStrength: 4, // 1 is baby, 5 is masterball
         notes: ""
     },
 
@@ -144,7 +144,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 3, // 1 is baby, 5 is masterball
+        ballStrength: 2, // 1 is baby, 5 is masterball
         notes: ""
     },
 
@@ -172,7 +172,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 7, // 1 is baby, 5 is masterball
+        ballStrength: 4, // 1 is baby, 5 is masterball
         notes: ""
     },
 
@@ -238,7 +238,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 5, // 1 is baby, 5 is masterball
+        ballStrength: 4, // 1 is baby, 5 is masterball
         notes: ""
     },
 
@@ -266,7 +266,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 7, // 1 is baby, 5 is masterball
+        ballStrength: 2, // 1 is baby, 5 is masterball
         notes: ""
     },
 
@@ -294,7 +294,7 @@ const Slammers = [
                 notes: []
             }
         },
-        ballStrength: 6, // 1 is baby, 5 is masterball
+        ballStrength: 3, // 1 is baby, 5 is masterball
         notes: ""
-    },
+    }
 ]
