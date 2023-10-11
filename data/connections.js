@@ -9,7 +9,7 @@ Use Dig with a pokemon with the fighting energy type
 
 alternatives are stated on the zone map
 
-use 'both' for all directions until given clarification
+use 'both' for all direction fields unless directed otherwise
 */
 const Connections = [
     //zone titles have capitals; requirements and alternatives do not
