@@ -240,5 +240,5 @@ const Connections = [
         direction: "both",
         req: ["surf", "water type pokemon"],
         alt: ["bike"]
-    },
+    }
 ]
