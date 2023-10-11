@@ -39,13 +39,19 @@ const Connections = [
         alt: ["bike"] // ... OR a bike
     },
     {
-        zones: ["The Safari Zone", "Fuchsia City"],
+        zones: ["Safari Zone", "Fuchsia City"],
         direction: "both",
         req: [],
         alt: []
     },
     {
         zones: ["Route 13-14-15", "Fuchsia City"],
+        direction: "both",
+        req: [],
+        alt: []
+    },
+    {
+        zones: ["Bill's House", "Route 24-25"],
         direction: "both",
         req: [],
         alt: []
@@ -147,7 +153,7 @@ const Connections = [
         alt: []
     },
     {
-        zones: ["Silph Co", "Saffron City"],
+        zones: ["Silph Co. Headquarters", "Saffron City"],
         direction: "both",
         req: [],
         alt: []
@@ -177,7 +183,7 @@ const Connections = [
         alt: []
     },
     {
-        zones: ["Vermilion City", "Route 6"],
+        zones: ["Vermillion City", "Route 6"],
         direction: "both",
         req: [],
         alt: []
@@ -207,7 +213,7 @@ const Connections = [
         alt: [],
     },
     {
-        zones: ["Celadon Dept. Store", "Celadon City"],
+        zones: ["Celadon Department Store", "Celadon City"],
         direction: "both",
         req: [],
         alt: []
@@ -236,112 +242,4 @@ const Connections = [
         req: ["surf", "water type pokemon"],
         alt: ["bike"]
     },
-    {
-        zones: ["Indigo Plateau", "Victory Road"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Victory Road", "Route 22-23"],
-        direction: "both",
-        req: ["surf", "water type pokemon", "dig", "fighting type pokemon", "cut", "grass type pokemon", "8 badges"],
-        alt: []
-    },
-    {
-        zones: ["Route 22-23", "Viridian City"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Viridian City", "Route 2"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Route 2", "Viridian Forest"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Route 2", "Pewter City"],
-        direction: "both",
-        req: ["cut", "grass type pokemon"],
-        alt: []
-    },
-    {
-        zones: ["Viridian Forest", "Pewter City"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Pewter City", "Route 3"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Route 3", "Mt. Moon"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Mt. Moon", "Route 4"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Route 3", "Route 4"],
-        direction: "both",
-        req: ["dig", "fighting type pokemon"],
-        alt: []
-    },
-    {
-        zones: ["Route 4", "Cerulean Cave"],
-        direction: "both",
-        req: ["defeated elite 4"],
-        alt: []
-    },
-    {
-        zones: ["Viridian City", "Route 1"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Route 1", "Pallet Town"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Pallet Town", "Route 21"],
-        direction: "both",
-        req: ["surf", "water type pokemon"],
-        alt: []
-    },
-    {
-        zones: ["Cinnabar Island", "Pokemon Mansion"],
-        direction: "both",
-        req: [],
-        alt: []
-    },
-    {
-        zones: ["Cinnabar Island", "Route 20"],
-        direction: "both",
-        req: ["surf", "water type pokemon"],
-        alt: []
-    },
-    {
-        zones: ["Route 20", "Seafoam Islands"],
-        direction: "both",
-        req: ["surf", "water type pokemon"],
-        alt: []
-    }
 ]
