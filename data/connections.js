@@ -1,5 +1,4 @@
-/*for connections, follow the path
-I think that the first element in the zone is where you want to go, and the second is where your leaving from. If not the case leave as a hypothetical for good practice.
+/*
 'req' are the things you need before moving
 'alt' are the alternatives if you don't have the requirements.
 
