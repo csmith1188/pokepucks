@@ -1,7 +1,7 @@
 const Zones = [
     {
         name: "Route 1",
-        description: "",
+        description: "Connects Pallet Town to Viridian City, or cross the ocean to Route 21.",
         type: "route", // route, city, location
         mart: [], // Additional items sold in the PokeMart
         poi: [], // Points of interests, such as Gyms
@@ -10,7 +10,7 @@ const Zones = [
     },
     {
         name: "Route 2",
-        description: "",
+        description: "Connects Viridian Forest to Viridian City, or cut from Route 2 to Pewter City.",
         type: "route",
         mart: [],
         poi: [],
@@ -19,7 +19,7 @@ const Zones = [
     },
     {
         name: "Route 3",
-        description: "",
+        description: "Connects Pawter City to Mt. Moon, or to Route 4 threw a tunnel.",
         type: "route",
         mart: [],
         poi: [],
@@ -28,7 +28,7 @@ const Zones = [
     },
     {
         name: "Route 4",
-        description: "",
+        description: "Connects to Route 3 threw a tunnel, or travel to Cerulean City, or defeat Elite 4 to travel to Cerulean Cave, or Travel to Mt. Moon.",
         type: "route",
         mart: [],
         poi: [],
@@ -37,7 +37,7 @@ const Zones = [
     },
     {
         name: "Route 5",
-        description: "",
+        description: "Connects Cerulean City to Saffron City, or go to the Babysitter.",
         type: "route",
         mart: [],
         poi: [],
@@ -46,7 +46,7 @@ const Zones = [
     },
     {
         name: "Route 6",
-        description: "",
+        description: "Connects Saffron City to Vermillion City.",
         type: "route",
         mart: [],
         poi: [],
@@ -55,7 +55,7 @@ const Zones = [
     },
     {
         name: "Route 7",
-        description: "",
+        description: "Connects Saffron City to Lavender Town.",
         type: "route",
         mart: [],
         poi: [],
@@ -64,7 +64,7 @@ const Zones = [
     },
     {
         name: "Route 8",
-        description: "",
+        description: "Connects Saffron City to Celadon City",
         type: "route",
         mart: [],
         poi: [],
@@ -73,7 +73,7 @@ const Zones = [
     },
     {
         name: "Route 9-10",
-        description: "",
+        description: "Connects Cerulean City to Rock tunnel, or travel threw a tunnel to get to lavender Town, or cross the ocean to the Pwer Plant.",
         type: "route",
         mart: [],
         poi: [],
@@ -82,7 +82,7 @@ const Zones = [
     },
     {
         name: "Route 11",
-        description: "",
+        description: "Cut threw Route 11 to Vermillion City, or use a PokeFlute to go to Routes 12/13/14 and or 15.",
         type: "route",
         mart: [],
         poi: [],
@@ -91,7 +91,7 @@ const Zones = [
     },
     {
         name: "Route 12",
-        description: "",
+        description: "Connects to Lavender Town, or use PoekFlute to travel to Routes 11/13/14 and or 15.",
         type: "route",
         mart: [],
         poi: [],
@@ -100,7 +100,7 @@ const Zones = [
     },
     {
         name: "Route 13-15",
-        description: "",
+        description: "Connects to Fuschia City, or use a PokeFlute to travel to Routes 11 and or 12.",
         type: "route",
         mart: [],
         poi: [],
@@ -109,7 +109,7 @@ const Zones = [
     },
     {
         name: "Route 16",
-        description: "",
+        description: "Connects to Celadon city, or Surf/Bike to Routes 17 and or 18.",
         type: "route",
         mart: [],
         poi: [],
@@ -118,7 +118,7 @@ const Zones = [
     },
     {
         name: "Route 17-18",
-        description: "",
+        description: "Surf/Bike to Fuschia City, or Surf/Bike to Route 16.",
         type: "route",
         mart: [],
         poi: [],
@@ -127,7 +127,7 @@ const Zones = [
     },
     {
         name: "Route 19",
-        description: "",
+        description: "Connects to Fuschia City, or Surf to Route 20, or use a SS Anne Ticket to go to The SS Anne Docks.",
         type: "route",
         mart: [],
         poi: [],
@@ -136,7 +136,7 @@ const Zones = [
     },
     {
         name: "Route 20",
-        description: "",
+        description: "Surf to Route 19, or surf to Seafoam Islands, or Surf to Cinnabar Island.",
         type: "route",
         mart: [],
         poi: [],
@@ -145,7 +145,7 @@ const Zones = [
     },
     {
         name: "Route 21",
-        description: "",
+        description: "Surf to Pallet Town, or Surf to Cinnabar Island.",
         type: "route",
         mart: [],
         poi: [],
@@ -154,7 +154,7 @@ const Zones = [
     },
     {
         name: "Route 22-23",
-        description: "",
+        description: "Connects to Viridian City, or Only the most experienced trainers may go from Route 22/23 to Victory road.",
         type: "route",
         mart: [],
         poi: [],
@@ -163,7 +163,7 @@ const Zones = [
     },
     {
         name: "Celadon City",
-        description: "Celadon City home to of the Grass type specialists Erika make sure to bring Fire types to dispatch her fauna! Celadon City is home to the Celadon Department Store and the Celadon Game Corner, rumor has it there’s been some shady people walking in and out of the Game Corner; Officer Jenny has asked Trainers to be wary and on guard around the Game Corner, what’s it hiding?",
+        description: "",
         type: "city",
         mart: [],
         poi: ["Rainbow Badge Gym"],
@@ -172,7 +172,7 @@ const Zones = [
     },
     {
         name: "Cerulean City",
-        description: "Cerulean City home of the Water type specialists Misty make sure to bring Electric types and give her a controlled shock! Their are rumors of a professor to the north of Cerulean, along with multiple towns people reported to have heard whispers in their minds of a cave that only a Champion could brave!",
+        description: "",
         type: "city",
         mart: ["Bike", "Switch"],
         poi: ["Cascade Badge Gym"],
@@ -181,7 +181,7 @@ const Zones = [
     },
     {
         name: "Cinnabar Island",
-        description: "Cinnabar Island home of the Fire type specialists Blaine make sure to bring Water types and a 'Burn Heal' and wash him away! Cinnabar is also home to an abandoned Mansion no one dares go inside, rumor has it with a special fossil someone could give you a special prehistoric Pokémon.",
+        description: "",
         type: "city",
         mart: ["Full Heal", "Ultraball"],
         poi: ["Volcano Badge Gym", "Pokegenics Lab"],
@@ -190,16 +190,16 @@ const Zones = [
     },
     {
         name: "Fuschia City",
-        description: "Fuschia City home of the Poisen type specialists Koga make sure to bring Ground types to ground him and even the field! Also known around the world for its famous Safari Zone, rumor has it a rare Pokémon lives there.",
+        description: "A city celebrated for its connection to the wilderness around it. Known around the world for its famous Safari Zone.",
         type: "city",
-        mart: ["Full Heal", "Ultraball", "Focus Energy", "Berry"],
+        mart: ["Full Heal", "Ultraball", "Focus Energy"],
         poi: ["Soul Badge Gym"],
         discoveries: [],
         pkmn: []
     },
     {
         name: "Lavender Town",
-        description: "Lavender Town home to the Pokémon Tower as a trainer going to the tower could be an adventurous occasion or a disheartening one, Pokémon Tower is a grave dedicated to our beloved Pokémon companions. Rumor has it a Pokémon who was forcibly parted from something it held dear haunts the tower, if only there was a way to show the creatures true form?",
+        description: "",
         type: "city",
         mart: ["Great Ball", "Switch", "Focus Energy"],
         poi: [],
@@ -217,7 +217,7 @@ const Zones = [
     },
     {
         name: "Pewter City",
-        description: "Pewter City home of the Rock type specialists Brock make sure to bring Water types to rain on his parade! Pewter City is also home to the Pewter Museum of Science.",
+        description: "",
         type: "city",
         mart: ["Switch", "Energy"],
         poi: ["Boulder Badge Gym"],
@@ -226,7 +226,7 @@ const Zones = [
     },
     {
         name: "Saffron City",
-        description: "Saffron City home of the Psychic type specialists Sabrina make sure to bring Dark types and dip her mind and clairvoyance in darkness! Saffron City is also home to Silph Co and the Fighting dojo, rumors say Silph Co has a device that can see the true form of ghosts.",
+        description: "",
         type: "city",
         mart: ["Switch", "Energy", "Greatball"],
         poi: ["Marsh Badge Gym"],
@@ -235,7 +235,7 @@ const Zones = [
     },
     {
         name: "Vermillion City",
-        description: "Vermillion City home of the Electric type specialist Lt. Surge make sure to bring Ground types and ground his electric personality! Vermillion City is right next to Diglett cave conveniently full of the Ground type Diglett, Vermillion also hosts the S.S. Anne! Rumor has it that with the right Pokémon one could take a shortcut to Viridian Forest.",
+        description: "",
         type: "city",
         mart: ["Switch", "Energy", "Greatball", "Berry"],
         poi: ["Thunder Badge Gym"],
@@ -244,7 +244,7 @@ const Zones = [
     },
     {
         name: "Viridian City",
-        description: "Viridian City hosts the eighth Pokémon League Gym whos gym leader has mysteriously disappeared. Viridian also hosts the route Trainers need to take if they wish to access Victory Road!",
+        description: "",
         type: "city",
         mart: ["Berry", "Switch", "Energy"],
         poi: ["Earth Badge Gym"],
@@ -415,9 +415,8 @@ const Zones = [
     },
     {
         name: "Victory Road",
-        description: "So, you've made it huh? Test your might on Victory Road if you can make it past this challenge nothing can stand between you and the Indigo Plateau, May only the brave travel this road.",
-        type: "city",
-
+        description: "The final stretch before reaching the Indigo Plateau. Only the most prepared trainers can make it through this dangerous terrain.",
+        type: "location",
         mart: [],
         poi: [],
         discoveries: [],
@@ -425,7 +424,7 @@ const Zones = [
     },
     {
         name: "Viridian Forest",
-        description: " Route 2 passes through Viridian Forest, which has open north and south gates and is positioned halfway between Viridian City and Pewter City.",
+        description: "Route 2 passes through Viridian Forest, which has open north and south gates and is positioned halfway between Viridian City and Pewter City.",
         type: "location",
         mart: [],
         poi: [],
