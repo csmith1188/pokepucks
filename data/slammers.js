@@ -25,6 +25,7 @@ const Slammers = [
             }
         },
         ballStrength: 2,
+        tags: ["wing"],
         notes: ""
     }, 
 
@@ -62,6 +63,7 @@ const Slammers = [
             }
         },
         ballStrength: 2, // 1 is baby, 2 is 4g, 3 is 8g, 4 is higher, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -99,6 +101,7 @@ const Slammers = [
             }
         },
         ballStrength: 2,
+        tags: [],
         notes: ""
 
     },
@@ -128,6 +131,7 @@ const Slammers = [
             }
         },
         ballStrength: 2,
+        tags: [],
         notes: ""
     },
 
@@ -156,6 +160,7 @@ const Slammers = [
             }
         },
         ballStrength: 3,
+        tags: [],
         notes: ""
     },
 
@@ -185,6 +190,7 @@ const Slammers = [
             }
         },
         ballStrength: 2,
+        tags: [],
         notes: ""
     },
 
@@ -214,6 +220,7 @@ const Slammers = [
             },
         },
         ballStrength: 2,
+        tags: [],
         notes: ""
     },
 
@@ -243,6 +250,7 @@ const Slammers = [
             }
         },
         ballStrength: 3,
+        tags: [],
         notes: ""
     }, 
 
@@ -271,6 +279,7 @@ const Slammers = [
             }
         },
         ballStrength: 3,
+        tags: [],
         notes: ""
     },
 
@@ -299,6 +308,7 @@ const Slammers = [
             }
         },
         ballStrength: 2, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -327,6 +337,7 @@ const Slammers = [
             }
         },
         ballStrength: 2, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -355,6 +366,7 @@ const Slammers = [
             }
         },
         ballStrength: 4, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -383,6 +395,7 @@ const Slammers = [
             }
         },
         ballStrength: 2, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -411,6 +424,7 @@ const Slammers = [
             }
         },
         ballStrength: 4, // 1 is baby, 5 is masterball
+        tags: ["wing"],
         notes: ""
     },
 
@@ -449,6 +463,7 @@ const Slammers = [
             }
         },
         ballStrength: 2, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -477,6 +492,7 @@ const Slammers = [
             }
         },
         ballStrength: 4, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -505,6 +521,7 @@ const Slammers = [
             }
         },
         ballStrength: 2, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     },
 
@@ -533,6 +550,7 @@ const Slammers = [
             }
         },
         ballStrength: 3, // 1 is baby, 5 is masterball
+        tags: [],
         notes: ""
     }
 ]
