@@ -41,6 +41,7 @@ const Pucks = [
         type: "Trainer",
         role: "lottery",
         img: "",
+		description: "",
         se: {
             adventure: [],
             battle: [{
