@@ -1,5 +1,80 @@
 const Pucks = [
     {
+        name: "You",
+        ids: [],
+        type: "Trainer",
+        role: "lottery",
+        img: "",
+        description: "This is you",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "If this is the only trainer Puck in your Power stack when you finish an attack, if that throw didn't hit, you make 1 additional attack.",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Ms. Hicks",
+        ids: [],
+        type: "Trainer",
+        role: "lottery",
+        img: "",
+        description: "One of the trainers you will find along your way.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "If this is the only Trainer Puck in your Power stack when the previous player makes a throw, you may pick up any pucks that landed outside of the Arena. The previous player must move as many pucks from their Health stack to the Arena stack as you picked up. If they cannot, their slammer gains the Critical Status. ",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Mr. Merkert",
+        ids: [],
+        type: "Trainer",
+        role: "lottery",
+        img: "",
+        description: "One of the trainers you will find along your way.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "if this is the only Trainer Puck in your Power stack after you have made your last attack and you did not pick up and pucks this turn, you may make 1 additional attack",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Mr. Saia",
+        ids: [],
+        type: "Trainer",
+        role: "lottery",
+        img: "",
+        description: "One of the trainers you will find along your way.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "If this is the only Trainer Puck in your Power stack when previous player finishes making a throw, you may move a flipped puck to your Health stack and move a puck from your Health stack into the Arena face-up. ",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Mr. Smith",
+        ids: [],
+        type: "Trainer",
+        role: "lottery",
+        img: "",
+        description: "One of the trainers you will find along your way.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "If this is the only Trainer Puck in your Power stack when you finish topping-off, you may rearrange the Arena stack. ",
+                notes: []
+            }]
+        }
+    },
+    {
         name: "Bike",
         ids: [],
         type: "Item", // Item, Trainer, Energy, Pokemon
@@ -26,7 +101,7 @@ const Pucks = [
         description: "A superb tool for relaxation, unless you are a hungry and unwitting water type Pokemon",
         se: {
             adventure: [{
-                text: "You require a Fishing Rod to start a Catch Pokemon action for a Pokemon Slammer Type is Water.",
+                text: "You require a Fishing Rod to start a Catch Pokemon action for a Pokemon Slammer Type of Water.",
                 notes: []
             }],
             battle: [{
@@ -35,84 +110,14 @@ const Pucks = [
             }]
         }
     },
-    {
-        name: "Ms. Hicks",
-        ids: [],
-        type: "Trainer",
-        role: "lottery",
-        img: "",
-		description: "",
-        se: {
-            adventure: [],
-            battle: [{
-                text: "If this is the only Trainer Puck in your Power stack when the previous player makes a throw, you may pick up any pucks that landed outside of the Arena. The previous player must move as many pucks from their Health stack to the Arena stack as you picked up. If they cannot, their slammer gains the Critical Status. ",
-                notes: []
-            }]
-        }
-    },
-    {
-        name: "You",
-        ids: [],
-        type: "Trainer",
-        role: "lottery",
-        img: "",
-        se: {
-            adventure: [],
-            battle: [{
-                text: "If this is the only trainer Puck in your Power stack when you finish an attack, if that throw didn't hit, you make 1 additional attack.",
-                notes: []
-            }]
-        }
-    },
-    {
-        name: "Mr. Merkert",
-        ids: [],
-        type: "Trainer",
-        role: "lottery",
-        img: "",
-        se: {
-            adventure: [],
-            battle: [{
-                text: "if this is the only Trainer Puck in your Power stack after you have made your last attack and you did not pick up and pucks this turn, you may make 1 additional attack",
-                notes: []
-            }]
-        }
-    },
-    {
-        name: "Mr. Saia",
-        ids: [],
-        type: "Trainer",
-        role: "lottery",
-        img: "",
-        se: {
-            adventure: [],
-            battle: [{
-                text: "If this is the only Trainer Puck in your Power stack when previous player finishes making a throw, you may move a flipped puck to your Health stack and move a puck from your Health stack into the Arena face-up. ",
-                notes: []
-            }]
-        }
-    },
-    {
-        name: "Mr. Smith",
-        ids: [],
-        type: "Trainer",
-        role: "lottery",
-        img: "",
-        se: {
-            adventure: [],
-            battle: [{
-                text: "If this is the only Trainer Puck in your Power stack when you finish topping-off, you may rearrange the Arena stack. ",
-                notes: []
-            }]
-        }
-    },
+    
     {
         name: "Potions",
         ids: [],
         type: "Item",
         role: "mart",
         img: "",
-        description: "heals your pokemon for 20 HP",
+        description: "Brings 2 pokemon into your deck to battle.",
         se: {
             adventure: [],
             battle: [{
@@ -127,7 +132,7 @@ const Pucks = [
         type: "Item",
         role: "mart",
         img: "",
-        description: "switch's out your current pokemon for a different one",
+        description: "Switch's out your current pokemon for another.",
         se: {
             adventure: [],
             battle: [{
@@ -137,12 +142,12 @@ const Pucks = [
         }
     },
     {
-        name: "berry",
+        name: "Berry",
         ids: [],
         type: "Item",
         role: "discovery",
         img: "",
-        description: "heals your pokemon for 10 HP",
+        description: "Rejuvanates your pokemon to keep them in the fight.",
         se: {
             adventure: [],
             battle: [{
@@ -157,7 +162,7 @@ const Pucks = [
         type: "Item",
         role: "Energy",
         img: "",
-        description: "adds 1 attack if you have a pokemon with the same typing in your party",
+        description: "gives your pokemon with ever increasing strength of they're attacks",
         se: {
             adventure: [],
             battle: [{
@@ -172,7 +177,7 @@ const Pucks = [
         type: "Item",
         role: "Energy",
         img: "",
-        description: "adds 1 attack if you have a pokemon with the same typing in your party",
+        description: "Helps your pokemon work well eith moves of it's same typing.",
         se: {
             adventure: [],
             battle: [{
@@ -187,7 +192,7 @@ const Pucks = [
         type: "Item",
         role: "mart",
         img: "",
-        description: "rempves all negatve status effects form one pokemon",
+        description: "Removes all statuses from one of your pokemon.",
         se: {
             adventure: [],
             battle: [{
@@ -197,12 +202,12 @@ const Pucks = [
         }
     },
     {
-        name: "focus Sash",
+        name: "Focus Sash",
         ids: [],
         type: "Item",
         role: "mart",
         img: "",
-        description: "leaves your pokemon on 1 HP if they would have gotten 1-hit KO",
+        description: "A good tool to make sure your pokemon will keep fighting",
         se: {
             adventure: [],
             battle: [{
@@ -217,7 +222,7 @@ const Pucks = [
         type: "Item",
         role: "Discovery",
         img: "",
-        description: "awakens sleeping pokemon",
+        description: "Awakens your pokemon.",
         se: {
             adventure: [],
             battle: [{
@@ -227,12 +232,12 @@ const Pucks = [
         }
     },
     {
-        name: "power stone",
+        name: "Power Stone",
         ids: [],
         type: "Item",
         role: "discovery",
         img: "",
-        description: "evolves certain pokemon with the right stone",
+        description: "If the power stone is the same type as your pokemon, itmakes those moves stronger.",
         se: {
             adventure: [],
             battle: [{
@@ -247,7 +252,7 @@ const Pucks = [
         type: "Item",
         role: "discovery",
         img: "",
-        description: "ignores special conditions when determining the number of attacks",
+        description: "ignores anything that might change this pokemons turn.",
         se: {
             adventure: [],
             battle: [{
