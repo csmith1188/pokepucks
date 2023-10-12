@@ -44,7 +44,7 @@ const Connections = [
         alt: []
     },
     {
-        zones: ["Route 13-14-15", "Fuchsia City"],
+        zones: ["Route 13-15", "Fuchsia City"],
         direction: "both",
         req: [],
         alt: []
@@ -56,7 +56,7 @@ const Connections = [
         alt: []
     },
     {
-        zones: ["Snorlax Blockade", "Route 13-14-15"],
+        zones: ["Snorlax Blockade", "Route 13-15"],
         direction: "both",
         req: ["pokeflute"],
         alt: []
@@ -94,7 +94,7 @@ const Connections = [
     {
         zones: ["Route 9-10", "Lavender Town"],
         direction: "both",
-        req: ["dig","fighting type pokemon"],
+        req: ["dig", "fighting type pokemon"],
         alt: []
     },
     {
@@ -169,7 +169,7 @@ const Connections = [
         req: [],
         alt: []
     },
-    {   
+    {
         zones: ["Route 6", "Saffron City"],
         direction: "both",
         req: [],
@@ -188,19 +188,19 @@ const Connections = [
         alt: []
     },
     {
-        zones: ["Route 11", "Vermilion City"],
+        zones: ["Route 11", "Vermillion City"],
         direction: "both",
         req: ["cut", "grass type pokemon"],
         alt: []
     },
     {
-        zones: ["Diglett's Cave", "Vermilion City"],
+        zones: ["Diglett's Cave", "Vermillion City"],
         direction: "both",
         req: [],
         alt: []
     },
     {
-        zones: ["The SS Anne", "Vermilion City"],
+        zones: ["The SS Anne", "Vermillion City"],
         direction: "both",
         req: [],
         alt: []
@@ -351,3 +351,5 @@ const Connections = [
         alt: []
     }
 ]
+
+//Babysitter and Route 24-25 dont work or go anywhere(?)
