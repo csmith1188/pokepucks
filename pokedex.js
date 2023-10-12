@@ -310,6 +310,7 @@ function printSlammer(slammerToFind, erase) {
     titleHeader.innerText = "Slammers";
     contentBox.appendChild(titleHeader);
 
+
     for (const slammer of SlammersToSearch) {
         //slammer Name
         let slammerHeader = document.createElement("h2");
@@ -317,10 +318,21 @@ function printSlammer(slammerToFind, erase) {
         contentBox.appendChild(slammerHeader);
 
         //dex
-        let slammerDex = document.createElement("p");
-        slammerDex.classList.add(`pucktype`);
-        slammerDex.innerText = `PokeDex #: ${slammer.pokedex}`;
+        let slammerDex = document.createElement("p"); // <p></p>
+        slammerDex.classList.add(`pucktype`); // <p class='pucktype'></p>
+        slammerDex.innerText = `PokeDex #: ${slammer.pokedex}`; // <p class='pucktype'>PokeDex #: Pokemon Name</p>
         contentBox.appendChild(slammerDex);
+
+        //tag
+        if (slammer.tags.length) {
+            let tags = document.createElement("p"); // <p></p>
+            tags.classList.add(`pucktype`); // <p class='pucktype'></p>
+            tags.innerText = `Tags:`; // <p class='pucktype'>Tags:</p>
+            for (const tag of slammer.tags) {
+                tags.innerText += " " + tag;
+            }
+            contentBox.appendChild(tags);
+        }
 
         //ballStrength
         let slammerBallStr = document.createElement("p");
