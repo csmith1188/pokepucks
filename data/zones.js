@@ -19,7 +19,7 @@ const Zones = [
     },
     {
         name: "Route 3",
-        description: "Connects Pawter City to Mt. Moon, or to Route 4 threw a tunnel.",
+        description: "Connects Pewter City to Mt. Moon, or to Route 4 threw a tunnel.",
         type: "route",
         mart: [],
         poi: [],
@@ -28,7 +28,7 @@ const Zones = [
     },
     {
         name: "Route 4",
-        description: "Connects to Route 3 threw a tunnel, or travel to Cerulean City, or defeat Elite 4 to travel to Cerulean Cave, or Travel to Mt. Moon.",
+        description: "Connects to Route 3 though a tunnel, travel to Cerulean City, defeat the Elite 4 to enter Cerulean Cave, or Travel to Mt. Moon.",
         type: "route",
         mart: [],
         poi: [],
@@ -73,7 +73,7 @@ const Zones = [
     },
     {
         name: "Route 9-10",
-        description: "Connects Cerulean City to Rock tunnel, or travel threw a tunnel to get to lavender Town, or cross the ocean to the Pwer Plant.",
+        description: "Connects Cerulean City to Rock tunnel, travel though a tunnel to get to lavender Town, or cross the ocean to the Power Plant.",
         type: "route",
         mart: [],
         poi: [],
@@ -82,7 +82,7 @@ const Zones = [
     },
     {
         name: "Route 11",
-        description: "Cut threw Route 11 to Vermillion City, or use a PokeFlute to go to Routes 12/13/14 and or 15.",
+        description: "Cut though Route 11 to Vermillion City, or use a PokeFlute to go to Routes 12, 13, 14, and 15.",
         type: "route",
         mart: [],
         poi: [],
@@ -91,7 +91,7 @@ const Zones = [
     },
     {
         name: "Route 12",
-        description: "Connects to Lavender Town, or use PoekFlute to travel to Routes 11/13/14 and or 15.",
+        description: "Connects to Lavender Town, or use the PokéFlute to travel to Routes 11/13/14 and or 15.",
         type: "route",
         mart: [],
         poi: [],
@@ -100,7 +100,7 @@ const Zones = [
     },
     {
         name: "Route 13-15",
-        description: "Connects to Fuschia City, or use a PokeFlute to travel to Routes 11 and or 12.",
+        description: "Connects to Fuschia City, or use the PokéFlute to travel to Routes 11 and or 12.",
         type: "route",
         mart: [],
         poi: [],
@@ -109,7 +109,7 @@ const Zones = [
     },
     {
         name: "Route 16",
-        description: "Connects to Celadon city, or Surf/Bike to Routes 17 and or 18.",
+        description: "Connects to Celadon city, use Surf, or cycle with a Bike to Routes 17 and 18.",
         type: "route",
         mart: [],
         poi: [],
@@ -118,7 +118,7 @@ const Zones = [
     },
     {
         name: "Route 17-18",
-        description: "Surf/Bike to Fuschia City, or Surf/Bike to Route 16.",
+        description: "Surf or cycle with a Bike to Fuschia City, or to Route 16.",
         type: "route",
         mart: [],
         poi: [],
@@ -127,7 +127,7 @@ const Zones = [
     },
     {
         name: "Route 19",
-        description: "Connects to Fuschia City, or Surf to Route 20, or use a SS Anne Ticket to go to The SS Anne Docks.",
+        description: "Connects to Fuschia City, Surf to Route 20, or use a SS Anne Ticket to go to The SS Anne Docks.",
         type: "route",
         mart: [],
         poi: [],
@@ -136,7 +136,7 @@ const Zones = [
     },
     {
         name: "Route 20",
-        description: "Surf to Route 19, or surf to Seafoam Islands, or Surf to Cinnabar Island.",
+        description: "Surf to Route 19, surf to the Seafoam Islands, or Surf to Cinnabar Island.",
         type: "route",
         mart: [],
         poi: [],
@@ -145,7 +145,7 @@ const Zones = [
     },
     {
         name: "Route 21",
-        description: "Surf to Pallet Town, or Surf to Cinnabar Island.",
+        description: "Surf to Pallet Town, or to Cinnabar Island.",
         type: "route",
         mart: [],
         poi: [],
@@ -154,7 +154,7 @@ const Zones = [
     },
     {
         name: "Route 22-23",
-        description: "Connects to Viridian City, or Only the most experienced trainers may go from Route 22/23 to Victory road.",
+        description: "Connects to Viridian City, or Route 22/23 where only the most experienced trainers may go to enter Victory road.",
         type: "route",
         mart: [],
         poi: [],
@@ -208,7 +208,7 @@ const Zones = [
     },
     {
         name: "Pallet Town",
-        description: "A quiet small town near the water in Kanto. It houses the Pokémon Professor Oak's Lab know for researching Pokemon!",
+        description: "A quiet small town near the water in Kanto. It houses the Pokémon Professor Oak's Lab know for researching Pokémon!",
         type: "location",
         mart: [],
         poi: ["Homesweet", "Professor Oak's Lab"],
