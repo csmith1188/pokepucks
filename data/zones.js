@@ -19,7 +19,7 @@ const Zones = [
     },
     {
         name: "Route 3",
-        description: "Connects Pawter City to Mt. Moon, or to Route 4 threw a tunnel.",
+        description: "Connects Pewter City to Mt. Moon, or to Route 4 threw a tunnel.",
         type: "route",
         mart: [],
         poi: [],
@@ -28,7 +28,7 @@ const Zones = [
     },
     {
         name: "Route 4",
-        description: "Connects to Route 3 threw a tunnel, or travel to Cerulean City, or defeat Elite 4 to travel to Cerulean Cave, or Travel to Mt. Moon.",
+        description: "Connects to Route 3 though a tunnel, travel to Cerulean City, defeat the Elite 4 to enter Cerulean Cave, or Travel to Mt. Moon.",
         type: "route",
         mart: [],
         poi: [],
@@ -73,7 +73,7 @@ const Zones = [
     },
     {
         name: "Route 9-10",
-        description: "Connects Cerulean City to Rock tunnel, or travel threw a tunnel to get to lavender Town, or cross the ocean to the Pwer Plant.",
+        description: "Connects Cerulean City to Rock tunnel, travel though a tunnel to get to lavender Town, or cross the ocean to the Power Plant.",
         type: "route",
         mart: [],
         poi: [],
@@ -82,7 +82,7 @@ const Zones = [
     },
     {
         name: "Route 11",
-        description: "Cut threw Route 11 to Vermillion City, or use a PokeFlute to go to Routes 12/13/14 and or 15.",
+        description: "Cut though Route 11 to Vermillion City, or use a PokeFlute to go to Routes 12, 13, 14, and 15.",
         type: "route",
         mart: [],
         poi: [],
@@ -91,7 +91,7 @@ const Zones = [
     },
     {
         name: "Route 12",
-        description: "Connects to Lavender Town, or use PoekFlute to travel to Routes 11/13/14 and or 15.",
+        description: "Connects to Lavender Town, or use the PokéFlute to travel to Routes 11/13/14 and or 15.",
         type: "route",
         mart: [],
         poi: [],
@@ -100,7 +100,7 @@ const Zones = [
     },
     {
         name: "Route 13-15",
-        description: "Connects to Fuschia City, or use a PokeFlute to travel to Routes 11 and or 12.",
+        description: "Connects to Fuschia City, or use the PokéFlute to travel to Routes 11 and or 12.",
         type: "route",
         mart: [],
         poi: [],
@@ -109,7 +109,7 @@ const Zones = [
     },
     {
         name: "Route 16",
-        description: "Connects to Celadon city, or Surf/Bike to Routes 17 and or 18.",
+        description: "Connects to Celadon city, use Surf, or cycle with a Bike to Routes 17 and 18.",
         type: "route",
         mart: [],
         poi: [],
@@ -118,7 +118,7 @@ const Zones = [
     },
     {
         name: "Route 17-18",
-        description: "Surf/Bike to Fuschia City, or Surf/Bike to Route 16.",
+        description: "Surf or cycle with a Bike to Fuschia City, or to Route 16.",
         type: "route",
         mart: [],
         poi: [],
@@ -127,7 +127,7 @@ const Zones = [
     },
     {
         name: "Route 19",
-        description: "Connects to Fuschia City, or Surf to Route 20, or use a SS Anne Ticket to go to The SS Anne Docks.",
+        description: "Connects to Fuschia City, Surf to Route 20, or use a SS Anne Ticket to go to The SS Anne Docks.",
         type: "route",
         mart: [],
         poi: [],
@@ -136,7 +136,7 @@ const Zones = [
     },
     {
         name: "Route 20",
-        description: "Surf to Route 19, or surf to Seafoam Islands, or Surf to Cinnabar Island.",
+        description: "Surf to Route 19, surf to the Seafoam Islands, or Surf to Cinnabar Island.",
         type: "route",
         mart: [],
         poi: [],
@@ -145,7 +145,7 @@ const Zones = [
     },
     {
         name: "Route 21",
-        description: "Surf to Pallet Town, or Surf to Cinnabar Island.",
+        description: "Surf to Pallet Town, or to Cinnabar Island.",
         type: "route",
         mart: [],
         poi: [],
@@ -154,7 +154,7 @@ const Zones = [
     },
     {
         name: "Route 22-23",
-        description: "Connects to Viridian City, or Only the most experienced trainers may go from Route 22/23 to Victory road.",
+        description: "Connects to Viridian City, or Route 22/23 where only the most experienced trainers may go to enter Victory road.",
         type: "route",
         mart: [],
         poi: [],
@@ -208,7 +208,7 @@ const Zones = [
     },
     {
         name: "Pallet Town",
-        description: "The town's reputation as the home of the Professor Oaks Lab is due to its waterfront location.",
+        description: "A quiet small town near the water in Kanto. It houses the Pokémon Professor Oak's Lab know for researching Pokémon!",
         type: "location",
         mart: [],
         poi: ["Homesweet", "Professor Oak's Lab"],
@@ -253,16 +253,16 @@ const Zones = [
     },
     {
         name: "Bill's House",
-        description: "Bill, the renown Pokemon Data Scientists, known for his invention of the Pokemon Box system, lives quietly in a luxury home in the north of Kanto.",
+        description: "Bill, the renowned Pokémon Data Scientists, known for his invention of the Pokémon Box system, lives quietly in a luxury home in the north of Kanto.",
         type: "location",
         mart: [],
         poi: ["Bill"],
         discoveries: [],
-        pkmn: []
+        pkmn: ["Eevee"]
     },
     {
         name: "Celadon Department Store",
-        description: "The largest retailer in Kanto provides a vast selection of goods, some of which are not found in standard Pokémarts.",
+        description: "The largest retailer in Kanto provideing a vast selection of goods, some of which are not found in standard Pokémarts.",
         type: "location",
         mart: ["Focus Energy", "Full Heal", "Greatball", "Power Stone", "Switch"],
         poi: [],
@@ -271,7 +271,7 @@ const Zones = [
     },
     {
         name: "Celadon Game Corner",
-        description: "A game corner that is located in Celadon City's southeast.",
+        description: "A game corner that is located in Celadon City's southeast. Sightings of shady individuals have been entering and leaving the corner, Police haven't tracked down the source but advise caution",
         type: "location",
         mart: [],
         poi: [],
@@ -280,7 +280,7 @@ const Zones = [
     },
     {
         name: "Cerulean Cave",
-        description: "The Cerulean Cave, a huge 4-story cave in Cerulean City, is only open to players who have conquered the Elite Four of Kanto.",
+        description: "The Cerulean Cave, a powerful psychic aura envelopes the cavern. Champion are you the challenge met?",
         type: "location",
         mart: [],
         poi: [],
@@ -289,7 +289,7 @@ const Zones = [
     },
     {
         name: "Diglett's Cave",
-        description: "From Route 11 to Route 2, a tunnel in Kanto provides an alternate route.",
+        description: "A tunnel in Kanto full of Diglett! Convenietly a Electric type gym was placed next to it!.",
         type: "location",
         mart: [],
         poi: [],
@@ -298,7 +298,7 @@ const Zones = [
     },
     {
         name: "Indigo Plateau",
-        description: "Pokémon Trainers who have earned badges arrive at this last location to face the Elite Four after defeating all eight of Kanto's gym leaders.",
+        description: "Pokémon Trainers who have faithfully earned 8 badges have the oppertunity to challenge the Elite 4. You have reached the culmination of your journey be proud Trainer theirs only rockbottom from here.",
         type: "city",
         mart: [],
         poi: [],
@@ -307,7 +307,7 @@ const Zones = [
     },
     {
         name: "Mt. Moon",
-        description: "The mountain is a mythical location famous for its regular meteor falls known as Moon Stones, which are fragments of stars.",
+        description: "The mountain is a mystical mountain famous for its abundant meteorites known as Moon Stones, which are said to be fragments of stars.",
         type: "location",
         mart: [],
         poi: [],
@@ -316,7 +316,7 @@ const Zones = [
     },
     {
         name: "Pokemon Mansion",
-        description: "Cinnabar Island's Pokémon Mansion, a four-story structure, is where you can find the secret key that unlocks Cinnabar Gym.",
+        description: "Cinnabar Island's Pokémon Mansion, a delapatated structure, what mysteries hide within.",
         type: "location",
         mart: [],
         poi: [],
@@ -325,7 +325,7 @@ const Zones = [
     },
     {
         name: "Pokemon Tower",
-        description: "Many people pay their condolences every day at the various graves of deceased Pokémon located in the seven-story edifice.",
+        description: "Many people pay their condolences every day at the various graves of deceased Pokémon located in the seven-story edifice. Let's pray you won't need to anytime soon...",
         type: "location",
         mart: [],
         poi: [],
@@ -334,7 +334,7 @@ const Zones = [
     },
     {
         name: "Power Plant",
-        description: "Power plants, or structures that produce and transmit electrical power, are frequently home to electric-type Pokémon.",
+        description: "A Power plant that produced and transmited electrical power, Electric type Pokémon seem to roam the rubble now.",
         type: "location",
         mart: [],
         poi: [],
@@ -343,7 +343,7 @@ const Zones = [
     },
     {
         name: "Rock Tunnel",
-        description: "To get to Lavender Town, which is situated in the center of Route 10 in Kanto, players must travel via the Rock Tunnel.",
+        description: "Rock Tunnel located in route 10 leads to Lavender town. Various Rock type Pokémon reside in the tunnels darkness.",
         type: "location",
         mart: [],
         poi: [],
@@ -352,7 +352,7 @@ const Zones = [
     },
     {
         name: "Rocket Hideout",
-        description: "A hidden base in the basement of the Celadon Game Corner where Team Rocket organizes their operations.",
+        description: "WHATS THIS!!! TEAM ROCKET!!! Quickly to their hideout now!",
         type: "location",
         mart: [],
         poi: [],
@@ -361,7 +361,7 @@ const Zones = [
     },
     {
         name: "Safari Zone",
-        description: "As well as acting as a sanctuary and providing access to a timed game, the site is home to unique, rare Pokémon that are not present anywhere else.",
+        description: "As well as acting as a sanctuary and providing access to a catching game, the site is home to unique, rare Pokémon that are not present anywhere else.",
         type: "location",
         mart: [],
         poi: [],
@@ -370,7 +370,7 @@ const Zones = [
     },
     {
         name: "Seafoam Islands",
-        description: "Two islands separate Route 20 into two independent sections.",
+        description: "Two islands located in route 20. Many water types make their home there.",
         type: "location",
         mart: [],
         poi: [],
@@ -379,7 +379,7 @@ const Zones = [
     },
     {
         name: "Silph Co. Headquarters",
-        description: "The tallest structure in Saffron City serves as the covert headquarters of Team Rocket.",
+        description: "Headquarters of the leading manufacturer of Pokémon technology! Know for creating some of the most commercially used Poké Balls along side technical machines.",
         type: "location",
         mart: [],
         poi: [],
@@ -388,7 +388,7 @@ const Zones = [
     },
     {
         name: "Snorlax Blockade",
-        description: "You must use the Pok Flute to awaken Snorlax since he is blocking your route.",
+        description: "Oh no Snorlax is blocking the way! Rumor has it that snorlax once woke up to the sound of a special flute.",
         type: "location",
         mart: [],
         poi: [],
@@ -397,7 +397,7 @@ const Zones = [
     },
     {
         name: "The Dojo",
-        description: "An establishment in Saffron City that is close to the Saffron City Gym.",
+        description: "ONE! TWO!! THREE!!! KNOCKOUT! train with your fellow trainer's Fighting types, Masters of the martial arts!",
         type: "location",
         mart: [],
         poi: [],
@@ -406,7 +406,7 @@ const Zones = [
     },
     {
         name: "The SS Anne",
-        description: "There are many Pokémon trainers on board this opulent cruise ship, including several gentlemen and sailors.",
+        description: "The cruse of many Kantonian dreams, now 99% Gyarados proof! Hopefully...",
         type: "location",
         mart: [],
         poi: ["SS Anne"],
@@ -425,7 +425,7 @@ const Zones = [
     },
     {
         name: "Viridian Forest",
-        description: " Route 2 passes through Viridian Forest, which has open north and south gates and is positioned halfway between Viridian City and Pewter City.",
+        description: "A small dense forest home to many Bug type Pokémon! Rumor has it theirs a special yellow mouse waiting to be captured.",
         type: "location",
         mart: [],
         poi: [],
