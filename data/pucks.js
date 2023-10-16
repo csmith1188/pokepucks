@@ -101,8 +101,8 @@ const Pucks = [
         description: "A superb tool for relaxation, unless you are a hungry and unwitting water type Pokemon",
         se: {
             adventure: [{
-                text: "You require a Fishing Rod to start a Catch Pokemon action for a Pokemon Slammer Type of Water.",
-                notes: []
+                text: "You require a Fishing Rod to start a Catch Pokemon action for a Pokemon Slammer Type of Water. In addition, you may start said Catch Action if you are in a Zone with a connection that requires 'Surf' to get to the Zone where the Pokemon is located.",
+                notes: ["Example: If you are in Route 19, you may catch a Pokemon located in Route 20 if you possess this puck, even if you do not have Surf and a Water Type Pokemon.", "Vaporeon may be evolved from Eevee with Water Stones without a Fishing Rod, because it is not a Catch Action."]
             }],
             battle: [{
                 text: "After making a throw, if this puck is flipped, the current player moves it to their prize stack.",
