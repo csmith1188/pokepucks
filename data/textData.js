@@ -2,7 +2,7 @@ const textData = {
     Introduction: [
         {
             header: "What is PokePucks?",
-            body: "PokePucks is a game of collecting, trading, and staking Pokemon themed 'pucks'. While it can be enjoyed as small individual games called \"Battles\", it can also be played as an \"Adventure\", where players track their progress using collected pucks to traverse the Pokemon world and compete for goals such as collecting all available Pokemon Slammers or Gym Badges. While there are many nuances to the game, the core of the experience is to stack up some pucks and throw a slammer at them, collecting the pucks that land face up."
+            body: "PokePucks is a game of collecting, trading, and staking Pokemon themed 'pucks'. While it can be enjoyed as small individual games called \"Battles\", it can also be played as an \"Adventure\". In an Adventure, players track their progress using competing for goals such as collecting all available Pokemon Slammers or Gym Badges. While there are many nuances to the game, the core of the experience is to stack up some pucks and throw a slammer at them, collecting the pucks that land face up."
         },
         {
             header: "What is a Puck?",
@@ -14,7 +14,7 @@ const textData = {
         },
         {
             header: "Pokemon Battles",
-            body: "The rules for a \"Battle\" consist of a Setup, Loop, and End Stages, General Rules, and Modifiers.\n In the Setup Stage, players involved will make several decisions about what game they want to play and begin putting the pieces in place. It's important that everyone agrees to the experience they want to have beforehand, else they may not have fun.\nIn the Loop Stage, players take turns going through a series of steps, called \"phases\", until only one player can take their turn, or another agreed upon condition is met.\nIn the End Stage, players decide who won the match, and how to distribute the pucks used in the game.\nGeneral Rules are rules that are always in effect at any Stage of the Game Mode. Modifiers are used in Game Modes that copy the base Setup and Loop from another Game Mode, and overwrite them with new rules. For example, an Even Ante Battle has all of the same rules as an Ante Battle, except there are a few rules changed so that both players leave the game with the same number of pucks as when they started."
+            body: "The rules for a \"Battle\" consist of a Setup, Loop, and End Stages, General Rules, and Modifiers.\n In the Setup Stage, players involved will make several decisions about what game they want to play and begin putting the pieces in place. It's important that everyone agrees to the experience they want to have beforehand, else they may not have fun.\nIn the Loop Stage, players take turns going through a series of steps, called \"phases\", until only one player can take their turn, or another agreed upon condition is met.\nIn the End Stage, players decide who won the match, and how to distribute the pucks used in the game.\nGeneral Rules are rules that are always in effect at any Stage of the Battle. Modifiers are used in Battles that copy the base Setup and Loop from another Battle, and overwrite them with new rules. For example, an Even Ante Battle has all of the same rules as an Ante Battle, except there are a few rules changed so that both players leave the game with the same number of pucks as when they started."
         },
         {
             header: "A Note About Staking",
@@ -74,6 +74,28 @@ const textData = {
                 },
                 {
                     text: "Pidgeot's Wing Attack now reads: \"When counting attacks on your turn, if the next player's slammer Energy Type is Grass, may treat your slammer as having the Energy Type that matches their weakness.\"",
+                    notes: ["Changed to 'may treat'."]
+                },
+                {
+                    text: "Squirtle's Defense Curl now reads: \"After making all your attacks on your turn, if you did not pick up any pucks this turn, the next time the previous player picks up, they must pick up 1 less puck in each of their attacks.\"",
+                    notes: ["Boosted to 1 less puck per attack, instead of one less puck per turn."]
+                },
+                {
+                    text: "Aerodactyl's Hyper Beam now reads: \"When counting attacks on your turn, you may choose to increase that number by 2. If you do, after counting your attacks on your next turn, reduce that number to 1.\"",
+                    notes: ["Clarified 'when' and 'after'."]
+                },
+                {
+                    text: "Flareon's Fire Spin now reads: \"After making your last attack on your turn, if you flipped any pucks this turn, in the previous player's Pick a Slammer phase, they must pick the slammer they picked in their previous turn.\"",
+                    notes: [
+                        "More clear explanation and modified for the new 'Pick Slammer' phase.",
+                        "Note that the Switch Item Puck still bypasses this."
+                    ]
+                },
+                {
+                    text: "Eevee's Genetically Unstable now reads: \"When counting attacks on your turn, if there is only 1 Energy Puck in your Power Stack, you may change this Slammer's Energy Type to match that Energy Puck.\"",
+                    notes: [
+                        "This will give you the 1 additional attack from having an Energy Puck that matches the Slammer's Energy Type."
+                    ]
                 }
             ],
             body: ""

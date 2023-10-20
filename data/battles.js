@@ -1,7 +1,8 @@
-const GameModes = [
+const Battles_description = "";
+const Battles = [
     {
         name: "Training Battle",
-        description: "A safe, no-stakes battle to learn how PokePucks is played. Players take turns in their turn order until all but one player has been eliminated! This is one of two \"complete Game Modes\", in that it doesn't modify any other existing Game Mode. This Game Mode is just so you can learn how to play a Battle. You can't lose any of your pucks, just relax and have fun with friends.",
+        description: "A safe, no-stakes battle to learn how PokePucks is played. Players take turns in their turn order until all but one player has been eliminated! This is one of two \"complete Battles\", in that it doesn't modify any other existing Battle. This Battle is just so you can learn how to play a Battle. You can't lose any of your pucks, just relax and have fun with friends.",
         type: "battle",
         general: [
             {
@@ -159,7 +160,7 @@ const GameModes = [
     },
     {
         name: "Ante Battle",
-        description: "The most common way to play a Pokemon Battle. This is one of the only two base Game Modes. All other Game Modes are modifications of this one.",
+        description: "The most common way to play a Pokemon Battle. This is one of the only two base Battles. All other Battles are modifications of this one.",
         type: "battle",
         general: [
             {
@@ -336,4 +337,4 @@ const GameModes = [
             }
         ]
     }
-]
+];

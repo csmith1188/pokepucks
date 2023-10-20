@@ -7,7 +7,7 @@
 <div id="content"></div>
 
 <script src="data/connections.js"></script>
-<script src="data/gamemodes.js"></script>
+<script src="data/battles.js"></script>
 <script src="data/mart.js"></script>
 <script src="data/pucks.js"></script>
 <script src="data/slammers.js"></script>
@@ -20,7 +20,7 @@
 
 <script>
     printSection();
-    printGameMode();
+    printBattle();
     printTerm();
     printPuck();
     printSlammer();
@@ -65,30 +65,30 @@ function printSection(sectionToFind, erase) {
     } //End Intro
 }
 
-// print from GameModes
-// gameModeToFind: which key in GameModes to print (false for all)
+// print from Battles
+// battleToFind: which key in Battles to print (false for all)
 // erase: clear the previous content (true/false)
-function printGameMode(gameModeToFind, erase) {
+function printBattle(battleToFind, erase) {
     if (erase)
         contentBox.innerHTML = "";
 
-    let GameModesToSearch = GameModes;
+    let BattlesToSearch = Battles;
 
-    // If a gameMode was provided, find it and put it in a list
-    if (gameModeToFind)
-        GameModesToSearch = [GameModes.find((gameModeSearch) => gameModeSearch.name == gameModeToFind)];
-    // If you couldn't find that gameMode, revert back to all
-    if (!GameModesToSearch)
-        GameModesToSearch = GameModes;
+    // If a battle was provided, find it and put it in a list
+    if (battleToFind)
+        BattlesToSearch = [Battles.find((battleSearch) => battleSearch.name == battleToFind)];
+    // If you couldn't find that battle, revert back to all
+    if (!BattlesToSearch)
+        BattlesToSearch = Battles;
 
-    //Game Modes
-    let gameModeHeader = document.createElement("h1");
-    gameModeHeader.innerText = "Game Modes";
-    contentBox.appendChild(gameModeHeader);
+    //Battles
+    let battleHeader = document.createElement("h1");
+    battleHeader.innerText = "Battles";
+    contentBox.appendChild(battleHeader);
 
-    for (const mode of GameModes) {
+    for (const mode of Battles) {
 
-        //Game Mode Name
+        //Battle Name
         let modeHeader = document.createElement("h2");
         modeHeader.innerText = mode.name;
         contentBox.appendChild(modeHeader);
