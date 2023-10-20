@@ -419,11 +419,11 @@ const Slammers = [
             name: "Wing Attack",
             adventure: {},
             battle: {
-                text: "When counting attacks on your turn, if the next player’s slammer Energy Type is Grass, treat your slammer as having the Energy Type that matches their weakness.",
+                text: "When counting attacks on your turn, if the next player's slammer Energy Type is Grass, may treat your slammer as having the Energy Type that matches their weakness.",
                 notes: []
             }
         },
-        ballStrength: 4, // 1 is baby, 5 is masterball
+        ballStrength: 3, // 1 is baby, 5 is masterball
         tags: ["wing"],
         notes: ""
     },
@@ -458,7 +458,7 @@ const Slammers = [
             name: "Defense Curl",
             adventure: {},
             battle: {
-                text: "After making all of your attacks on your turn, if you did not pick up any pucks this turn, the next time the previous player picks up, they must pick up 1 less puck.",
+                text: "After making all of your attacks on your turn, if you did not pick up any pucks this turn, after the next time the previous player counts the number of pucks to pick up, reduce that number by 1.",
                 notes: []
             }
         },
@@ -516,7 +516,7 @@ const Slammers = [
             name: "Cut",
             adventure: {},
             battle: {
-                text: "After making all of your attacks on your turn, you may make 1 additional attack. You may only pick up 1 puck from this attack.",
+                text: "If your current Slammer's Energy Type is Grass, in each of your attacks on your turn, when counting the number of pucks to pick up, add 1 to that number.",
                 notes: []
             }
         },
