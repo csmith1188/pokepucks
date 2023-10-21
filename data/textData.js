@@ -26,7 +26,9 @@ const textData = {
             header: "PokePucks 1.0 Launch Notes",
             changes: [
                 {
-                    text: ["Added a step in the Make Attacks phase called Counting Pucks to Pickup. Instead of picking up every puck that flips, you must count the number of pucks you pick up in the way you count attacks, starting with 1."],
+                    rule: "Make Attacks",
+                    text: "",
+                    description: ["Added a step in the Make Attacks phase called Counting Pucks to Pickup. Instead of picking up every puck that flips, you must count the number of pucks you pick up in the way you count attacks, starting with 1."],
                     notes: [
                         "Some players have more access to PokePucks than others, and some players take a long time to build up a collection to play with. I have personally flipped 7 of 8 pucks with a baby pokemon slammer, so it is not especially difficult for an experienced player with a great Slammer to knock out a new player in a few turns, while taking no damage themselves.",
                         "Reducing the average number of pickups per attack gives a struggling opponent more chances to catch up, and get some pucks into their Prize stacks to be able to play another game. Games will also last longer for the amount of investment put in.",
@@ -35,66 +37,107 @@ const textData = {
                     ]
                 },
                 {
-                    text: ["Added the \"Bench Stack\" to Ante Battles, allowing you take up to 3 Pokemon Slammers into battle."],
+                    rule: "Bench Stack",
+                    text: "",
+                    description: ["Added the Bench Stack to Ante Battles, allowing you take up to 3 Pokemon Slammers into battle."],
                     notes: ["Before, the rules were written to put them in your Power Stack with the rest of you pucks.", "Functionally, you would seperate your Slammers into a seperate Power Stack. This jsut makes it an officially different stack."]
                 },
                 {
-                    text:["Added the \"Pick a Slammer\" phase to the turn, along with the Switch Sick Status."],
+                    rule: "Pick a Slammer",
+                    text: "",
+                    description:["Added the Pick a Slammer phase to the turn, along with the Switch Sick Status."],
                     notes: ["Before, the only way to switch Pokemon was to get a Switch Item into the Arena, then successfully pick it up and use it.", "Pokemon are now able to switch freely, but at a penalty."]
                 },
                 {
-                    text: ["Added Term \"HM Move\" which reads \"In a Battle, treat this Slammer as though it had the HM Move Item Puck in your Power Stack. If it is a Support Ability, you must choose this Slammer. In an Adventure, if you possess this Slammer, you may make Move Actions as though you also possess the HM Move Item Puck.\""],
-                    notes: ["This is just to clarify that some Slammers are treated as already knowing the move needed to use the associated abilities, even if you do not have the puck.", "It also clarifies that a Pokemon that already knows this move cannot \"give\" this move to another Pokemon."]
+                    rule: "HM Move",
+                    text: "In a Battle, treat this Slammer as though it had the HM Move Item Puck in your Power Stack. If it is a Support Ability, you must choose this Slammer.\nIn an Adventure, if you possess this Slammer, you may make Move Actions as though you also possess the HM Move Item Puck.",
+                    description: ["Added a new General Rule to Ante Battles and Adventure. This also changes the Slammer Abilities of Scyther, Lapras, and Onix"],
+                    notes: [
+                        "This is just to clarify that some Slammers are treated as already knowing the move needed to use the associated abilities, even if you do not have the puck.",
+                        "It also clarifies that a Pokemon that already knows this move cannot give this move to another Pokemon."]
                 },
                 {
-                    text: "HM01 Cut now reads: \"If your current Slammer's Energy Type is Grass, in each of your attacks on your turn, when counting the number of pucks to pick up, add 1 to that number.\"",
+                    rule: "HM01 Cut",
+                    text: "If your current Slammer's Energy Type is Grass, in each of your attacks on your turn, when counting the number of pucks to pick up, add 1 to that number.",
+                    description: "",
                     notes: [
                         "Scyther's Slammer Ability now reads the same as well.",
                         "Cut should be a single sharp attack, with the potential to do more damage."
                     ]
                 },
                 {
-                    text: "HM02 Fly now reads: \"Each time you make a Move Action, if you possess a Pokemon Slammer with a Wing Tag, you may move up to 4 times, but you must finish your Move Action in a City Zone.\"",
+                    rule: "HM02 Fly",
+                    text: "In an Adventure, each time you make a Move Action, if you possess a Pokemon Slammer with a Wing Tag, you may move up to 4 times, but you must finish your Move Action in a City Zone.",
+                    description: "",
                     notes: [
                         "You may not take other actions until your last move is finished.",
-                        "This isn't the Gameboy game. Instantly teleporting across the map in a multiplayer game is over pwoered."
+                        "This isn't the Gameboy game. Instantly teleporting across the map in a multiplayer game is over powered."
                     ]
                 },
                 {
-                    text: "HM03 Surf now reads: \"Support: Once in your turn, if a Slammer in your Bench Stack has a Water Energy Type, when counting the number of pucks to pick up in the first attack made on your turn, add that Slammer's Ball Strength to that number.\"",
+                    rule: "HM03 Surf",
+                    text: "Support: Once in your turn, if a Slammer in your Bench Stack has a Water Energy Type, when counting the number of pucks to pick up in the first attack made on your turn, add that Slammer's Ball Strength to that number.",
+                    description: "",
                     notes: [
                         "Lapras's Slammer Ability now reads the same as well.",
-                        "Surf is now the first and only 'Support' Ability, which allows it to be \"used\" on any Poekmon that is on the bench."
-
+                        "Surf is now the first and only 'Support' Ability, which allows it to be used on any Poekmon that is on the bench."
                     ]
                 },
                 {
-                    text: "HM04 Dig now reads: \"If your current Slammer's Energy Type is Fighting, when counting attacks on your turn, you may choose to reduce that number to 1. If you do, you may pick up an additional puck in each of your attacks during your next turn.\"",
+                    rule: "HM04 Dig",
+                    text: "If your current Slammer's Energy Type is Fighting, when counting attacks on your turn, you may choose to reduce that number to 1. If you do, you may pick up an additional puck in each of your attacks during your next turn.",
+                    description: "",
                     notes: ["The classic Dig move allows you to dodge now and attack later. In PokePucks, it provides a greater delayed attack."]
                 },
                 {
-                    text: "Pidgeot's Wing Attack now reads: \"When counting attacks on your turn, if the next player's slammer Energy Type is Grass, may treat your slammer as having the Energy Type that matches their weakness.\"",
+                    rule: "Wing Attack",
+                    text: "When counting attacks on your turn, if the next player's slammer Energy Type is Grass, may treat your slammer as having the Energy Type that matches their weakness.",
+                    description: "Pidgeot",
                     notes: ["Changed to 'may treat'."]
                 },
                 {
-                    text: "Squirtle's Defense Curl now reads: \"After making all your attacks on your turn, if you did not pick up any pucks this turn, the next time the previous player picks up, they must pick up 1 less puck in each of their attacks.\"",
+                    rule: "Defense Curl",
+                    text: "After making all your attacks on your turn, if you did not pick up any pucks this turn, the next time the previous player picks up, they must pick up 1 less puck in each of their attacks.",
+                    description: "Squirtle",
                     notes: ["Boosted to 1 less puck per attack, instead of one less puck per turn."]
                 },
                 {
-                    text: "Aerodactyl's Hyper Beam now reads: \"When counting attacks on your turn, you may choose to increase that number by 2. If you do, after counting your attacks on your next turn, reduce that number to 1.\"",
+                    rule: "Hyper Beam",
+                    text: "When counting attacks on your turn, you may choose to increase that number by 2. If you do, after counting your attacks on your next turn, reduce that number to 1.",
+                    description: "Aerodactyl",
                     notes: ["Clarified 'when' and 'after'."]
                 },
                 {
-                    text: "Flareon's Fire Spin now reads: \"After making your last attack on your turn, if you flipped any pucks this turn, in the previous player's Pick a Slammer phase, they must pick the slammer they picked in their previous turn.\"",
+                    rule: "Fire Spin",
+                    text: "After making your last attack on your turn, if you flipped any pucks this turn, in the previous player's Pick a Slammer phase, they must pick the slammer they picked in their previous turn.",
+                    description: "Flareon",
                     notes: [
                         "More clear explanation and modified for the new 'Pick Slammer' phase.",
                         "Note that the Switch Item Puck still bypasses this."
                     ]
                 },
                 {
-                    text: "Eevee's Genetically Unstable now reads: \"When counting attacks on your turn, if there is only 1 Energy Puck in your Power Stack, you may change this Slammer's Energy Type to match that Energy Puck.\"",
+                    rule: "Genetically Unstable",
+                    text: "When counting attacks on your turn, if there is only 1 Energy Puck in your Power Stack, you may change this Slammer's Energy Type to match that Energy Puck.",
+                    description: "Eevee",
                     notes: [
                         "This will give you the 1 additional attack from having an Energy Puck that matches the Slammer's Energy Type."
+                    ]
+                },
+                {
+                    rule: "Pay Day",
+                    text: "After making an attack on your turn, after you pick up, you may pick up a flipped Item puck.",
+                    description: "Meowth",
+                    notes: [
+                        "For example, if you flip an Energy Puck and an Item Puck, but can only pick up 1 this attack, you can pick up the Energy puck for you attack, then this ability allows you to pick up the item puck."
+                    ]
+                },
+                {
+                    rule: "Sleep",
+                    text: "Before calculating the number of attacks to make on your turn, if this Slammer does not have the Sleep Status or the Switch Sick Status, you may give it the Sleep Status. If you do, you may top off your Health Stack from your Prize Stack. After calculating the number of attacks to make on your turn, reduce the number to 0.",
+                    description: "Snorlax",
+                    notes: [
+                        "Succeeding or failing to top off the Health Stack does not matter. If your Health Stack Size is 10, and it has 4 pucks in it"
                     ]
                 }
             ],

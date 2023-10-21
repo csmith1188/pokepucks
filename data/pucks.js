@@ -110,7 +110,7 @@ const Pucks = [
             }]
         }
     },
-    
+
     {
         name: "Potions",
         ids: [],
@@ -122,7 +122,7 @@ const Pucks = [
             adventure: [],
             battle: [{
                 text: "Before you top-off, you may move up to 2 pucks from Prize stack onto your Health stack without going over the max size, then discard this puck. ",
-                notes: ["This does not count towards the number of pucks the player is allowed to pick up"]
+                notes: [""]
             }]
         }
     },
@@ -137,7 +137,7 @@ const Pucks = [
             adventure: [],
             battle: [{
                 text: "Before determining the number of attacks to make on your turn, you may replace your slammer with a legal slammer from your collection, then discard this puck. ",
-                notes: ["this does not count towards the number of pucks the player is allowed to pick up"]
+                notes: [""]
             }]
         }
     },
@@ -145,7 +145,7 @@ const Pucks = [
         name: "Berry",
         ids: [],
         type: "Item",
-        role: "discovery",
+        role: "mart",
         img: "",
         description: "Rejuvanates your pokemon to keep them in the fight.",
         se: {
@@ -197,7 +197,7 @@ const Pucks = [
             adventure: [],
             battle: [{
                 text: "Remove all Status's from your slammer.",
-                notes: ["this does not count towards the number of pucks the player is allowed to pick up"]
+                notes: [""]
             }]
         }
     },
@@ -227,7 +227,7 @@ const Pucks = [
             adventure: [],
             battle: [{
                 text: "Before you top-off, remove the Sleep Status from your slammer",
-                notes: ["this does not count towards the number of pucks the player is allowed to pick up"]
+                notes: [""]
             }]
         }
     },
@@ -235,14 +235,14 @@ const Pucks = [
         name: "Power Stone",
         ids: [],
         type: "Item",
-        role: "discovery",
+        role: "mart",
         img: "",
-        description: "If the power stone is the same type as your pokemon, itmakes those moves stronger.",
+        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
         se: {
             adventure: [],
             battle: [{
                 text: "If your slammer's Power Type matches the Energy Type on this puck, after determining the number of attacks you can make, add 1 to that number, then discard this puck. ",
-                notes: ["this does not count towards the number of pucks the player is allowed to pick up"]
+                notes: [""]
             }]
         }
     },
@@ -252,13 +252,73 @@ const Pucks = [
         type: "Item",
         role: "discovery",
         img: "",
-        description: "ignores anything that might change this pokemons turn.",
+        description: "",
         se: {
             adventure: [],
             battle: [{
-                text: "When determine the number of attacks you can make on your turn, you may ignore any special rules that can reduce your number of attacks by one. ",
-                notes: ["this does not count towards the number of pucks the player is allowed to pick up"]
+                text: "After counting the number of attacks you can make on your turn, if you can only make 1 attack that turn, when counting the numebr of pucks you can pick up in that attack, increase that number by 1.",
+                notes: [""]
             }]
         }
     },
+    {
+        name: "HM01 Cut",
+        ids: [],
+        type: "Item",
+        role: "discovery",
+        img: "",
+        description: "",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "If your current Slammer's Energy Type is Grass, in each of your attacks on your turn, when counting the number of pucks to pick up, add 1 to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "HM02 Fly",
+        ids: [],
+        type: "Item",
+        role: "discovery",
+        img: "",
+        description: "",
+        se: {
+            adventure: [{
+                text: "Each time you make a Move Action, if you possess a Pokemon Slammer with a Wing Tag, you may move up to 4 times, but you must finish your Move Action in a City Zone.",
+                notes: [""]
+            }],
+            battle: []
+        }
+    },
+    {
+        name: "HM03 Surf",
+        ids: [],
+        type: "Item",
+        role: "discovery",
+        img: "",
+        description: "",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "Support: Once in your turn, if a Slammer in your Bench Stack has a Water Energy Type, when counting the number of pucks to pick up in the first attack made on your turn, add that Slammer's Ball Strength to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "HM04 Dig",
+        ids: [],
+        type: "Item",
+        role: "discovery",
+        img: "",
+        description: "",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "If your current Slammer's Energy Type is Fighting, when counting attacks on your turn, you may choose to reduce that number to 1. If you do, you may pick up an additional puck in each of your attacks during your next turn.",
+                notes: [""]
+            }]
+        }
+    }
 ]

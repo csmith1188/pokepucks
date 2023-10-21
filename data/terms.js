@@ -96,10 +96,16 @@ const Terms = [
         notes: []
     },
     {
+        name: "HM Move",
+        alternates: [],
+        text: "In a Battle, treat this Slammer as though it had the HM Move Item Puck in your Power Stack. If it is a Support Ability, you must choose this Slammer.\nIn an Adventure, if you possess this Slammer, you may make Move Actions as though you also possess the HM Move Item Puck.",
+        notes: []
+    },
+    {
         name: "Item Puck",
         alternates: ["Items"],
-        text: "The pucks that can be used by a player to refill the Arena Stack.",
-        notes: ["Any puck that is listed in the PuckMart, or is listed as a suitable proxy for one. It has the special rules listed for that puck."]
+        text: "Any puck that is listed in the PuckMart, or is listed as a suitable proxy for one. It has the special rules listed for that puck.",
+        notes: [""]
     },
     {
         name: "Knock Out",

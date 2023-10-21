@@ -286,7 +286,7 @@ function printPuck(puckToFind, erase) {
             }
         }
 
-    } //End Terms
+    } //End Pucks
 }
 
 // print from Slammers
@@ -407,6 +407,49 @@ function printSlammer(slammerToFind, erase) {
         }
 
     }
+} // End Slammers
+
+// print from statuses
+// statusToFind: which key in statuses to print (false for all)
+// erase: clear the previous content (true/false)
+function printStatus(statusToFind, erase) {
+    // Clear the contentBox if they chose to erase
+    if (erase)
+        contentBox.innerHTML = "";
+
+    //
+    var statPrint = statusToFind;
+    if (!statusToFind)
+        statPrint = Statuses;
+
+    // Header
+    let mainHeader = document.createElement("h1");
+    mainHeader.innerText = "Statuses";
+    contentBox.appendChild(mainHeader);
+
+    //Each Status
+    for (const stat of statPrint) {
+        let newHeader = document.createElement("h2");
+        newHeader.innerText = stat.name;
+        contentBox.appendChild(newHeader);
+        let newDesc = document.createElement("p");
+        newDesc.classList.add(`desc`);
+        newDesc.innerText = stat.description;
+        contentBox.appendChild(newDesc);
+        let newStat = document.createElement("p");
+        newStat.innerText = stat.text;
+        contentBox.appendChild(newStat);
+        if (stat.notes.length) {
+            let rulesNoteList = document.createElement("ul");
+            abilItem.appendChild(rulesNoteList);
+            for (const note of stat.notes) {
+                let rulesNote = document.createElement("li");
+                rulesNote.classList.add(`note`);
+                rulesNote.innerText = note;
+                rulesNoteList.appendChild(rulesNote);
+            }
+        }
+    } //End Intro
 }
 
 // print from Zones
@@ -550,7 +593,7 @@ function printZone(zoneToFind, erase) {
         }
 
     }
-}
+} // End Zones
 
 // reverse true if you want to search one way routes coming into thisZone
 function findConnections(thisZone, reverse) {

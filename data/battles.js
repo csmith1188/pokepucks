@@ -28,45 +28,53 @@ const Battles = [
         ],
         setup: [
             {
-                text: "Decide how many players are playing",
-                description: [],
+                text: "Number of Players",
+                description: ["Decide how many players are playing"],
                 notes: [
                     "PokéPucks is designed for 2 to 4 players, but can support more."
                 ]
             },
             {
-                text: "Decide which Special Rules to add to this battle",
+                text: "Special Rules",
                 description: [
-                    "Will you use Pokeball Slammer or Pokemon Slammer Abilities? Will you use Pokemon Slammer Types?"
+                    "Decide which Special Rules to add to this battle"
                 ],
                 notes: [
+                    "For example, will you use Pokeball Slammer or Pokemon Slammer Abilities? Will you use Pokemon Slammer Types?",
                     "It is good to add in a few rules from the Ante Battle and Core Rules as you play more games to get used to the game."
                 ]
             },
             {
-                text: "Determine the turn order of all players",
+                text: "Determine Turn Order",
                 description: [
                     "Flip coins, rock/paper/scissors, and smash pucks to decide who goes first.",
+                    "Decide who who take their turn clockwise from the first player",
                     "The first player will take their next turn after the last player's turn, making an infinite loop."
                 ],
                 notes: []
             },
             {
-                text: "Each player puts 10 Sandbag Item Pucks in their Health Stack",
-                description: [],
+                text: "Build Health Stack",
+                description: [
+                    "Each player puts 10 Sandbag Item Pucks in their Health Stack.",
+                    "If they players agree, any puck can be used as a Sandbag Item Proxy."
+                ],
                 notes: [
                     "These Sandbag Item Pucks should be from a neutral collection that one, all, or none of the players owns. This way nobody can lose any pucks."
                 ]
             },
             {
-                text: "Place 8 Sandbag Item Pucks in the Arena Stack",
-                description: [],
+                text: "Build Arena",
+                description: [
+                    "Place 8 Sandbag Item Pucks in the Arena Stack",
+                    "If they players agree, any puck can be used as a Sandbag Item Proxy."
+                ],
                 notes: [
                     "These Sandbag Item Pucks should be from a neutral collection that one, all, or none of the players owns. This way nobody can lose any pucks."
                 ]
             },
             {
-                text: "Each player selects a Slammer",
+                text: "Pick a Slammer",
                 description: ["In the turn order, each player selects a legal puck from their collection to be their slammer."],
                 notes: []
             },
@@ -78,7 +86,7 @@ const Battles = [
         ],
         loop: [
             {
-                text: "Top off the Arena Stack",
+                text: "Top Off",
                 description: ["The current player tops-off the Arena Stack from their Health Stack."],
                 notes: [
                     "Check the Previous Player for Critical Status before topping off",
@@ -86,8 +94,9 @@ const Battles = [
                 ]
             },
             {
-                text: "Attempt a Knock Out",
+                text: "Knock Out",
                 description: [
+                    "If the previous player's Slammer has the Critical Status, you may attempt a Knock Out",
                     "Set aside the pucks in the Arena stack. Move the current player's slammer into the Arena stack.",
                     "The previous player makes one attack. If the current player's slammer is flipped, do not pick up; the current player is out of the battle. Move their slammer and all of the pucks in their Health, Power, and Prize stacks to their collection. Skip to the end of this turn."
                 ],
@@ -116,7 +125,8 @@ const Battles = [
                     "The current player restacks the pucks that were not picked up."
                 ],
                 notes: [
-                    "Many Special Rules change the number of pucks you can pick up."
+                    "Many Special Rules change the number of pucks you can pick up.",
+                    "In an Ante Battle, you would pick up a different amount of pucks. Counting pucks seems pointless in a Training Battle, but it will help you learn to play Ante Battles if you choose to."
                 ]
             },
             {
