@@ -3,7 +3,8 @@ const Pucks = [
         name: "You",
         ids: [],
         type: "Trainer",
-        role: "lottery",
+        subtype: "",
+        found: "lottery",
         img: "",
         description: "This is you",
         se: {
@@ -18,7 +19,8 @@ const Pucks = [
         name: "Ms. Hicks",
         ids: [],
         type: "Trainer",
-        role: "lottery",
+        subtype: "",
+        found: "lottery",
         img: "",
         description: "One of the trainers you will find along your way.",
         se: {
@@ -33,7 +35,8 @@ const Pucks = [
         name: "Mr. Merkert",
         ids: [],
         type: "Trainer",
-        role: "lottery",
+        subtype: "",
+        found: "lottery",
         img: "",
         description: "One of the trainers you will find along your way.",
         se: {
@@ -48,7 +51,8 @@ const Pucks = [
         name: "Mr. Saia",
         ids: [],
         type: "Trainer",
-        role: "lottery",
+        subtype: "",
+        found: "lottery",
         img: "",
         description: "One of the trainers you will find along your way.",
         se: {
@@ -63,7 +67,8 @@ const Pucks = [
         name: "Mr. Smith",
         ids: [],
         type: "Trainer",
-        role: "lottery",
+        subtype: "",
+        found: "lottery",
         img: "",
         description: "One of the trainers you will find along your way.",
         se: {
@@ -78,7 +83,8 @@ const Pucks = [
         name: "Bike",
         ids: [],
         type: "Item", // Item, Trainer, Energy, Pokemon
-        role: "mart", // Mart, Discovery, Lottery
+        subtype: "", // Unofficial category of puck
+        found: "mart", // Mart, Discovery, Lottery
         img: "",
         description: "A little pricey, but there's no better way for a trainer to zip around the world.",
         se: {
@@ -96,7 +102,8 @@ const Pucks = [
         name: "Fishing Rod",
         ids: [],
         type: "Item",
-        role: "discovery",
+        subtype: "",
+        found: "discovery",
         img: "",
         description: "A superb tool for relaxation, unless you are a hungry and unwitting water type Pokemon",
         se: {
@@ -115,7 +122,8 @@ const Pucks = [
         name: "Potions",
         ids: [],
         type: "Item",
-        role: "mart",
+        subtype: "",
+        found: "mart",
         img: "",
         description: "Brings 2 pokemon into your deck to battle.",
         se: {
@@ -130,7 +138,8 @@ const Pucks = [
         name: "Switch",
         ids: [],
         type: "Item",
-        role: "mart",
+        subtype: "",
+        found: "mart",
         img: "",
         description: "Switch's out your current pokemon for another.",
         se: {
@@ -145,7 +154,8 @@ const Pucks = [
         name: "Berry",
         ids: [],
         type: "Item",
-        role: "mart",
+        subtype: "",
+        found: "mart",
         img: "",
         description: "Rejuvanates your pokemon to keep them in the fight.",
         se: {
@@ -160,29 +170,193 @@ const Pucks = [
         name: "Focus Energy",
         ids: [],
         type: "Item",
-        role: "Energy",
+        subtype: "",
+        found: "mart",
         img: "",
-        description: "gives your pokemon with ever increasing strength of they're attacks",
+        description: "A blast of type energy that powers up you Pokemon a lot for a short bit.",
         se: {
             adventure: [],
             battle: [{
-                text: "After counting attacks on your turn, if your slammer's Energy Type matches the icon on the puck, add 1 to that number, or discard this puck to add two to that number",
+                text: "When counting the number of attacks to make on your turn, you may discard this puck. If you do, add 2 to that number.",
+                notes: ["A Focus Energy is any other Energy subtype puck with a fully transparent bottom."]
+            }]
+        }
+    },
+    {
+        name: "Electric Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up your Pokemon's attacks.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Electric, add 1 to that number",
                 notes: []
             }]
         }
     },
     {
-        name: "Energy",
+        name: "Water Energy",
         ids: [],
         type: "Item",
-        role: "Energy",
+        subtype: "Energy",
+        found: "mart",
         img: "",
-        description: "Helps your pokemon work well eith moves of it's same typing.",
+        description: "Type energy that powers up your Pokemon's attacks.",
         se: {
             adventure: [],
             battle: [{
-                text: "When determining how many attacks to make on your turn, if this puck is in your Power stack, and the icon on it matches your slammer's Energy Type, add 1 to that number",
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Water, add 1 to that number",
                 notes: []
+            }]
+        }
+    },
+    {
+        name: "Fire Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up your Pokemon's attacks.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fire, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Grass Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up your Pokemon's attacks.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Grass, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Fighting Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up your Pokemon's attacks.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fighting, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Psychic Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up your Pokemon's attacks.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Psychic, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Normal Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up your Pokemon's attacks.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Normal, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Fairy Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up attacks of many different types of Pokemon.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Water, Grass, or Normal, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Dark Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up attacks of many different types of Pokemon.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Psychic, Fire, or Normal, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Steel Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up attacks of many different types of Pokemon.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Electric, Fighting, or Normal, add 1 to that number",
+                notes: []
+            }]
+        }
+    },
+    {
+        name: "Dragon Energy",
+        ids: [],
+        type: "Item",
+        subtype: "Energy",
+        found: "mart",
+        img: "",
+        description: "Type energy that powers up attacks of all different types of Pokemon.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "If there is another Energy puck in your Power Stack whose type that matches your current Pokemon Slammer's Energy Type, in each attack in your turn, when counting the number of pucks to pick up, add 1 to that number. Otherwise, when counting the number of attacks to make on your turn, add 1 to that number.",
+                notes: [
+                    "A Squirtle with a Dragon Energy makes two attacks. A Squirtle with a Water Energy and Dragon Energy makes two attacks and picks up two pucks from each."
+                ]
             }]
         }
     },
@@ -190,7 +364,8 @@ const Pucks = [
         name: "Full Heal",
         ids: [],
         type: "Item",
-        role: "mart",
+        subtype: "",
+        found: "mart",
         img: "",
         description: "Removes all statuses from one of your pokemon.",
         se: {
@@ -205,7 +380,8 @@ const Pucks = [
         name: "Focus Sash",
         ids: [],
         type: "Item",
-        role: "mart",
+        subtype: "",
+        found: "mart",
         img: "",
         description: "A good tool to make sure your pokemon will keep fighting",
         se: {
@@ -220,7 +396,8 @@ const Pucks = [
         name: "PokeFlute",
         ids: [],
         type: "Item",
-        role: "Discovery",
+        subtype: "",
+        found: "Discovery",
         img: "",
         description: "Awakens your pokemon.",
         se: {
@@ -232,16 +409,113 @@ const Pucks = [
         }
     },
     {
-        name: "Power Stone",
+        name: "Moon Stone",
         ids: [],
         type: "Item",
-        role: "mart",
+        subtype: "Power Stone",
+        found: "mart",
         img: "",
         description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
         se: {
             adventure: [],
             battle: [{
-                text: "If your slammer's Power Type matches the Energy Type on this puck, after determining the number of attacks you can make, add 1 to that number, then discard this puck. ",
+                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Normal, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "Thunder Stone",
+        ids: [],
+        type: "Item",
+        subtype: "Power Stone",
+        found: "mart",
+        img: "",
+        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Electric, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "Leaf Stone",
+        ids: [],
+        type: "Item",
+        subtype: "Power Stone",
+        found: "mart",
+        img: "",
+        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Grass, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "Water Stone",
+        ids: [],
+        type: "Item",
+        subtype: "Power Stone",
+        found: "mart",
+        img: "",
+        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Water, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "Fire Stone",
+        ids: [],
+        type: "Item",
+        subtype: "Power Stone",
+        found: "mart",
+        img: "",
+        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fire, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "Old Amber",
+        ids: [],
+        type: "Item",
+        subtype: "Power Stone",
+        found: "mart",
+        img: "",
+        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fighting, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                notes: [""]
+            }]
+        }
+    },
+    {
+        name: "Dusk Stone",
+        ids: [],
+        type: "Item",
+        subtype: "Power Stone",
+        found: "mart",
+        img: "",
+        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+        se: {
+            adventure: [],
+            battle: [{
+                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Psychic, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
                 notes: [""]
             }]
         }
@@ -250,7 +524,8 @@ const Pucks = [
         name: "Silph Scope",
         ids: [],
         type: "Item",
-        role: "discovery",
+        subtype: "",
+        found: "discovery",
         img: "",
         description: "",
         se: {
@@ -265,7 +540,8 @@ const Pucks = [
         name: "HM01 Cut",
         ids: [],
         type: "Item",
-        role: "discovery",
+        subtype: "",
+        found: "discovery",
         img: "",
         description: "",
         se: {
@@ -280,7 +556,8 @@ const Pucks = [
         name: "HM02 Fly",
         ids: [],
         type: "Item",
-        role: "discovery",
+        subtype: "",
+        found: "discovery",
         img: "",
         description: "",
         se: {
@@ -295,7 +572,8 @@ const Pucks = [
         name: "HM03 Surf",
         ids: [],
         type: "Item",
-        role: "discovery",
+        subtype: "",
+        found: "discovery",
         img: "",
         description: "",
         se: {
@@ -310,7 +588,8 @@ const Pucks = [
         name: "HM04 Dig",
         ids: [],
         type: "Item",
-        role: "discovery",
+        subtype: "",
+        found: "discovery",
         img: "",
         description: "",
         se: {
