@@ -611,7 +611,7 @@ function findConnections(thisZone, reverse) {
 }
 
 // Return a list of strings that are the names of items that are in every Mart
-// fullObj true if you want the entire object
+// fullObj true if you want the entire object, instead of just their names
 function findStdMart(fullObj) {
     let stdMart = [];
     for (const puck of Mart.filter((puck) => puck.std)) {

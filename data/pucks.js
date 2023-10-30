@@ -16,17 +16,17 @@ const Pucks = [
         }
     },
     {
-        name: "Ms. Hicks",
+        name: "Officer Hicks",
         ids: [],
         type: "Trainer",
         subtype: "",
         found: "lottery",
         img: "",
-        description: "One of the trainers you will find along your way.",
+        description: "Officer Hicks is tasked with finding students leaving school early to have Pokemon battles.",
         se: {
             adventure: [],
             battle: [{
-                text: "If this is the only Trainer Puck in your Power stack when the previous player makes a throw, you may pick up any pucks that landed outside of the Arena. The previous player must move as many pucks from their Health stack to the Arena stack as you picked up. If they cannot, their slammer gains the Critical Status. ",
+                text: "After the previous player makes an attack on their turn, before picking up pucks, if any pucks landed outside of the Arena, the previous player must move 1 puck from their Health Stack to the Arena Stack.",
                 notes: []
             }]
         }
@@ -145,7 +145,7 @@ const Pucks = [
         se: {
             adventure: [],
             battle: [{
-                text: "Before determining the number of attacks to make on your turn, you may replace your slammer with a legal slammer from your collection, then discard this puck. ",
+                text: "Before determining the number of attacks to make on your turn, you may move your current Slammer to your Bench Stack, and select a different Slammer.",
                 notes: [""]
             }]
         }
@@ -371,7 +371,7 @@ const Pucks = [
         se: {
             adventure: [],
             battle: [{
-                text: "Remove all Status's from your slammer.",
+                text: "At the beginning of your Count Attacks phase, you may discard this puck. If you do, choose one Status your current Slammer has. Your current Slammer loses that Status.",
                 notes: [""]
             }]
         }
@@ -403,7 +403,7 @@ const Pucks = [
         se: {
             adventure: [],
             battle: [{
-                text: "Before you top-off, remove the Sleep Status from your slammer",
+                text: "At the beginning of your Count Attacks phase, if your current Slammer has the Sleep Status, it loses the Sleep Status.",
                 notes: [""]
             }]
         }
