@@ -50,17 +50,56 @@ function printSection(sectionToFind, erase) {
     var sectPrint = sectionToFind;
     if (!sectionToFind)
         sectPrint = "Introduction";
-
     //Intro Paragraphs
     for (const point of textData[sectPrint]) {
         let newHeader = document.createElement("h1");
         newHeader.innerText = point.header;
         contentBox.appendChild(newHeader);
+        if (point.date) {
+            let newDate = document.createElement("p");
+            newDate.classList.add('rule');
+            contentBox.appendChild(newDate);
+            let date = new Date(point.date);
+            console.log(date);
+            newDate.innerText = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        }
         let splitPara = point.body.split(/\r?\n|\r|\n/g);
         for (const para of splitPara) {
             let newPara = document.createElement("p");
             newPara.innerText = para;
             contentBox.appendChild(newPara);
+        }
+        if (point.changes) {
+            for (const change of point.changes) {
+                let newChangeHeader = document.createElement("h3");
+                contentBox.appendChild(newChangeHeader);
+                newChangeHeader.innerText = change.rule;
+                for (const desc of change.description) {
+                    splitPara = desc.split(/\r?\n|\r|\n/g);
+                    for (const para of splitPara) {
+                        let newPara = document.createElement("p");
+                        newPara.classList.add('desc');
+                        newPara.innerText = para;
+                        contentBox.appendChild(newPara);
+                    }
+                }
+                splitPara = change.text.split(/\r?\n|\r|\n/g);
+                for (const para of splitPara) {
+                    let newPara = document.createElement("p");
+                    newPara.classList.add('rule');
+                    newPara.innerText = para;
+                    contentBox.appendChild(newPara);
+                }
+                if (change.notes) {
+                    let newNoteList = document.createElement("ul");
+                    contentBox.appendChild(newNoteList);
+                    for (const note of change.notes) {
+                        let newBullet = document.createElement("li");
+                        newBullet.innerText = note;
+                        newNoteList.appendChild(newBullet);
+                    }
+                }
+            }
         }
     } //End Intro
 }

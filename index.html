@@ -13,7 +13,7 @@
     <a name="#"></a>
 
     <div id="navBar">
-        <a href="#top" class="button clickable" onclick="printSection(false, true)">Rules</a>
+        <a href="#top" class="button clickable" onclick="printSection(false, true); printSection('changelog');">Home</a>
         <a href="#top" class="button clickable" onclick="printBattle(false, true)">Battles</a>
         <a href="#top" class="button clickable" onclick="printTerm(false, true)">Terms</a>
         <a href="#top" class="button clickable" onclick="printPuck(false, true)">Pucks</a>
@@ -39,6 +39,7 @@
     <script>
 
         printSection();
+        printSection('changelog');
         printBattle();
         printTerm();
         printPuck();
