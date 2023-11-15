@@ -20,7 +20,7 @@ const Slammers = [
             name: "Hyper Beam",
             adventure: {},
             battle: {
-                text: "After counting your attacks on your turn, you may choose to increase the number by 2. If you do, After counting your attacks on your next turn, reduce the number to 1. ",
+                text: "When counting attacks on your turn, you may choose to increase that number by 2. If you do, after counting your attacks on your next turn, reduce that number to 1.",
                 notes: []
             }
         },
@@ -126,8 +126,8 @@ const Slammers = [
             name: "Genetically unstable",
             adventure: {},
             battle: {
-                text: "After making all of your attacks on your turn, if the previous player picked up any pucks in their turn, you may make 1 additional attack. You may only pick up 1 puck from this attack.",
-                notes: []
+                text: "When counting attacks on your turn, if there is only 1 Energy Puck in your Power Stack, you may change this Slammer's Energy Type to match that Energy Puck.",
+                notes: ["This will give you the 1 additional attack from having an Energy Puck that matches the Slammer's Energy Type."]
             }
         },
         ballStrength: 2,
@@ -155,8 +155,8 @@ const Slammers = [
             name: "Fire Spin",
             adventure: {},
             battle: {
-                text: "After making your last attack on your turn, if you flipped any pucks this turn, until the beginning of your next turn or you are out of the game, the next player cannot use any special effects from Item pucks, Trainer pucks, or Slammer Abilities that allow them to change their slammer. ",
-                notes: []
+                text: "After making your last attack on your turn, if you flipped any pucks this turn, in the previous player's Pick a Slammer phase, they must pick the slammer they picked in their previous turn.",
+                notes: ["Note that the Switch Item Puck still bypasses this."]
             }
         },
         ballStrength: 3,
@@ -332,8 +332,8 @@ const Slammers = [
             name: "Pay Day",
             adventure: {},
             battle: {
-                text: "After you have made your last attack, if you picked up any Item Pucks this turn, you may move an Item Puck from your Prize Stack to the top of the Arena Stack. If you do, make an additional attack. You may only pick up flipped Item pucks.",
-                notes: []
+                text: "After making an attack on your turn, after you pick up, you may pick up a flipped Item puck.",
+                notes: ["For example, if you flip an Energy Puck and an Item Puck, but can only pick up 1 this attack, you can pick up the Energy puck for you attack, then this ability allows you to pick up the item puck."]
             }
         },
         ballStrength: 2, // 1 is baby, 5 is masterball
@@ -419,11 +419,11 @@ const Slammers = [
             name: "Wing Attack",
             adventure: {},
             battle: {
-                text: "When counting attacks on your turn, if the next player’s slammer Energy Type is Grass, treat your slammer as having the Energy Type that matches their weakness.",
+                text: "When counting attacks on your turn, if the next player's slammer Energy Type is Grass, may treat your slammer as having the Energy Type that matches their weakness.",
                 notes: []
             }
         },
-        ballStrength: 4, // 1 is baby, 5 is masterball
+        ballStrength: 3, // 1 is baby, 5 is masterball
         tags: ["wing"],
         notes: ""
     },
@@ -458,7 +458,7 @@ const Slammers = [
             name: "Defense Curl",
             adventure: {},
             battle: {
-                text: "After making all of your attacks on your turn, if you did not pick up any pucks this turn, the next time the previous player picks up, they must pick up 1 less puck.",
+                text: "After making all your attacks on your turn, if you did not pick up any pucks this turn, the next time the previous player picks up, they must pick up 1 less puck in each of their attacks.",
                 notes: []
             }
         },
@@ -487,8 +487,8 @@ const Slammers = [
             name: "Thunder Wave",
             adventure: {},
             battle: {
-                text: "Before you top-off, you may give your slammer the Sleep Status if it does not already have it. If you do, you may move pucks from your Prize Stack to your HP Stack until your HP Stack has as many pucks in it as it had at the beginning of your first turn, or your Prize Stack is empty.",
-                notes: []
+                text: "Before calculating the number of attacks to make on your turn, if this Slammer does not have the Sleep Status or the Switch Sick Status, you may give it the Sleep Status. If you do, you may top off your Health Stack from your Prize Stack. After calculating the number of attacks to make on your turn, reduce the number to 0.",
+                notes: ["Succeeding or failing to top off the Health Stack does not matter. If your Health Stack Size is 10, and it has 4 pucks in it"]
             }
         },
         ballStrength: 4, // 1 is baby, 5 is masterball
@@ -516,7 +516,7 @@ const Slammers = [
             name: "Cut",
             adventure: {},
             battle: {
-                text: "After making all of your attacks on your turn, you may make 1 additional attack. You may only pick up 1 puck from this attack.",
+                text: "If your current Slammer's Energy Type is Grass, in each of your attacks on your turn, when counting the number of pucks to pick up, add 1 to that number.",
                 notes: []
             }
         },

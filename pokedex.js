@@ -7,7 +7,7 @@
 <div id="content"></div>
 
 <script src="data/connections.js"></script>
-<script src="data/gamemodes.js"></script>
+<script src="data/battles.js"></script>
 <script src="data/mart.js"></script>
 <script src="data/pucks.js"></script>
 <script src="data/slammers.js"></script>
@@ -20,7 +20,7 @@
 
 <script>
     printSection();
-    printGameMode();
+    printBattle();
     printTerm();
     printPuck();
     printSlammer();
@@ -50,45 +50,84 @@ function printSection(sectionToFind, erase) {
     var sectPrint = sectionToFind;
     if (!sectionToFind)
         sectPrint = "Introduction";
-
     //Intro Paragraphs
     for (const point of textData[sectPrint]) {
         let newHeader = document.createElement("h1");
         newHeader.innerText = point.header;
         contentBox.appendChild(newHeader);
+        if (point.date) {
+            let newDate = document.createElement("p");
+            newDate.classList.add('rule');
+            contentBox.appendChild(newDate);
+            let date = new Date(point.date);
+            console.log(date);
+            newDate.innerText = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        }
         let splitPara = point.body.split(/\r?\n|\r|\n/g);
         for (const para of splitPara) {
             let newPara = document.createElement("p");
             newPara.innerText = para;
             contentBox.appendChild(newPara);
         }
+        if (point.changes) {
+            for (const change of point.changes) {
+                let newChangeHeader = document.createElement("h3");
+                contentBox.appendChild(newChangeHeader);
+                newChangeHeader.innerText = change.rule;
+                for (const desc of change.description) {
+                    splitPara = desc.split(/\r?\n|\r|\n/g);
+                    for (const para of splitPara) {
+                        let newPara = document.createElement("p");
+                        newPara.classList.add('desc');
+                        newPara.innerText = para;
+                        contentBox.appendChild(newPara);
+                    }
+                }
+                splitPara = change.text.split(/\r?\n|\r|\n/g);
+                for (const para of splitPara) {
+                    let newPara = document.createElement("p");
+                    newPara.classList.add('rule');
+                    newPara.innerText = para;
+                    contentBox.appendChild(newPara);
+                }
+                if (change.notes) {
+                    let newNoteList = document.createElement("ul");
+                    contentBox.appendChild(newNoteList);
+                    for (const note of change.notes) {
+                        let newBullet = document.createElement("li");
+                        newBullet.innerText = note;
+                        newNoteList.appendChild(newBullet);
+                    }
+                }
+            }
+        }
     } //End Intro
 }
 
-// print from GameModes
-// gameModeToFind: which key in GameModes to print (false for all)
+// print from Battles
+// battleToFind: which key in Battles to print (false for all)
 // erase: clear the previous content (true/false)
-function printGameMode(gameModeToFind, erase) {
+function printBattle(battleToFind, erase) {
     if (erase)
         contentBox.innerHTML = "";
 
-    let GameModesToSearch = GameModes;
+    let BattlesToSearch = Battles;
 
-    // If a gameMode was provided, find it and put it in a list
-    if (gameModeToFind)
-        GameModesToSearch = [GameModes.find((gameModeSearch) => gameModeSearch.name == gameModeToFind)];
-    // If you couldn't find that gameMode, revert back to all
-    if (!GameModesToSearch)
-        GameModesToSearch = GameModes;
+    // If a battle was provided, find it and put it in a list
+    if (battleToFind)
+        BattlesToSearch = [Battles.find((battleSearch) => battleSearch.name == battleToFind)];
+    // If you couldn't find that battle, revert back to all
+    if (!BattlesToSearch)
+        BattlesToSearch = Battles;
 
-    //Game Modes
-    let gameModeHeader = document.createElement("h1");
-    gameModeHeader.innerText = "Game Modes";
-    contentBox.appendChild(gameModeHeader);
+    //Battles
+    let battleHeader = document.createElement("h1");
+    battleHeader.innerText = "Battles";
+    contentBox.appendChild(battleHeader);
 
-    for (const mode of GameModes) {
+    for (const mode of Battles) {
 
-        //Game Mode Name
+        //Battle Name
         let modeHeader = document.createElement("h2");
         modeHeader.innerText = mode.name;
         contentBox.appendChild(modeHeader);
@@ -286,7 +325,7 @@ function printPuck(puckToFind, erase) {
             }
         }
 
-    } //End Terms
+    } //End Pucks
 }
 
 // print from Slammers
@@ -407,6 +446,49 @@ function printSlammer(slammerToFind, erase) {
         }
 
     }
+} // End Slammers
+
+// print from statuses
+// statusToFind: which key in statuses to print (false for all)
+// erase: clear the previous content (true/false)
+function printStatus(statusToFind, erase) {
+    // Clear the contentBox if they chose to erase
+    if (erase)
+        contentBox.innerHTML = "";
+
+    //
+    var statPrint = statusToFind;
+    if (!statusToFind)
+        statPrint = Statuses;
+
+    // Header
+    let mainHeader = document.createElement("h1");
+    mainHeader.innerText = "Statuses";
+    contentBox.appendChild(mainHeader);
+
+    //Each Status
+    for (const stat of statPrint) {
+        let newHeader = document.createElement("h2");
+        newHeader.innerText = stat.name;
+        contentBox.appendChild(newHeader);
+        let newDesc = document.createElement("p");
+        newDesc.classList.add(`desc`);
+        newDesc.innerText = stat.description;
+        contentBox.appendChild(newDesc);
+        let newStat = document.createElement("p");
+        newStat.innerText = stat.text;
+        contentBox.appendChild(newStat);
+        if (stat.notes.length) {
+            let rulesNoteList = document.createElement("ul");
+            abilItem.appendChild(rulesNoteList);
+            for (const note of stat.notes) {
+                let rulesNote = document.createElement("li");
+                rulesNote.classList.add(`note`);
+                rulesNote.innerText = note;
+                rulesNoteList.appendChild(rulesNote);
+            }
+        }
+    } //End Intro
 }
 
 // print from Zones
@@ -550,7 +632,7 @@ function printZone(zoneToFind, erase) {
         }
 
     }
-}
+} // End Zones
 
 // reverse true if you want to search one way routes coming into thisZone
 function findConnections(thisZone, reverse) {
@@ -568,7 +650,7 @@ function findConnections(thisZone, reverse) {
 }
 
 // Return a list of strings that are the names of items that are in every Mart
-// fullObj true if you want the entire object
+// fullObj true if you want the entire object, instead of just their names
 function findStdMart(fullObj) {
     let stdMart = [];
     for (const puck of Mart.filter((puck) => puck.std)) {

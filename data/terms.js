@@ -3,7 +3,7 @@ const Terms = [
         name: "Arena",
         alternates: [],
         text: "A coordoned off section of play, where the Arena Stack is placed, throws can be made, and pucks can land. A standard Arena is a minimum of 11\"x8.5\" (the size of a sheet of standard letter paper), on a hard surface (typically wood), inside of an open box that is at least 4 inches deep.",
-        notes: ["Rules for setting up the Arena are in the Setup portion of your Game Mode."]
+        notes: ["Rules for setting up the Arena are in the Setup portion of your Battle."]
     },
     {
         name: "Arena Stack",
@@ -24,6 +24,12 @@ const Terms = [
         notes: []
     },
     {
+        name: "Battle Mode",
+        alternates: [],
+        text: "All of the rules used to play a PokePucks Battle.",
+        notes: []
+    },
+    {
         name: "Bench Stack",
         alternates: [],
         text: "The stack where each player keeps their slammers during the Battle.",
@@ -39,6 +45,12 @@ const Terms = [
         name: "Current Player",
         alternates: [],
         text: "The player who is taking their turn now.",
+        notes: []
+    },
+    {
+        name: "Current Slammer",
+        alternates: [],
+        text: "The Slammer you chose in your last Select Slammer phase.",
         notes: []
     },
     {
@@ -96,15 +108,21 @@ const Terms = [
         notes: []
     },
     {
+        name: "HM Move",
+        alternates: [],
+        text: "In a Battle, treat this Slammer as though it had the HM Move Item Puck in your Power Stack. If it is a Support Ability, you must choose this Slammer.\nIn an Adventure, if you possess this Slammer, you may make Move Actions as though you also possess the HM Move Item Puck.",
+        notes: []
+    },
+    {
         name: "Item Puck",
         alternates: ["Items"],
-        text: "The pucks that can be used by a player to refill the Arena Stack.",
-        notes: ["Any puck that is listed in the PuckMart, or is listed as a suitable proxy for one. It has the special rules listed for that puck."]
+        text: "Any puck that is listed in the PuckMart, or is listed as a suitable proxy for one. It has the special rules listed for that puck.",
+        notes: [""]
     },
     {
         name: "Knock Out",
         alternates: ["knockout"],
-        text: "Set aside the pucks in the Arena Stack and move the current player's slammer into the Arena Stack. The previous player must make 1 throw. If the current player's slammer lands face up, the Knockout was successful. Otherwise, remove the current player's slammer and move the set aside pucks into the Arena Stack.",
+        text: "Set aside the pucks in the Arena Stack and move the target player's slammer into the Arena Stack. The player attempting the knock out must make 1 throw. If the current player's slammer is flipped, the Knockout was successful. Otherwise, remove the target player's slammer and move the set aside pucks into the Arena Stack.",
         notes: []
     },
     {
@@ -183,7 +201,7 @@ const Terms = [
         name: "Puck",
         alternates: [],
         text: "A plastic or paper puck 41.37mm in diameter and at least 1.6mm thick, with a face side that has a graphic, and a back side that is blank or has a serial number on it.",
-        notes: ["If puck is reccessed, no part of the reccess can be deeper than 0.8mm, the recess must be more than at least 1mm from the oute edge of the puck, and cannot cover more than half the surface area of the puck face.", "All pucks must be able to lay flat. If a puck's entire face cannot touch the flat bottom surface of the Arena, it cannot be selected as a Legal Puck for any Game Mode."]
+        notes: ["If puck is reccessed, no part of the reccess can be deeper than 0.8mm, the recess must be more than at least 1mm from the oute edge of the puck, and cannot cover more than half the surface area of the puck face.", "All pucks must be able to lay flat. If a puck's entire face cannot touch the flat bottom surface of the Arena, it cannot be selected as a Legal Puck for any Battle."]
     },
     {
         name: "Restack",
@@ -234,6 +252,12 @@ const Terms = [
         notes: ["A list of Statuses can be found in the PuckCenter."]
     },
     {
+        name: "Step",
+        alternates: [],
+        text: "A step or rule in a phase.",
+        notes: ["Turns are made up of phases, which are made up of steps."]
+    },
+    {
         name: "Throw",
         alternates: [],
         text: "An attempt to hit the Arena Stack with your slammer.",
@@ -243,7 +267,10 @@ const Terms = [
         name: "Top Off",
         alternates: ["topoff", "topping off", "tops off", "topped off"],
         text: "Move a puck from one stack to another until the number of pucks in the second pile equals its Stack Size. If this happens, you have succeeded in topping off. If you cannot, because the first stack has no pucks remaining in it, then the top off has failed.",
-        notes: ["In the rules, it will state which stack to move pucks to and from what stack.", "Because the most common instance of topping off is when the Current Player tops off the Arena Stack from their Health Stack, this phase of the game is frequently jsut referred to as \"topping off\". If the rule does not specify, assume this to be the case."]
+        notes: [
+            "In the rules, it will state which stack to move pucks to and from what stack.",
+            "Because the most common instance of topping off is when the Current Player tops off the Arena Stack from their Health Stack, this phase of the game is frequently jsut referred to as \"topping off\". If the rule does not specify, assume this to be the case."
+        ]
     },
     {
         name: "Turn Order",
