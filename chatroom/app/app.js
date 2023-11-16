@@ -19,7 +19,7 @@ function sendMessage(e) { //sendMeassage recieves an event which is represented 
     // If input has a value
     if (input.value) {
         // Send the value of the input
-        SocketAddress.send(input.value);
+        socket.send(input.value);
         // Replace the input with nothing
         input.value = "";
     };
@@ -28,12 +28,11 @@ function sendMessage(e) { //sendMeassage recieves an event which is represented 
 };
 
 // Selects the form
-document.querySelector('form')
-    .addEventListener('submit', sendMessage); // listens for the submit event of the form and calls the sendMessage function
+document.querySelector('form').addEventListener('submit', sendMessage); // listens for the submit event of the form and calls the sendMessage function
 
 // Listen for messages
 socket.addEventListener('message', ({ data }) => {
     const li = document.createElement('li');
     li.textContent = data;
     document.querySelector('ul').appendChild(li);
-})
+});
