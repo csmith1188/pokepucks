@@ -24,6 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3500;
+// Stopped tutorial here where the nodejs part starts - 15:20
 
 const app = express(); // Our express server is referred to as app
 
@@ -45,9 +46,25 @@ const io = new Server(expressServer, {
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`);
 
-    // Listens for a message
+    // Upon connection - only to user
+    socket.emit('message', "Welcome to Chat App!");
+
+    // Upon connection - to all others
+    socket.broadcast.emit('message', `User ${socket.id.substring(0, 5)} connected`);
+
+    // Listening for a message event
     socket.on('message', data => {
         console.log(data);
         io.emit('message', `${socket.id.substring(0, 5)}: ${data}`); // Emits the message to everyone that is connected to the server
+    });
+
+    // When user disconnects - to all others
+    socket.on('disconnect', () => {
+        socket.broadcast.emit('message', `User ${socket.id.substring(0, 5)} disconnected`);
+    });
+
+    // Listen for activity
+    socket.on('activity', (name) => {
+        socket.broadcast.emit('activity', name);
     });
 });

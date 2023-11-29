@@ -23,12 +23,26 @@ The html file for the chatroom.
 </head>
 
 <body>
-    <form>
-        <input type="text" placeholder="Your message">
-        <button>Send</button>
-    </form>
-    <ul></ul>
-    <p class="activity"></p>
+    <main>
+        <form class="form-join">
+            <input type="text" id="name" maxlength="8" placeholder="Your name" size="5" required>
+            <input type="text" id="room" placeholder="Chat room" size="5" required>
+            <button id="join" type="submit">Join</button>
+        </form>
+
+        <ul class="chat-displat"></ul>
+
+        <p class="user-list"></p>
+
+        <p class="room-list"></p>
+
+        <p class="activity"></p>
+
+        <form class="form-message">
+            <input type="text" id="message" placeholder="Your message" required>
+            <button type="submit">Send</button>
+        </form>
+    </main>
 </body>
 
 </html>
