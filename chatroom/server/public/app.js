@@ -8,7 +8,7 @@ Code for the frontend serer-side for the chatroom.
 \***************************************************************************/
 
 // Defines socket = to a new websocket
-const socket = io('http://172.16.3.157:3500/');
+const socket = io('http://172.16.3.157:3000/');
 
 const msgInput = document.querySelector('#message');
 const nameInput = document.querySelector('#name');

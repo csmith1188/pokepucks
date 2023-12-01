@@ -23,7 +23,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT || 3000;
 const ADMIN = "Admin";
 
 const app = express(); // Our express server is referred to as app
@@ -46,7 +46,7 @@ const UsersState = {
 const io = new Server(expressServer, {
     cors: {
         // origin allows you to change what is accepted and what is blocked
-        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:3500", "http://172.16.3.157:3500/"] // Looks at the node environment. If the node environemnt equals production, origin is set to false because we don't want anyone outside of the domain the server is currently on to access it. If it doesn't equal production, origin is set to the address that we will allow to access our socket.io server
+        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:3000", "http://172.16.3.157:3000/"] // Looks at the node environment. If the node environemnt equals production, origin is set to false because we don't want anyone outside of the domain the server is currently on to access it. If it doesn't equal production, origin is set to the address that we will allow to access our socket.io server
     }
 });
 
