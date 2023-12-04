@@ -6,7 +6,6 @@ Editors: Brandon Camacho
 <Description>
 Code for the frontend serer-side for the chatroom.
 \***************************************************************************/
-
 // Defines socket = to a new websocket
 const socket = io('http://172.16.3.157:3000/');
 
@@ -33,6 +32,25 @@ function sendMessage(e) { //sendMeassage recieves an event which is represented 
     // Puts the focus back on the msgInput
     msgInput.focus();
 };
+
+// Generates room code used to enter a chatroom
+function generateRoomCode() {
+    let roomCode = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < 5) {
+        roomCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter++;
+    };
+    return roomCode;
+};
+
+// Test function for generating room
+function generateRoom() {
+    let roomCode = generateRoomCode();
+    console.log(roomCode);
+}
 
 // Function used for when a user enters a chatroom
 function enterRoom(e) {

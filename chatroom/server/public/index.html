@@ -25,10 +25,12 @@ The html file for the chatroom.
 <body>
     <main>
         <form class="form-join">
-            <input type="text" id="name" maxlength="8" placeholder="Your name" size="5" required>
+            <input type="text" id="name" maxlength="16" placeholder="Your name" size="5" required>
             <input type="text" id="room" placeholder="Chat room" size="5" required>
             <button id="join" type="submit">Join</button>
         </form>
+
+        <button onclick="generateRoom()">Generate Room</button>
 
         <ul class="chat-display"></ul>
 

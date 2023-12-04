@@ -13,8 +13,8 @@ npm i socket.io
 npm i express
 npm i -D nodemon (Not required but makes editing this file much more convenient. Nodemon will restart the server automatically every time you save the server.)
 // Start the server by using 'npm start' while in the server folder
+// Start the server for testing by using 'npm run dev' while in the server folder
 */
-
 import express from 'express';
 import { Server } from "socket.io";
 import path from 'path';
