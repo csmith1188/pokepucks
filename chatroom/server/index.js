@@ -171,3 +171,22 @@ function getUsersInRoom(room) {
 function getAllActiveRooms() {
     return Array.from(new Set(UsersState.users.map(user => user.room)));
 };
+
+// Generates room code used to enter a chatroom
+function generateRoomCode() {
+    let roomCode = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < 5) {
+        roomCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter++;
+    };
+    return roomCode;
+};
+
+// Test function for generating room
+function generateRoom() {
+    let roomCode = generateRoomCode();
+    console.log(roomCode);
+}

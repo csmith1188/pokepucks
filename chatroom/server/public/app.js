@@ -48,12 +48,17 @@ function generateRoomCode() {
 
 // Test function for generating room
 function generateRoom() {
-    let roomCode = generateRoomCode();
-    console.log(roomCode);
-}
+    if (nameInput.value) {
+        chatRoom.value = generateRoomCode();
+        socket.emit('enterRoom', {
+            name: nameInput.value,
+            room: chatRoom.value,
+        });
+    };
+};
 
 // Function used for when a user enters a chatroom
-function enterRoom(e) {
+function joinRoom(e) {
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && chatRoom.value) {
@@ -65,7 +70,7 @@ function enterRoom(e) {
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);
-document.querySelector('.form-join').addEventListener('submit', enterRoom);
+document.querySelector('.form-join').addEventListener('submit', joinRoom);
 
 msgInput.addEventListener('keypress', () => {
     socket.emit('activity', nameInput.value);
