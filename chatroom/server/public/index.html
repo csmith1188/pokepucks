@@ -30,7 +30,13 @@ The html file for the chatroom.
             <button id="join" type="submit">Join</button>
         </form>
 
-        <button onclick="generateRoom()">Generate Room</button>
+        <button onclick="createRoom()">Create Room</button>
+
+        <label for="privacy">Choose Room Privacy:</label>
+        <select id="privacy">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
 
         <ul class="chat-display"></ul>
 

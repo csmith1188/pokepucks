@@ -17,8 +17,10 @@ const usersList = document.querySelector('.user-list');
 const roomList = document.querySelector('.room-list');
 const chatDisplay = document.querySelector('.chat-display');
 
+var privacy = '';
+
 // Function used to send a message
-function sendMessage(e) { //sendMeassage recieves an event which is represented with the letter e\
+function sendMessage(e) { // sendMeassage recieves an event which is represented with the letter e\
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && msgInput.value && chatRoom.value) {
@@ -47,7 +49,7 @@ function generateRoomCode() {
 };
 
 // Test function for generating room
-function generateRoom() {
+function createRoom() {
     if (nameInput.value) {
         chatRoom.value = generateRoomCode();
         socket.emit('enterRoom', {
@@ -55,6 +57,7 @@ function generateRoom() {
             room: chatRoom.value,
         });
     };
+    privacy = document.getElementById('privacy').value;
 };
 
 // Function used for when a user enters a chatroom
