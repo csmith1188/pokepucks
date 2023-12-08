@@ -6,7 +6,6 @@ Editors: Brandon Camacho
 <Description>
 Code for the frontend serer-side for the chatroom.
 \***************************************************************************/
-
 // Defines socket = to a new websocket
 const socket = io('http://172.16.3.157:3000/');
 
@@ -18,8 +17,10 @@ const usersList = document.querySelector('.user-list');
 const roomList = document.querySelector('.room-list');
 const chatDisplay = document.querySelector('.chat-display');
 
+var privacy = '';
+
 // Function used to send a message
-function sendMessage(e) { //sendMeassage recieves an event which is represented with the letter e\
+function sendMessage(e) { // sendMeassage recieves an event which is represented with the letter e\
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && msgInput.value && chatRoom.value) {
@@ -34,20 +35,53 @@ function sendMessage(e) { //sendMeassage recieves an event which is represented 
     msgInput.focus();
 };
 
+// Generates room code used to enter a chatroom
+function generateRoomCode() {
+    let roomCode = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < 5) {
+        roomCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter++;
+    };
+    return roomCode;
+};
+
+// Function used for when a user generates a chatroom
+function createRoom() {
+    privacy = document.getElementById('privacy').value;
+    if (nameInput.value) {
+        chatRoom.value = generateRoomCode();
+        socket.emit('enterRoom', {
+            name: nameInput.value,
+            room: chatRoom.value,
+            privacy: privacy,
+            method: 'create'
+        });
+    };
+};
+
 // Function used for when a user enters a chatroom
-function enterRoom(e) {
+function joinRoom(e) {
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && chatRoom.value) {
         socket.emit('enterRoom', {
             name: nameInput.value,
             room: chatRoom.value,
+            method: 'join'
         });
     };
 };
 
+// Function used for when a user leaves a chatroom
+function leaveRoom() {
+    socket.emit('leaveRoom');
+};
+
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);
-document.querySelector('.form-join').addEventListener('submit', enterRoom);
+document.querySelector('.form-join').addEventListener('submit', joinRoom);
 
 msgInput.addEventListener('keypress', () => {
     socket.emit('activity', nameInput.value);
