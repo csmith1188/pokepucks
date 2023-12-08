@@ -48,16 +48,18 @@ function generateRoomCode() {
     return roomCode;
 };
 
-// Test function for generating room
+// Function used for when a user generates a chatroom
 function createRoom() {
+    privacy = document.getElementById('privacy').value;
     if (nameInput.value) {
         chatRoom.value = generateRoomCode();
         socket.emit('enterRoom', {
             name: nameInput.value,
             room: chatRoom.value,
+            privacy: privacy,
+            method: 'create'
         });
     };
-    privacy = document.getElementById('privacy').value;
 };
 
 // Function used for when a user enters a chatroom
@@ -68,8 +70,14 @@ function joinRoom(e) {
         socket.emit('enterRoom', {
             name: nameInput.value,
             room: chatRoom.value,
+            method: 'join'
         });
     };
+};
+
+// Function used for when a user leaves a chatroom
+function leaveRoom() {
+    socket.emit('leaveRoom');
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);
