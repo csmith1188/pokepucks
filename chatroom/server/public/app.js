@@ -17,6 +17,9 @@ const usersList = document.querySelector('.user-list');
 const roomList = document.querySelector('.room-list');
 const chatDisplay = document.querySelector('.chat-display');
 
+const lobbyPage = document.getElementById('lobby-page');
+const chatroomPage = document.getElementById('chatroom-page');
+
 var privacy = '';
 
 // Function used to send a message
@@ -59,6 +62,8 @@ function createRoom() {
             privacy: privacy,
             method: 'create'
         });
+        lobbyPage.style.visibility = 'hidden';
+        chatroomPage.style.visibility = 'visible';
     };
 };
 
@@ -72,12 +77,22 @@ function joinRoom(e) {
             room: chatRoom.value,
             method: 'join'
         });
+        socket.on('joinConfirmation', (data) => {
+            if (data.success) {
+                lobbyPage.style.visibility = 'hidden';
+                chatroomPage.style.visibility = 'visible';
+            } else {
+                console.log('No room with that code currently active.');
+            };
+        });
     };
 };
 
 // Function used for when a user leaves a chatroom
 function leaveRoom() {
     socket.emit('leaveRoom');
+    lobbyPage.style.visibility = 'visible';
+    chatroomPage.style.visibility = 'hidden';
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);

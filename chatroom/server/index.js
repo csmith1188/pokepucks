@@ -138,6 +138,8 @@ io.on('connection', socket => {
                     io.emit('roomList', {
                         rooms: allActivePublicRooms,
                     });
+
+                    io.emit('joinConfirmation', { success: true });
                 } else {
                     console.log('No room with that code currently active.');
                 };
@@ -151,6 +153,7 @@ io.on('connection', socket => {
         userLeavesApp(socket.id);
 
         if (user) {
+            console.log(getUsersInRoom(user.room)); //continue here, checking if there are still users in room before removing room from all active rooms
             // Loops through the allActiveRooms array
             for (let i = 0; i < allActiveRooms.length; i++) {
                 // If the room value of user is equal to any of the array items
