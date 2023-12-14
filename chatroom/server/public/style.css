@@ -55,6 +55,14 @@ button {
     padding: .5rem;
 }
 
+#lobby-page {
+    visibility: visible;
+}
+
+#chatroom-page {
+    visibility: hidden;
+}
+
 .chat-display {
     background-color: #333;
     list-style-type: none;

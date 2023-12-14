@@ -24,7 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
-const ADMIN = "Admin";
+const ADMIN = "aaaaaaaaaaaaaaaaa"; // Make sure this is longer than the maxlength of a username
 
 var allActiveRooms = [];
 var allActivePublicRooms = [];
@@ -138,6 +138,8 @@ io.on('connection', socket => {
                     io.emit('roomList', {
                         rooms: allActivePublicRooms,
                     });
+
+                    io.emit('joinConfirmation', { success: true });
                 } else {
                     console.log('No room with that code currently active.');
                 };
@@ -151,22 +153,28 @@ io.on('connection', socket => {
         userLeavesApp(socket.id);
 
         if (user) {
-            // Loops through the allActiveRooms array
-            for (let i = 0; i < allActiveRooms.length; i++) {
-                // If the room value of user is equal to any of the array items
-                if (user.room === allActiveRooms[i]) {
-                    // Removes that room from the allActiveRooms array
-                    allActiveRooms.splice(allActiveRooms.indexOf(user.room), 1);
+            socket.leave(user.room);
+            if (getUsersInRoom(user.room).length === 0) {
+                // Loops through the allActiveRooms array
+                for (let i = 0; i < allActiveRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActiveRooms[i]) {
+                        // Removes that room from the allActiveRooms array
+                        allActiveRooms.splice(allActiveRooms.indexOf(user.room), 1);
+                    };
+                };
+                // Loops through the allActivePublicRooms array
+                for (let i = 0; i < allActivePublicRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActivePublicRooms[i]) {
+                        // Removes that room from the allActivePublicRooms array
+                        allActivePublicRooms.splice(allActivePublicRooms.indexOf(user.room), 1);
+                    };
                 };
             };
-            // Loops through the allActivePublicRooms array
-            for (let i = 0; i < allActivePublicRooms.length; i++) {
-                // If the room value of user is equal to any of the array items
-                if (user.room === allActivePublicRooms[i]) {
-                    // Removes that room from the allActivePublicRooms array
-                    allActivePublicRooms.splice(allActivePublicRooms.indexOf(user.room), 1);
-                };
-            };
+
+            socket.emit('leaveRoomConfirmation');
+
             io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`));
 
             io.to(user.room).emit('userList', {
@@ -187,20 +195,22 @@ io.on('connection', socket => {
         userLeavesApp(socket.id);
 
         if (user) {
-            // Loops through the allActiveRooms array
-            for (let i = 0; i < allActiveRooms.length; i++) {
-                // If the room value of user is equal to any of the array items
-                if (user.room === allActiveRooms[i]) {
-                    // Removes that room from the allActiveRooms array
-                    allActiveRooms.splice(allActiveRooms.indexOf(user.room), 1);
+            if (getUsersInRoom(user.room).length === 0) {
+                // Loops through the allActiveRooms array
+                for (let i = 0; i < allActiveRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActiveRooms[i]) {
+                        // Removes that room from the allActiveRooms array
+                        allActiveRooms.splice(allActiveRooms.indexOf(user.room), 1);
+                    };
                 };
-            };
-            // Loops through the allActivePublicRooms array
-            for (let i = 0; i < allActivePublicRooms.length; i++) {
-                // If the room value of user is equal to any of the array items
-                if (user.room === allActivePublicRooms[i]) {
-                    // Removes that room from the allActivePublicRooms array
-                    allActivePublicRooms.splice(allActivePublicRooms.indexOf(user.room), 1);
+                // Loops through the allActivePublicRooms array
+                for (let i = 0; i < allActivePublicRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActivePublicRooms[i]) {
+                        // Removes that room from the allActivePublicRooms array
+                        allActivePublicRooms.splice(allActivePublicRooms.indexOf(user.room), 1);
+                    };
                 };
             };
             io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`));
@@ -221,7 +231,7 @@ io.on('connection', socket => {
     socket.on('message', ({ name, text }) => {
         const room = getUser(socket.id)?.room;
         if (room) {
-            io.to(room).emit('message', buildMsg(name, text));
+            io.to(room).emit('message', buildMsg(name, text, socket.id));
         };
     });
 
@@ -234,10 +244,11 @@ io.on('connection', socket => {
     });
 });
 
-function buildMsg(name, text) {
+function buildMsg(name, text, id) {
     return {
         name,
         text,
+        id,
         time: new Intl.DateTimeFormat('default', {
             hour: 'numeric',
             minute: 'numeric',
