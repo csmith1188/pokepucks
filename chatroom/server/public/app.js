@@ -6,7 +6,6 @@ Editors: Brandon Camacho
 <Description>
 Code for the frontend serer-side for the chatroom.
 \***************************************************************************/
-
 // Defines socket = to a new websocket
 const socket = io('http://172.16.3.157:3000/');
 
@@ -18,8 +17,13 @@ const usersList = document.querySelector('.user-list');
 const roomList = document.querySelector('.room-list');
 const chatDisplay = document.querySelector('.chat-display');
 
+const lobbyPage = document.getElementById('lobby-page');
+const chatroomPage = document.getElementById('chatroom-page');
+
+var privacy = '';
+
 // Function used to send a message
-function sendMessage(e) { //sendMeassage recieves an event which is represented with the letter e\
+function sendMessage(e) { // sendMeassage recieves an event which is represented with the letter e\
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && msgInput.value && chatRoom.value) {
@@ -34,20 +38,68 @@ function sendMessage(e) { //sendMeassage recieves an event which is represented 
     msgInput.focus();
 };
 
+// Generates room code used to enter a chatroom
+function generateRoomCode() {
+    let roomCode = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < 5) {
+        roomCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter++;
+    };
+    return roomCode;
+};
+
+// Function used for when a user generates a chatroom
+function createRoom() {
+    privacy = document.getElementById('privacy').value;
+    if (nameInput.value) {
+        chatRoom.value = generateRoomCode();
+        socket.emit('enterRoom', {
+            name: nameInput.value,
+            room: chatRoom.value,
+            privacy: privacy,
+            method: 'create'
+        });
+        lobbyPage.style.visibility = 'hidden';
+        chatroomPage.style.visibility = 'visible';
+    };
+};
+
 // Function used for when a user enters a chatroom
-function enterRoom(e) {
+function joinRoom(e) {
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && chatRoom.value) {
         socket.emit('enterRoom', {
             name: nameInput.value,
             room: chatRoom.value,
+            method: 'join'
+        });
+        socket.on('joinConfirmation', (data) => {
+            if (data.success) {
+                lobbyPage.style.visibility = 'hidden';
+                chatroomPage.style.visibility = 'visible';
+            } else {
+                console.log('No room with that code currently active.');
+            };
         });
     };
 };
 
+// Function used for when a user leaves a chatroom
+function leaveRoom() {
+    socket.emit('leaveRoom');
+
+    socket.on('leaveRoomConfirmation', () => {
+        lobbyPage.style.visibility = 'visible';
+        chatroomPage.style.visibility = 'hidden';
+    });
+};
+
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);
-document.querySelector('.form-join').addEventListener('submit', enterRoom);
+document.querySelector('.form-join').addEventListener('submit', joinRoom);
 
 msgInput.addEventListener('keypress', () => {
     socket.emit('activity', nameInput.value);
@@ -56,13 +108,14 @@ msgInput.addEventListener('keypress', () => {
 // Listen for messages
 socket.on('message', (data) => {
     activity.textContent = "";
-    const { name, text, time } = data;
+    const { name, text, id, time } = data;
+    
     const li = document.createElement('li');
     li.className = 'post';
-    if (name === nameInput.value) li.className = 'post post--left';
-    if (name !== nameInput.value && name !== 'Admin') li.className = 'post post--right';
-    if (name !== 'Admin') {
-        li.innerHTML = `<div class="post__header ${name === nameInput.value
+    if (id === socket.id) li.className = 'post post--left';
+    if (id !== socket.id && name !== 'aaaaaaaaaaaaaaaaa') li.className = 'post post--right';
+    if (name !== 'aaaaaaaaaaaaaaaaa') {
+        li.innerHTML = `<div class="post__header ${id === socket.id
             ? 'post__header--user'
             : 'post__header--reply'
             }">

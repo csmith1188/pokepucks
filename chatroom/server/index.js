@@ -13,8 +13,8 @@ npm i socket.io
 npm i express
 npm i -D nodemon (Not required but makes editing this file much more convenient. Nodemon will restart the server automatically every time you save the server.)
 // Start the server by using 'npm start' while in the server folder
+// Start the server for testing by using 'npm run dev' while in the server folder
 */
-
 import express from 'express';
 import { Server } from "socket.io";
 import path from 'path';
@@ -24,7 +24,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
-const ADMIN = "Admin";
+const ADMIN = "aaaaaaaaaaaaaaaaa"; // Make sure this is longer than the maxlength of a username
+
+var allActiveRooms = [];
+var allActivePublicRooms = [];
 
 const app = express(); // Our express server is referred to as app
 
@@ -57,7 +60,7 @@ io.on('connection', socket => {
     // Upon connection - only to user
     socket.emit('message', buildMsg(ADMIN, "Welcome to Chat App!"));
 
-    socket.on('enterRoom', ({ name, room }) => {
+    socket.on('enterRoom', ({ name, room, privacy, method }) => {
         // leave previous room
         const prevRoom = getUser(socket.id)?.room;
 
@@ -68,31 +71,122 @@ io.on('connection', socket => {
 
         const user = activateUser(socket.id, name, room);
 
-        // cannot update previous room users list until after the state update in avtivate user
+        // cannot update previous room users list until after the state update in activate user
         if (prevRoom) {
             io.to(prevRoom).emit('userList', {
                 users: getUsersInRoom(prevRoom)
             });
         };
 
-        // join room
-        socket.join(user.room);
+        allActiveRooms.push(room);
 
-        // to user who joined
-        socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
+        // If user is creating a room, user creates and joins the room like normal
+        if (method === 'create') {
+            // join room
+            socket.join(user.room);
 
-        // to everyone else
-        socket.broadcast.to(user.room).emit('messsage', buildMsg(ADMIN, `${user.name} has joined the room`));
+            // to user who joined
+            socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
 
-        // update user list for room
-        io.to(user.room).emit('userList', {
-            users: getUsersInRoom(user.room)
-        });
+            // to everyone else
+            socket.broadcast.to(user.room).emit('messsage', buildMsg(ADMIN, `${user.name} has joined the room`));
 
-        // update rooms list for everyone
-        io.emit('roomList', {
-            rooms: getAllActiveRooms()
-        });
+            // update user list for room
+            io.to(user.room).emit('userList', {
+                users: getUsersInRoom(user.room)
+            });
+
+            allActivePublicRooms.push(room);
+
+            // If a room is private, it removes it from the array
+            if (privacy === 'private') {
+                allActivePublicRooms.splice(allActivePublicRooms.indexOf(room), 1);
+            };
+
+            // update rooms list for everyone
+            io.emit('roomList', {
+                rooms: allActivePublicRooms,
+            });
+        };
+
+        if (method === 'join') {
+            allActiveRooms.splice(allActiveRooms.indexOf(room), 1);
+            // Loops through the allActiveRooms array
+            for (let i = 0; i < allActiveRooms.length; i++) {
+                // Checks if any of the array items are equal to the room
+                if (room === allActiveRooms[i]) {
+                    // join room
+                    socket.join(user.room);
+
+                    // to user who joined
+                    socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
+
+                    // to everyone else
+                    socket.broadcast.to(user.room).emit('messsage', buildMsg(ADMIN, `${user.name} has joined the room`));
+
+                    // update user list for room
+                    io.to(user.room).emit('userList', {
+                        users: getUsersInRoom(user.room)
+                    });
+
+                    // If a room is private, it removes it from the array
+                    if (privacy === 'private') {
+                        allActivePublicRooms.splice(allActivePublicRooms.indexOf(room), 1);
+                    };
+
+                    // update rooms list for everyone
+                    io.emit('roomList', {
+                        rooms: allActivePublicRooms,
+                    });
+
+                    io.emit('joinConfirmation', { success: true });
+                } else {
+                    console.log('No room with that code currently active.');
+                };
+            };
+        };
+    });
+
+    // When user leaves a room - to all others
+    socket.on('leaveRoom', () => {
+        const user = getUser(socket.id);
+        userLeavesApp(socket.id);
+
+        if (user) {
+            socket.leave(user.room);
+            if (getUsersInRoom(user.room).length === 0) {
+                // Loops through the allActiveRooms array
+                for (let i = 0; i < allActiveRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActiveRooms[i]) {
+                        // Removes that room from the allActiveRooms array
+                        allActiveRooms.splice(allActiveRooms.indexOf(user.room), 1);
+                    };
+                };
+                // Loops through the allActivePublicRooms array
+                for (let i = 0; i < allActivePublicRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActivePublicRooms[i]) {
+                        // Removes that room from the allActivePublicRooms array
+                        allActivePublicRooms.splice(allActivePublicRooms.indexOf(user.room), 1);
+                    };
+                };
+            };
+
+            socket.emit('leaveRoomConfirmation');
+
+            io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`));
+
+            io.to(user.room).emit('userList', {
+                users: getUsersInRoom(user.room)
+            });
+
+            io.emit('roomList', {
+                rooms: allActivePublicRooms
+            });
+        };
+
+        console.log(`User ${socket.id} disconnected`);
     });
 
     // When user disconnects - to all others
@@ -101,6 +195,24 @@ io.on('connection', socket => {
         userLeavesApp(socket.id);
 
         if (user) {
+            if (getUsersInRoom(user.room).length === 0) {
+                // Loops through the allActiveRooms array
+                for (let i = 0; i < allActiveRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActiveRooms[i]) {
+                        // Removes that room from the allActiveRooms array
+                        allActiveRooms.splice(allActiveRooms.indexOf(user.room), 1);
+                    };
+                };
+                // Loops through the allActivePublicRooms array
+                for (let i = 0; i < allActivePublicRooms.length; i++) {
+                    // If the room value of user is equal to any of the array items
+                    if (user.room === allActivePublicRooms[i]) {
+                        // Removes that room from the allActivePublicRooms array
+                        allActivePublicRooms.splice(allActivePublicRooms.indexOf(user.room), 1);
+                    };
+                };
+            };
             io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`));
 
             io.to(user.room).emit('userList', {
@@ -108,7 +220,7 @@ io.on('connection', socket => {
             });
 
             io.emit('roomList', {
-                rooms: getAllActiveRooms()
+                rooms: allActivePublicRooms
             });
         };
 
@@ -119,7 +231,7 @@ io.on('connection', socket => {
     socket.on('message', ({ name, text }) => {
         const room = getUser(socket.id)?.room;
         if (room) {
-            io.to(room).emit('message', buildMsg(name, text));
+            io.to(room).emit('message', buildMsg(name, text, socket.id));
         };
     });
 
@@ -132,10 +244,11 @@ io.on('connection', socket => {
     });
 });
 
-function buildMsg(name, text) {
+function buildMsg(name, text, id) {
     return {
         name,
         text,
+        id,
         time: new Intl.DateTimeFormat('default', {
             hour: 'numeric',
             minute: 'numeric',
@@ -166,8 +279,4 @@ function getUser(id) {
 
 function getUsersInRoom(room) {
     return UsersState.users.filter(user => user.room === room);
-};
-
-function getAllActiveRooms() {
-    return Array.from(new Set(UsersState.users.map(user => user.room)));
 };

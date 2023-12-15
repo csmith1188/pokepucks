@@ -36,6 +36,10 @@ form {
     gap: .25rem;
 }
 
+select {
+    width: 20%;
+}
+
 input {
     flex-grow: 1;
     max-width: calc(80% - .25rem);
@@ -49,6 +53,14 @@ input,
 button {
     border-radius: 10px;
     padding: .5rem;
+}
+
+#lobby-page {
+    visibility: visible;
+}
+
+#chatroom-page {
+    visibility: hidden;
 }
 
 .chat-display {
