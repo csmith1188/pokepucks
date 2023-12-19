@@ -11,14 +11,21 @@ Code for the backend server-side for the chatroom.
 // Make sure terminal is in the server folder
 npm i socket.io
 npm i express
+npm i jsonwebtoken
+npm i express-session
 npm i -D nodemon (Not required but makes editing this file much more convenient. Nodemon will restart the server automatically every time you save the server.)
 // Start the server by using 'npm start' while in the server folder
 // Start the server for testing by using 'npm run dev' while in the server folder
 */
 import express from 'express';
-import { Server } from "socket.io";
+import { Server } from 'socket.io';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import jwt from 'jsonwebtoken';
+import session from 'express-session';
+
+const AUTH_URL = 'http://172.16.3.144:420/oauth';
+const THIS_URL = 'http://172.16.3.157:3000';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +39,37 @@ var allActivePublicRooms = [];
 const app = express(); // Our express server is referred to as app
 
 app.use(express.static(path.join(__dirname, "public"))); // Defines our static folder so when we get a request to the root domain, it will send eveything to the public directory that will contain the static assets
+
+app.use(session({
+    secret: 'secret', // Secure later using an environment variable or a .env file that is in the .gitignore
+    resave: false,
+    saveUninitialized: false
+}));
+
+function isAuthenticated(req, res, next) {
+    if (req.session.user) next()
+    else res.redirect('/')
+};
+
+app.get('/', isAuthenticated, (req, res) => {
+    try {
+        res.render('index.ejs', { user: req.session.user })
+    }
+    catch (error) {
+        res.send(error.message)
+    }
+});
+
+app.get('/', (req, res) => {
+    if (req.query.token) {
+        let tokenData = jwt.decode(req.query.token);
+        req.session.token = tokenData;
+        req.session.user = tokenData.username;
+        res.redirect('/');
+    } else {
+        res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
+    };
+});
 
 const expressServer = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);

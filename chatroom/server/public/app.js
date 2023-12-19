@@ -109,7 +109,7 @@ msgInput.addEventListener('keypress', () => {
 socket.on('message', (data) => {
     activity.textContent = "";
     const { name, text, id, time } = data;
-    
+
     const li = document.createElement('li');
     li.className = 'post';
     if (id === socket.id) li.className = 'post post--left';
