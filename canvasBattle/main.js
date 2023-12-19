@@ -25,7 +25,7 @@ class Pog {
         this.aniFrame = 0
         this.y = 450
         this.ySpeed = 0
-        this.x = 450
+        this.x = 850
         this.xSpeed = 0
     }
     animate() {
@@ -73,11 +73,28 @@ class Slammer extends Pog {
             this.id = id
 
     }
-    powerHit() {
-        let power = Math.floor(Math.random() * 100) + testingSlammer.weight
-        if (power > 100) { power = 100 }
-        return power
-    }
+
+/**
++ * Generates a power hit based on the testing slammer weight.
++ * The power hit is a random number between 0 and 100, 
++ * plus the testing slammer weight.
++ * If the power hit exceeds 100, it is capped at 100.
++ * 
++ * returns {number} The power hit value.
++ */
+powerHit() {
+   // Generate a random number between 0 and 100
+  let power = Math.floor(Math.random() * 100);
+   // Add the testing slammer weight to the power hit
+   power += testingSlammer.weight;
+   // Cap the power hit at 100 if it exceeds 100
+   if (power > 100) {
+       power = 100;
+   }
+
+    return power;
+}
+
 }
 class PokeBall extends Pog {
     constructor(face, speed, slammer, type, id, weight) {
@@ -90,6 +107,16 @@ class PokeBall extends Pog {
             this.weight = weight
     }
 }
+class Player {
+    constructor(hp,slammer,winPogs,id){
+            this.hp = hp
+            this.slammer = slammer
+            this.winPogs = winPogs
+            this.id = id
+    }
+}
+var player1 = new Player(10, 0, [], 1)
+var player2 = new Player(10, 0, [], 2)
 var testingList = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8']
 for (i of testingList) {
     var i = new Pog('down', 0, false)
@@ -101,13 +128,12 @@ for (i of testingList) {
     i.animate()
 }
 var testingSlammer = new Slammer('down', 0, true, 'fire', 6, 0)
-
+var startTurn = Math.floor(Math.random()*2)+1
 function attempt1() {
-
     const power = testingSlammer.powerHit()
     var pogStack = testingList.length
     for(i of testingList){
-        final =Math.floor(Math.random()*10) + Math.floor(Math.random()*-10) 
+        final =Math.floor(Math.random()*11) + Math.floor(Math.random()*-10) 
         flipNum = Math.floor(Math.random()*100) + pogStack
         yNum = Math.floor(Math.random()*-15)-1
         xNum = final
@@ -115,6 +141,10 @@ function attempt1() {
         if(flipNum <= power){
             i.face = 'up'
             console.log('Pog has been flipped')
+            if (startTurn == 1) {
+                player1.winPogs.push(i)
+                i.animate
+            }
             i.ySpeed = yNum
             i.xSpeed = xNum
             
