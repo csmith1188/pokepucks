@@ -38,17 +38,17 @@ var allActivePublicRooms = [];
 
 const app = express(); // Our express server is referred to as app
 
-app.use(express.static(path.join(__dirname, "public"))); // Defines our static folder so when we get a request to the root domain, it will send eveything to the public directory that will contain the static assets
-
-app.use(session({
-    secret: 'secret', // Secure later using an environment variable or a .env file that is in the .gitignore
-    resave: false,
-    saveUninitialized: false
-}));
+app.use(
+    express.static(path.join(__dirname, "public")), // Defines our static folder so when we get a request to the root domain, it will send eveything to the public directory that will contain the static assets
+    session({
+        secret: 'super secret string', // replace with environemnt variable later
+        resave: false,
+        saveUninitialized: false
+    }));
 
 function isAuthenticated(req, res, next) {
     if (req.session.user) next()
-    else res.redirect('/')
+    else res.redirect('/login')
 };
 
 app.get('/', isAuthenticated, (req, res) => {
@@ -60,7 +60,7 @@ app.get('/', isAuthenticated, (req, res) => {
     }
 });
 
-app.get('/', (req, res) => {
+app.get('/login', (req, res) => {
     if (req.query.token) {
         let tokenData = jwt.decode(req.query.token);
         req.session.token = tokenData;
@@ -69,7 +69,7 @@ app.get('/', (req, res) => {
     } else {
         res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
     };
-});
+}); // Stopped here. Do testing when back from chrsitmas break.
 
 const expressServer = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
