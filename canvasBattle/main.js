@@ -57,6 +57,7 @@ class Pog {
             if (this.aniFrame >= 80) this.aniFrame = 0
             if (this.ySpeed >= 10) {this.ySpeed = 0;this.speed = 0 ;this.xSpeed = 0}
         }
+        
     }
 
 
@@ -115,8 +116,8 @@ class Player {
             this.id = id
     }
 }
-var player1 = new Player(10, 0, [], 1)
-var player2 = new Player(10, 0, [], 2)
+var player1 = new Player([], 0, [], 1)
+var player2 = new Player([], 0, [], 2)
 var testingList = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8']
 for (i of testingList) {
     var i = new Pog('down', 0, false)
@@ -129,7 +130,29 @@ for (i of testingList) {
 }
 var testingSlammer = new Slammer('down', 0, true, 'fire', 6, 0)
 var startTurn = Math.floor(Math.random()*2)+1
+
+for(i=0;i<10;i++){
+    num +=5
+    var L= new Pog('down', 0, false)
+    player1.hp.push(L)
+    console.log(player1.hp)
+    L.y = 900 - num
+    L.x = 1100
+    
+    console.log(L)
+    console.log(player1.hp.length)
+}
+for(i=0;i<=10;i++){
+    num +=5
+    var k = new Pog('down', 0, false)
+    player2.hp.push(k)
+    k.y = 300 - num
+    k.x = 100
+    
+
+}
 function attempt1() {
+
     const power = testingSlammer.powerHit()
     var pogStack = testingList.length
     for(i of testingList){
@@ -143,7 +166,14 @@ function attempt1() {
             console.log('Pog has been flipped')
             if (startTurn == 1) {
                 player1.winPogs.push(i)
-                i.animate
+                i.x = 950
+                i.animate()
+                testingList.pop(i)
+            }
+            if (startTurn == 2) {
+                player2.winPogs.push(i)
+                i.animate()
+                testingList.pop(i)
             }
             i.ySpeed = yNum
             i.xSpeed = xNum
@@ -157,7 +187,7 @@ function attempt1() {
         
     }
 }
-
+attempt1()
 for (i of pogList) {
     num++
     var i = new Pog('down', 1, false)
@@ -171,7 +201,7 @@ for (i of pogList) {
         pogList.push(i)
 
     }
-    attempt1()
+    
 }
 const gameLoop = () => {
     window.requestAnimationFrame(gameLoop)
@@ -189,6 +219,13 @@ const gameLoop = () => {
     for (i of testingList) {
         
         i.animate()
+    }
+    for(i of player1.hp){
+        i.animate()
+    }
+    
+    for(i of player2.hp){
+       i.animate()
     }
 
 }
