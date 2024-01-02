@@ -164,17 +164,6 @@ function attempt1() {
         if(flipNum <= power){
             i.face = 'up'
             console.log('Pog has been flipped')
-            if (startTurn == 1) {
-                player1.winPogs.push(i)
-                i.x = 950
-                i.animate()
-                testingList.pop(i)
-            }
-            if (startTurn == 2) {
-                player2.winPogs.push(i)
-                i.animate()
-                testingList.pop(i)
-            }
             i.ySpeed = yNum
             i.xSpeed = xNum
             
@@ -187,7 +176,23 @@ function attempt1() {
         
     }
 }
+function results() {
+    for(i of testingList){
+        if (startTurn == 1 && i.face == 'up') {
+            player1.winPogs.push(i)
+            i.x = 950
+            i.animate()
+            testingList.pop(i)
+        }
+        if (startTurn == 2 && i.face == 'up') {
+            player2.winPogs.push(i)
+            i.animate()
+            testingList.pop(i)
+        }
+    }
+}
 attempt1()
+results()
 for (i of pogList) {
     num++
     var i = new Pog('down', 1, false)
