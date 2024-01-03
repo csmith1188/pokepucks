@@ -197,25 +197,51 @@ function results() {
         }
     }
 }
-function winPucks() {
-    for (i of player1.winPogs) {
-        i.x=900
-        i.y=450
-        i.face='up'
-        i.animate()
-        console.log(i)
-    }
-    for (i of player2.winPogs) {
-        i.x=100
-        i.y=150
-        i.face='up'
-        i.animate()
-        console.log(i)
+
+function isWinningPog(pog) {
+    return player1.winPogs.includes(pog) || player2.winPogs.includes(pog);
+}
+
+Pog.prototype.animate = function() {
+    if (isWinningPog(this)) {
+        // Adjust animation for winning pogs
+        // For example, you might change the y coordinate based on the index in the winPogs list
+        let index = player1.winPogs.includes(this) ? player1.winPogs.indexOf(this) : player2.winPogs.indexOf(this);
+        this.y = index * 10; // Adjust as needed
+    } else {
+        // Existing animation code
+        if (this.face === 'up' && this.speed == 0) {
+            ctx.drawImage(whiteSide, this.x, this.y)
+        }
+        if (this.face === 'down' && this.speed == 0) {
+            ctx.drawImage(blackSide, this.x, this.y)
+
+        }
+
+        if (this.speed != 0) {
+            this.aniFrame += this.speed
+            this.ySpeed += gravity
+            if (this.aniframe >= 70) ctx.drawImage(blackRotation3, this.x += this.xSpeed, this.y += this.ySpeed)
+            else if (this.aniframe >= 60) ctx.drawImage(blackRotation2, this.x += this.xSpeed, this.y += this.ySpeed)
+            else if (this.aniFrame >= 50) ctx.drawImage(blackRotation1, this.x += this.xSpeed, this.y += this.ySpeed)
+            else if (this.aniFrame >= 40) ctx.drawImage(whiteSide, this.x += this.xSpeed, this.y += this.ySpeed)
+            else if (this.aniFrame >= 30) ctx.drawImage(whiteRotation3, this.x += this.xSpeed, this.y += this.ySpeed)
+            else if (this.aniFrame >= 20) ctx.drawImage(whiteRotation2, this.x += this.xSpeed, this.y += this.ySpeed)
+            else if (this.aniFrame >= 10) ctx.drawImage(whiteRotation1, this.x += this.xSpeed, this.y += this.ySpeed);
+
+            /*
+                */
+            else ctx.drawImage(blackSide, this.x += this.xSpeed, this.y += this.ySpeed)
+
+
+            if (this.aniFrame >= 80) this.aniFrame = 0
+            if (this.ySpeed >= 10) { this.ySpeed = 0; this.speed = 0; this.xSpeed = 0 }
+        }
     }
 }
 attempt1()
 results()
-winPucks()
+isWinningPog()
 for (i of pogList) {
     num++
     var i = new Pog('down', 1, false)
@@ -255,7 +281,16 @@ const gameLoop = () => {
     for (i of player2.hp) {
         i.animate()
     }
-
+    
+    for(i of player1.winPogs){
+        i.animate()
+        
+    }
+    for(i of player2.winPogs){
+        i.animate()
+        
+    }
+    
 }
 
 gameLoop()
