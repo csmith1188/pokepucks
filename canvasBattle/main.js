@@ -116,6 +116,8 @@ class Player {
         this.id = id
     }
 }
+var player1WinStack = new Pog('down', 0, false)
+var player2WinStack = new Pog('down', 0, false)
 var player1 = new Player([], 0, [], 1)
 var player2 = new Player([], 0, [], 2)
 var testingList = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8']
@@ -136,21 +138,27 @@ for (i = 0; i < 10; i++) {
     var L = new Pog('down', 0, false)
     player1.hp.push(L)
     console.log(player1.hp)
-    L.y = 900 - num
-    L.x = 1100
+    L.y = 850 - num
+    L.x = 1500
+    player1WinStack.y = 900
+    player1WinStack.x = 1520
 
     console.log(L)
     console.log(player1.hp.length)
 }
-for (i = 0; i <= 10; i++) {
+
+for (i = 0; i < 10; i++) {
     num += 5
     var k = new Pog('down', 0, false)
     player2.hp.push(k)
     k.y = 300 - num
     k.x = 100
-
+    player2WinStack.y = 300
+    player2WinStack.x = 120
 
 }
+
+
 function attempt1() {
 
     const power = testingSlammer.powerHit()
@@ -202,7 +210,7 @@ function isWinningPog(pog) {
     return player1.winPogs.includes(pog) || player2.winPogs.includes(pog);
 }
 
-Pog.prototype.animate = function() {
+Pog.prototype.animate = function () {
     if (isWinningPog(this)) {
         // Adjust animation for winning pogs
         // For example, you might change the y coordinate based on the index in the winPogs list
@@ -266,9 +274,21 @@ const gameLoop = () => {
          i.animate()
      }
      */
-
+    ctx.fillStyle = 'black';
+    ctx.font = '20px Arial';
+    ctx.fillText(`Player 1 HP Stack: ${player1.hp.length}`, L.x, L.y - 20); // Adjust the position as needed
     //sort testinglist by each object's y value (low to high)
-
+    ctx.fillStyle = 'black';
+    ctx.font = '20px Arial';
+    ctx.fillText(`Player 2 HP Stack: ${player2.hp.length}`, k.x, k.y - 20); // Adjust the position as needed
+    player1WinStack.animate()
+    ctx.fillStyle = 'black';
+    ctx.font = '20px Arial';
+    ctx.fillText(`Player 1 Win Puck Stack: ${player1.winPogs.length}`, player1WinStack.x,player1WinStack.y - 20); // Adjust the position as needed
+    player2WinStack.animate()
+    ctx.fillStyle = 'black';
+    ctx.font = '20px Arial';
+    ctx.fillText(`Player 2 Win Puck Stack: ${player2.winPogs.length}`, player2WinStack.x,player2WinStack.y - 20); // Adjust the position as needed
     testingList.sort(function (a, b) { return b - a })
     for (i of testingList) {
 
@@ -281,16 +301,16 @@ const gameLoop = () => {
     for (i of player2.hp) {
         i.animate()
     }
-    
-    for(i of player1.winPogs){
+
+    for (i of player1.winPogs) {
         i.animate()
-        
+
     }
-    for(i of player2.winPogs){
+    for (i of player2.winPogs) {
         i.animate()
-        
+
     }
-    
+
 }
 
 gameLoop()
