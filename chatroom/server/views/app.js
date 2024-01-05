@@ -7,7 +7,7 @@ Editors: Brandon Camacho
 Code for the frontend serer-side for the chatroom.
 \***************************************************************************/
 // Defines socket = to a new websocket
-const socket = io('http://172.16.3.157:3000/');
+const socket = io('http://172.16.3.162:3000/');
 
 const msgInput = document.querySelector('#message');
 const nameInput = document.querySelector('#name');
@@ -17,13 +17,14 @@ const usersList = document.querySelector('.user-list');
 const roomList = document.querySelector('.room-list');
 const chatDisplay = document.querySelector('.chat-display');
 
+const loginPage = document.getElementById('login-page');
 const lobbyPage = document.getElementById('lobby-page');
 const chatroomPage = document.getElementById('chatroom-page');
 
 var privacy = '';
 
 // Function used to send a message
-function sendMessage(e) { // sendMeassage recieves an event which is represented with the letter e\
+function sendMessage(e) { // sendMeassage recieves an event which is represented with the letter e
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && msgInput.value && chatRoom.value) {
@@ -49,6 +50,25 @@ function generateRoomCode() {
         counter++;
     };
     return roomCode;
+};
+
+// Function used for pressing the login button
+function login() {
+    window.location.href = 'http://172.16.3.162:3000/login';
+
+    // Store the state in sessionStorage
+    sessionStorage.setItem('isLoggedIn', 'true');
+};
+
+window.onload = function() {
+    // Check the state from sessionStorage
+    if (sessionStorage.getItem('isLoggedIn') === 'true') {
+        document.getElementById('login-page').style.display = 'none';
+        document.getElementById('lobby-page').style.display = 'block';
+    } else {
+        document.getElementById('login-page').style.display = 'block';
+        document.getElementById('lobby-page').style.display = 'none';
+    }
 };
 
 // Function used for when a user generates a chatroom
@@ -109,12 +129,12 @@ msgInput.addEventListener('keypress', () => {
 socket.on('message', (data) => {
     activity.textContent = "";
     const { name, text, id, time } = data;
-    
+
     const li = document.createElement('li');
     li.className = 'post';
     if (id === socket.id) li.className = 'post post--left';
-    if (id !== socket.id && name !== 'aaaaaaaaaaaaaaaaa') li.className = 'post post--right';
-    if (name !== 'aaaaaaaaaaaaaaaaa') {
+    if (id !== socket.id && name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') li.className = 'post post--right';
+    if (name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') {
         li.innerHTML = `<div class="post__header ${id === socket.id
             ? 'post__header--user'
             : 'post__header--reply'
