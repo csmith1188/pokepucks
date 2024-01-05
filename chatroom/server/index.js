@@ -13,9 +13,11 @@ npm i socket.io
 npm i express
 npm i jsonwebtoken
 npm i express-session
+npm i ejs
 npm i -D nodemon (Not required but makes editing this file much more convenient. Nodemon will restart the server automatically every time you save the server.)
 // Start the server by using 'npm start' while in the server folder
 // Start the server for testing by using 'npm run dev' while in the server folder
+// Remember to change the ip address in both this file and the app.js file to the ip address of the computer you are using to run the server
 */
 import express from 'express';
 import { Server } from 'socket.io';
@@ -24,52 +26,49 @@ import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 import session from 'express-session';
 
-const AUTH_URL = 'http://172.16.3.144:420/oauth';
-const THIS_URL = 'http://172.16.3.157:3000';
+const AUTH_URL = 'http://172.16.3.162:420/oauth';
+const THIS_URL = 'http://172.16.3.162:3000/login';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
-const ADMIN = "aaaaaaaaaaaaaaaaa"; // Make sure this is longer than the maxlength of a username
+const ADMIN = "YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD"; // Make sure this is longer than the maxlength of a username
 
 var allActiveRooms = [];
 var allActivePublicRooms = [];
 
+var sessionUser = false;
+
 const app = express(); // Our express server is referred to as app
 
+app.set('view engine', 'ejs');
+
 app.use(
-    express.static(path.join(__dirname, "public")), // Defines our static folder so when we get a request to the root domain, it will send eveything to the public directory that will contain the static assets
+    express.static(path.join(__dirname, "views")), // Defines our static folder so when we get a request to the root domain, it will send eveything to the public directory that will contain the static assets
     session({
         secret: 'super secret string', // replace with environemnt variable later
         resave: false,
         saveUninitialized: false
     }));
 
-function isAuthenticated(req, res, next) {
-    if (req.session.user) next()
-    else res.redirect('/login')
-};
-
-app.get('/', isAuthenticated, (req, res) => {
-    try {
-        res.render('index.ejs', { user: req.session.user })
-    }
-    catch (error) {
-        res.send(error.message)
-    }
+app.get('/', (req, res) => {
+    res.render('index', { sessionUser: sessionUser });
 });
 
 app.get('/login', (req, res) => {
+    console.log("Redirecting based on login");
+    console.log(`Query Token: ${req.query.token}`);
     if (req.query.token) {
         let tokenData = jwt.decode(req.query.token);
         req.session.token = tokenData;
         req.session.user = tokenData.username;
+        sessionUser = req.session.user;
         res.redirect('/');
     } else {
         res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
     };
-}); // Stopped here. Do testing when back from chrsitmas break.
+});
 
 const expressServer = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
@@ -87,7 +86,7 @@ const UsersState = {
 const io = new Server(expressServer, {
     cors: {
         // origin allows you to change what is accepted and what is blocked
-        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:3000", "http://172.16.3.157:3000/"] // Looks at the node environment. If the node environemnt equals production, origin is set to false because we don't want anyone outside of the domain the server is currently on to access it. If it doesn't equal production, origin is set to the address that we will allow to access our socket.io server
+        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:3000", "http://172.16.3.162:3000/"] // Looks at the node environment. If the node environemnt equals production, origin is set to false because we don't want anyone outside of the domain the server is currently on to access it. If it doesn't equal production, origin is set to the address that we will allow to access our socket.io server
     }
 });
 
