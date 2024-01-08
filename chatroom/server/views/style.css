@@ -57,12 +57,10 @@ button {
 
 #login-page {
     visibility: visible;
-    display: none;
 }
 
 #lobby-page {
     visibility: visible;
-    display: none;
 }
 
 #chatroom-page {

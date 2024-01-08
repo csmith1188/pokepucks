@@ -14,7 +14,6 @@ const nameInput = document.querySelector('#name');
 const chatRoom = document.querySelector('#room');
 const activity = document.querySelector('.activity');
 const usersList = document.querySelector('.user-list');
-const roomList = document.querySelector('.room-list');
 const chatDisplay = document.querySelector('.chat-display');
 
 const loginPage = document.getElementById('login-page');
@@ -60,15 +59,8 @@ function login() {
     sessionStorage.setItem('isLoggedIn', 'true');
 };
 
-window.onload = function() {
-    // Check the state from sessionStorage
-    if (sessionStorage.getItem('isLoggedIn') === 'true') {
-        document.getElementById('login-page').style.display = 'none';
-        document.getElementById('lobby-page').style.display = 'block';
-    } else {
-        document.getElementById('login-page').style.display = 'block';
-        document.getElementById('lobby-page').style.display = 'none';
-    }
+function logout() {
+    window.location.href = 'http://172.16.3.162:3000/logout';
 };
 
 // Function used for when a user generates a chatroom
@@ -84,6 +76,8 @@ function createRoom() {
         });
         lobbyPage.style.visibility = 'hidden';
         chatroomPage.style.visibility = 'visible';
+        // Store the roomId in sesssionStorage
+        sessionStorage.setItem('chatroomID', chatroom.value);
     };
 };
 
@@ -101,11 +95,20 @@ function joinRoom(e) {
             if (data.success) {
                 lobbyPage.style.visibility = 'hidden';
                 chatroomPage.style.visibility = 'visible';
+                // Store the roomId in sessionStorage
+                sessionStorage.setItem('chatroomID', chatroom.value);
             } else {
                 console.log('No room with that code currently active.');
             };
         });
     };
+};
+
+window.onload = function () {
+    const chatroomID = sessionStorage.getItem('chatroomID');
+    if (chatroomID) {
+        joinRoom(chatroomID);
+    }
 };
 
 // Function used for when a user leaves a chatroom
@@ -116,6 +119,11 @@ function leaveRoom() {
         lobbyPage.style.visibility = 'visible';
         chatroomPage.style.visibility = 'hidden';
     });
+};
+
+if (sessionStorage.getItem('chatroomID')) {
+    // Rejoin the chatroom
+    socket.emit('rejoin', sessionStorage.getItem('chatroomID'));
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);
@@ -178,19 +186,6 @@ function showUsers(users) {
             usersList.textContent += ` ${user.name}`;
             if (users.length > 1 && i !== users.length - 1) {
                 usersList.textContent += ",";
-            };
-        });
-    };
-};
-
-function showRooms(rooms) {
-    roomList.textContent = '';
-    if (rooms) {
-        roomList.innerHTML = '<em>Active Rooms:</em>';
-        rooms.forEach((room, i) => {
-            roomList.textContent += ` ${room}`;
-            if (rooms.length > 1 && i !== rooms.length - 1) {
-                roomList.textContent += ",";
             };
         });
     };

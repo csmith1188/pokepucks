@@ -24,11 +24,6 @@ The ejs file for the chatroom.
 
 <body>
     <main>
-        <div id="login-page">
-            <button id="login" onclick="login()">Login with
-                Formbar</button>
-        </div>
-
         <div id="lobby-page">
             <form class="form-join">
                 <% if (sessionUser) { %>
@@ -49,7 +44,12 @@ The ejs file for the chatroom.
             </select>
         </div>
 
-        <p class="room-list"></p>
+        <p> Active Rooms:
+            <% activeRooms.forEach(function(room, index) { %>
+                <%= room %>
+                    <%= index !==activeRooms.length - 1 ? ',' : '' %>
+                        <% }); %>
+        </p>
 
         <div id="chatroom-page">
             <button onclick="leaveRoom()">Leave Room</button>
@@ -65,6 +65,8 @@ The ejs file for the chatroom.
                 <button type="submit">Send</button>
             </form>
         </div>
+
+        <button id="logout" onclick="logout()">Log Out</button>
     </main>
 </body>
 

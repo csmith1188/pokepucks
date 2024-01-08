@@ -38,8 +38,6 @@ const ADMIN = "YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW
 var allActiveRooms = [];
 var allActivePublicRooms = [];
 
-var sessionUser = false;
-
 const app = express(); // Our express server is referred to as app
 
 app.set('view engine', 'ejs');
@@ -53,21 +51,52 @@ app.use(
     }));
 
 app.get('/', (req, res) => {
-    res.render('index', { sessionUser: sessionUser });
+    // Check if user is already logged in
+    if (req.session && req.session.user) {
+        // User is logged in, redirect to chatroom
+        res.redirect('/chatroom');
+    } else {
+        // User is not logged in, render the login page
+        res.render('login');
+    }
+});
+
+app.get('/chatroom', (req, res) => {
+    // Check if user is logged in
+    if (req.session && req.session.user) {
+        // User is logged in, render the chatroom with the username
+        res.render('chatroom', { sessionUser: req.session.user, activeRooms: allActivePublicRooms });
+    } else {
+        // User is not logged in, redirect to login
+        res.redirect('/');
+    }
 });
 
 app.get('/login', (req, res) => {
-    console.log("Redirecting based on login");
-    console.log(`Query Token: ${req.query.token}`);
-    if (req.query.token) {
-        let tokenData = jwt.decode(req.query.token);
-        req.session.token = tokenData;
-        req.session.user = tokenData.username;
-        sessionUser = req.session.user;
-        res.redirect('/');
+    // Check if user is already logged in
+    if (req.session && req.session.user) {
+        // User is logged in, redirect to chatroom
+        res.redirect('/chatroom');
     } else {
-        res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
-    };
+        if (req.query.token) {
+            let tokenData = jwt.decode(req.query.token);
+            req.session.token = tokenData;
+            req.session.user = tokenData.username;
+            res.redirect('/chatroom');
+        } else {
+            res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
+        };
+    }
+});
+
+app.get('/logout', (req, res) => {
+    // Destroy the session and redirect to login
+    req.session.destroy((err) => {
+        if (err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    });
 });
 
 const expressServer = app.listen(PORT, () => {
@@ -177,8 +206,6 @@ io.on('connection', socket => {
                     });
 
                     io.emit('joinConfirmation', { success: true });
-                } else {
-                    console.log('No room with that code currently active.');
                 };
             };
         };
@@ -262,6 +289,11 @@ io.on('connection', socket => {
         };
 
         console.log(`User ${socket.id} disconnected`);
+    });
+
+    socket.on('rejoin', (chatroomID) => {
+        // Validate the chatroomID, then add the user to the chatroom
+        socket.join(chatroomID);
     });
 
     // Listening for a message event
