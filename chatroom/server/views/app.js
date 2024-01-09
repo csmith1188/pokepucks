@@ -74,10 +74,6 @@ function createRoom() {
             privacy: privacy,
             method: 'create'
         });
-        lobbyPage.style.visibility = 'hidden';
-        chatroomPage.style.visibility = 'visible';
-        // Store the roomId in sesssionStorage
-        sessionStorage.setItem('chatroomID', chatroom.value);
     };
 };
 
@@ -93,10 +89,6 @@ function joinRoom(e) {
         });
         socket.on('joinConfirmation', (data) => {
             if (data.success) {
-                lobbyPage.style.visibility = 'hidden';
-                chatroomPage.style.visibility = 'visible';
-                // Store the roomId in sessionStorage
-                sessionStorage.setItem('chatroomID', chatroom.value);
             } else {
                 console.log('No room with that code currently active.');
             };
@@ -104,26 +96,13 @@ function joinRoom(e) {
     };
 };
 
-window.onload = function () {
-    const chatroomID = sessionStorage.getItem('chatroomID');
-    if (chatroomID) {
-        joinRoom(chatroomID);
-    }
-};
-
 // Function used for when a user leaves a chatroom
 function leaveRoom() {
     socket.emit('leaveRoom');
-
     socket.on('leaveRoomConfirmation', () => {
-        lobbyPage.style.visibility = 'visible';
-        chatroomPage.style.visibility = 'hidden';
     });
-};
 
-if (sessionStorage.getItem('chatroomID')) {
-    // Rejoin the chatroom
-    socket.emit('rejoin', sessionStorage.getItem('chatroomID'));
+    window.location.href = 'http://172.16.3.162:3000/lobby';
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);

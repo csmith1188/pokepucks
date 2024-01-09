@@ -64,7 +64,7 @@ button {
 }
 
 #chatroom-page {
-    visibility: hidden;
+    visibility: visible;
 }
 
 .chat-display {

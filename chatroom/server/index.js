@@ -53,19 +53,29 @@ app.use(
 app.get('/', (req, res) => {
     // Check if user is already logged in
     if (req.session && req.session.user) {
-        // User is logged in, redirect to chatroom
-        res.redirect('/chatroom');
+        // User is logged in, redirect to chatroom lobby
+        res.redirect('/lobby');
     } else {
         // User is not logged in, render the login page
         res.render('login');
     }
 });
 
+app.get('/lobby', (req, res) => {
+    // Check if user is logged in
+    if (req.session && req.session.user) {
+        // User is logged in, render the chatroom lobby with the username
+        res.render('lobby', { sessionUser: req.session.user, activeRooms: allActivePublicRooms });
+    } else {
+        // User is not logged in, redirect to login
+        res.redirect('/');
+    }
+});
+
 app.get('/chatroom', (req, res) => {
     // Check if user is logged in
     if (req.session && req.session.user) {
-        // User is logged in, render the chatroom with the username
-        res.render('chatroom', { sessionUser: req.session.user, activeRooms: allActivePublicRooms });
+        res.render('chatroom', { sessionUser: req.session.user });
     } else {
         // User is not logged in, redirect to login
         res.redirect('/');
@@ -76,13 +86,13 @@ app.get('/login', (req, res) => {
     // Check if user is already logged in
     if (req.session && req.session.user) {
         // User is logged in, redirect to chatroom
-        res.redirect('/chatroom');
+        res.redirect('/lobby');
     } else {
         if (req.query.token) {
             let tokenData = jwt.decode(req.query.token);
             req.session.token = tokenData;
             req.session.user = tokenData.username;
-            res.redirect('/chatroom');
+            res.redirect('/lobby');
         } else {
             res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
         };
@@ -289,11 +299,6 @@ io.on('connection', socket => {
         };
 
         console.log(`User ${socket.id} disconnected`);
-    });
-
-    socket.on('rejoin', (chatroomID) => {
-        // Validate the chatroomID, then add the user to the chatroom
-        socket.join(chatroomID);
     });
 
     // Listening for a message event

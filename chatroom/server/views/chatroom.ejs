@@ -24,33 +24,6 @@ The ejs file for the chatroom.
 
 <body>
     <main>
-        <div id="lobby-page">
-            <form class="form-join">
-                <% if (sessionUser) { %>
-                    <input type="text" id="name" maxlength="16" size="5" value="<%= sessionUser %>" readonly>
-                    <% } else { %>
-                        <input type="text" id="name" maxlength="16" placeholder="Your name" size="5" required>
-                        <% } %>
-                            <input type="text" id="room" placeholder="Chat room" size="5" required>
-                            <button id="join" type="submit">Join</button>
-            </form>
-
-            <button onclick="createRoom()">Create Room</button>
-
-            <label for="privacy">Choose Room Privacy:</label>
-            <select id="privacy">
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-            </select>
-        </div>
-
-        <p> Active Rooms:
-            <% activeRooms.forEach(function(room, index) { %>
-                <%= room %>
-                    <%= index !==activeRooms.length - 1 ? ',' : '' %>
-                        <% }); %>
-        </p>
-
         <div id="chatroom-page">
             <button onclick="leaveRoom()">Leave Room</button>
 
@@ -65,8 +38,6 @@ The ejs file for the chatroom.
                 <button type="submit">Send</button>
             </form>
         </div>
-
-        <button id="logout" onclick="logout()">Log Out</button>
     </main>
 </body>
 
