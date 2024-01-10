@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
     } else {
         // User is not logged in, render the login page
         res.render('login');
-    }
+    };
 });
 
 app.get('/lobby', (req, res) => {
@@ -69,7 +69,7 @@ app.get('/lobby', (req, res) => {
     } else {
         // User is not logged in, redirect to login
         res.redirect('/');
-    }
+    };
 });
 
 app.get('/chatroom', (req, res) => {
@@ -79,7 +79,7 @@ app.get('/chatroom', (req, res) => {
     } else {
         // User is not logged in, redirect to login
         res.redirect('/');
-    }
+    };
 });
 
 app.get('/login', (req, res) => {
@@ -96,7 +96,7 @@ app.get('/login', (req, res) => {
         } else {
             res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
         };
-    }
+    };
 });
 
 app.get('/logout', (req, res) => {
