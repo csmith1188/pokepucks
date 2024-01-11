@@ -75,7 +75,7 @@ app.get('/lobby', (req, res) => {
 app.get('/chatroom', (req, res) => {
     // Check if user is logged in
     if (req.session && req.session.user) {
-        res.render('chatroom', { sessionUser: req.session.user });
+        res.render('chatroom', { activeRooms: allActivePublicRooms });
     } else {
         // User is not logged in, redirect to login
         res.redirect('/');

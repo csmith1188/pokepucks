@@ -38,6 +38,12 @@ The ejs file for the chatroom.
                 <button type="submit">Send</button>
             </form>
         </div>
+        <p> Active Rooms:
+            <% activeRooms.forEach(function(room, index) { %>
+                <%= room %>
+                    <%= index !==activeRooms.length - 1 ? ',' : '' %>
+                        <% }); %>
+        </p>
     </main>
 </body>
 

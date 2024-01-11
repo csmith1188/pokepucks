@@ -21,19 +21,20 @@ const lobbyPage = document.getElementById('lobby-page');
 const chatroomPage = document.getElementById('chatroom-page');
 
 var privacy = '';
+var username = '';
+var roomCode = '';
+var method = '';
 
 // Function used to send a message
 function sendMessage(e) { // sendMeassage recieves an event which is represented with the letter e
     // Allows you to submit the form without reloading the page
     e.preventDefault();
-    if (nameInput.value && msgInput.value && chatRoom.value) {
-        socket.emit('message', {
-            name: nameInput.value,
-            text: msgInput.value,
-        });
-        // Replace the msgInput with nothing
-        msgInput.value = "";
-    };
+    socket.emit('message', {
+        name: username,
+        text: msgInput.value,
+    });
+    // Replace the msgInput with nothing
+    msgInput.value = "";
     // Puts the focus back on the msgInput
     msgInput.focus();
 };
@@ -63,22 +64,48 @@ function logout() {
     window.location.href = 'http://172.16.3.162:3000/logout';
 };
 
-// Function used for when a user generates a chatroom
 function createRoom() {
+    username = nameInput.value;
+    chatRoom.value = generateRoomCode();
+    roomCode = chatRoom.value;
     privacy = document.getElementById('privacy').value;
-    if (nameInput.value) {
-        chatRoom.value = generateRoomCode();
-        socket.emit('enterRoom', {
-            name: nameInput.value,
-            room: chatRoom.value,
-            privacy: privacy,
-            method: 'create'
-        });
-    };
+
+    // Store the values in sessionStorage
+    sessionStorage.setItem('username', username);
+    sessionStorage.setItem('roomCode', roomCode);
+    sessionStorage.setItem('privacy', privacy);
+
+    window.location.href = 'http://172.16.3.162:3000/chatroom';
+}
+
+window.onload = function () {
+    console.log('test 1');
+    if (window.location.href === 'http://172.16.3.162:3000/chatroom') {
+        console.log('test 2');
+
+        // Retrieve the values from sessionStorage
+        username = sessionStorage.getItem('username');
+        roomCode = sessionStorage.getItem('roomCode');
+        privacy = sessionStorage.getItem('privacy');
+
+        enterRoomCreate()
+        console.log('test 3');
+    }
+};
+
+// Function used for when a user generates a chatroom
+function enterRoomCreate() {
+    socket.emit('enterRoom', {
+        name: username,
+        room: roomCode,
+        privacy: privacy,
+        method: 'create'
+    });
+    console.log('Variable Test 1;' + username, roomCode, privacy);
 };
 
 // Function used for when a user enters a chatroom
-function joinRoom(e) {
+function enterRoomJoin(e) {
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     if (nameInput.value && chatRoom.value) {
@@ -109,7 +136,7 @@ document.querySelector('.form-msg').addEventListener('submit', sendMessage);
 document.querySelector('.form-join').addEventListener('submit', joinRoom);
 
 msgInput.addEventListener('keypress', () => {
-    socket.emit('activity', nameInput.value);
+    socket.emit('activity', username);
 });
 
 // Listen for messages
