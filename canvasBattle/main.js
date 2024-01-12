@@ -160,54 +160,77 @@ for (i = 0; i < 10; i++) {
 
 
 function attempt1() {
+    return new Promise((resolve, reject) => {
+        const power = testingSlammer.powerHit()
+        var pogStack = testingList.length
+        for (i of testingList) {
+            final = Math.floor(Math.random() * 11) + Math.floor(Math.random() * -10)
+            flipNum = Math.floor(Math.random() * 100) + pogStack
+            yNum = Math.floor(Math.random() * -15) - 1
+            xNum = final
+            i.speed = Math.floor(Math.random() * 5) + 1
+            if (flipNum <= power) {
+                i.face = 'up'
+                console.log('Pog has been flipped')
+                i.ySpeed = yNum
+                i.xSpeed = xNum
 
-    const power = testingSlammer.powerHit()
-    var pogStack = testingList.length
-    for (i of testingList) {
-        final = Math.floor(Math.random() * 11) + Math.floor(Math.random() * -10)
-        flipNum = Math.floor(Math.random() * 100) + pogStack
-        yNum = Math.floor(Math.random() * -15) - 1
-        xNum = final
-        i.speed = Math.floor(Math.random() * 5) + 1
-        if (flipNum <= power) {
-            i.face = 'up'
-            console.log('Pog has been flipped')
+
+
+            }
             i.ySpeed = yNum
             i.xSpeed = xNum
 
 
-
         }
-        i.ySpeed = yNum
-        i.xSpeed = xNum
-
-
-    }
+        resolve()
+    });
 }
-var num1 = -1
 function results() {
+
+
     for (let i = testingList.length - 1; i >= 0; i--) {
-        if (startTurn == 1) {
-            if (testingList[i].face === 'up') {
-                player1.winPogs.push(testingList[i])
-                console.log(testingList)
-            }
-        }
-        if (startTurn == 2) {
-            if (testingList[i].face === 'up') {
-                player2.winPogs.push(testingList[i])
-                console.log(testingList)
-            }
-        }
+
         if (testingList[i].face === 'up') {
+            if (startTurn == 1) {
+                if (testingList[i].face === 'up') {
+                    player1.winPogs.push(testingList[i])
+                    console.log(testingList)
+                    if (player2.hp.length > 0) {
+                        player2.hp.pop()
+
+                    }
+                }
+            }
+            if (startTurn == 2) {
+                if (testingList[i].face === 'up') {
+                    player2.winPogs.push(testingList[i])
+                    console.log(testingList)
+                    if (player1.hp.length > 0) {
+                        player1.hp.pop()
+
+                    }
+                }
+            }
             testingList.splice(i, 1)
             console.log(testingList)
         }
-    }
-}
 
+
+    }
+
+
+}
+var num1 = -1
 function isWinningPog(pog) {
-    return player1.winPogs.includes(pog) || player2.winPogs.includes(pog);
+
+    if (player1.winPogs.includes(pog) || player2.winPogs.includes(pog))
+        return true;
+    else return false;
+
+
+
+
 }
 
 Pog.prototype.animate = function () {
@@ -247,9 +270,23 @@ Pog.prototype.animate = function () {
         }
     }
 }
-attempt1()
-results()
-isWinningPog()
+
+var num
+num++
+setTimeout(function () {
+    console.log('test')
+    attempt1()
+
+    results()
+    isWinningPog()
+    if (startTurn == 1) {
+        startTurn = 2
+    }
+    if (startTurn == 2) {
+        startTurn = 1
+    }
+}, 1000)
+
 for (i of pogList) {
     num++
     var i = new Pog('down', 1, false)
@@ -284,11 +321,11 @@ const gameLoop = () => {
     player1WinStack.animate()
     ctx.fillStyle = 'black';
     ctx.font = '20px Arial';
-    ctx.fillText(`Player 1 Win Puck Stack: ${player1.winPogs.length}`, player1WinStack.x,player1WinStack.y - 20); // Adjust the position as needed
+    ctx.fillText(`Player 1 Win Puck Stack: ${player1.winPogs.length}`, player1WinStack.x, player1WinStack.y - 20); // Adjust the position as needed
     player2WinStack.animate()
     ctx.fillStyle = 'black';
     ctx.font = '20px Arial';
-    ctx.fillText(`Player 2 Win Puck Stack: ${player2.winPogs.length}`, player2WinStack.x,player2WinStack.y - 20); // Adjust the position as needed
+    ctx.fillText(`Player 2 Win Puck Stack: ${player2.winPogs.length}`, player2WinStack.x, player2WinStack.y - 20); // Adjust the position as needed
     testingList.sort(function (a, b) { return b - a })
     for (i of testingList) {
 
@@ -310,6 +347,8 @@ const gameLoop = () => {
         i.animate()
 
     }
+
+
 
 }
 
