@@ -20,9 +20,9 @@ const loginPage = document.getElementById('login-page');
 const lobbyPage = document.getElementById('lobby-page');
 const chatroomPage = document.getElementById('chatroom-page');
 
-var privacy = '';
 var username = '';
 var roomCode = '';
+var privacy = '';
 var method = '';
 
 // Function used to send a message
@@ -65,32 +65,21 @@ function logout() {
 };
 
 function createRoom() {
-    username = nameInput.value;
-    chatRoom.value = generateRoomCode();
-    roomCode = chatRoom.value;
-    privacy = document.getElementById('privacy').value;
+    if (nameInput.value) {
+        username = nameInput.value;
+        chatRoom.value = generateRoomCode();
+        roomCode = chatRoom.value;
+        privacy = document.getElementById('privacy').value;
+        method = 'create';
 
-    // Store the values in sessionStorage
-    sessionStorage.setItem('username', username);
-    sessionStorage.setItem('roomCode', roomCode);
-    sessionStorage.setItem('privacy', privacy);
+        // Store the values in sessionStorage
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('roomCode', roomCode);
+        sessionStorage.setItem('privacy', privacy);
+        sessionStorage.setItem('method', method);
 
-    window.location.href = 'http://172.16.3.162:3000/chatroom';
-}
-
-window.onload = function () {
-    console.log('test 1');
-    if (window.location.href === 'http://172.16.3.162:3000/chatroom') {
-        console.log('test 2');
-
-        // Retrieve the values from sessionStorage
-        username = sessionStorage.getItem('username');
-        roomCode = sessionStorage.getItem('roomCode');
-        privacy = sessionStorage.getItem('privacy');
-
-        enterRoomCreate()
-        console.log('test 3');
-    }
+        window.location.href = 'http://172.16.3.162:3000/chatroom';
+    };
 };
 
 // Function used for when a user generates a chatroom
@@ -99,27 +88,53 @@ function enterRoomCreate() {
         name: username,
         room: roomCode,
         privacy: privacy,
-        method: 'create'
+        method: method
     });
-    console.log('Variable Test 1;' + username, roomCode, privacy);
+    sessionStorage.setItem('method', 'join');
+};
+
+function joinRoom() {
+    if (nameInput.value && chatRoom.value) {
+        username = nameInput.value;
+        roomCode = chatRoom.value;
+        method = 'join';
+
+        // Store the values in sessionStorage
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('roomCode', roomCode);
+        sessionStorage.setItem('method', method);
+
+        window.location.href = 'http://172.16.3.162:3000/chatroom';
+    } else { alert('Please fill in both name and room code fields.') };
 };
 
 // Function used for when a user enters a chatroom
-function enterRoomJoin(e) {
-    // Allows you to submit the form without reloading the page
-    e.preventDefault();
-    if (nameInput.value && chatRoom.value) {
-        socket.emit('enterRoom', {
-            name: nameInput.value,
-            room: chatRoom.value,
-            method: 'join'
-        });
-        socket.on('joinConfirmation', (data) => {
-            if (data.success) {
-            } else {
-                console.log('No room with that code currently active.');
-            };
-        });
+function enterRoomJoin() {
+    socket.emit('enterRoom', {
+        name: username,
+        room: roomCode,
+        method: method
+    });
+};
+
+window.onload = function () {
+    if (window.location.href === 'http://172.16.3.162:3000/chatroom') {
+        // Retrieve the values from sessionStorage
+        username = sessionStorage.getItem('username');
+        roomCode = sessionStorage.getItem('roomCode');
+        privacy = sessionStorage.getItem('privacy');
+        method = sessionStorage.getItem('method');
+
+        switch (method) {
+            case 'create':
+                enterRoomCreate();
+                break;
+            case 'join':
+                enterRoomJoin();
+                break;
+            default:
+                console.log('Error: No method given');
+        };
     };
 };
 
@@ -133,7 +148,6 @@ function leaveRoom() {
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);
-document.querySelector('.form-join').addEventListener('submit', joinRoom);
 
 msgInput.addEventListener('keypress', () => {
     socket.emit('activity', username);

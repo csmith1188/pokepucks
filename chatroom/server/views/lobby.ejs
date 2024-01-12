@@ -25,11 +25,9 @@ The ejs file for the chatroom.
 <body>
     <main>
         <div id="lobby-page">
-            <form class="form-join">
-                <input type="text" id="name" size="5" value="<%= sessionUser %>" readonly>
-                <input type="text" id="room" placeholder="Chat room" size="5" required>
-                <button id="join" type="submit">Join</button>
-            </form>
+            <input type="text" id="name" size="5" value="<%= sessionUser %>" readonly>
+            <input type="text" id="room" placeholder="Room Code" size="5">
+            <button id="join" onclick="joinRoom()">Join</button>
 
             <button onclick="createRoom()">Create Room</button>
 
