@@ -13,7 +13,7 @@ The ejs file for the chatroom.
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokePucks Chatroom</title>
+    <title>PokePucks Chatroom Lobby</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"
         integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w=="
@@ -24,21 +24,10 @@ The ejs file for the chatroom.
 
 <body>
     <main>
-        <div id="login-page">
-            <button id="login" onclick="login()">Login with
-                Formbar</button>
-        </div>
-
         <div id="lobby-page">
-            <form class="form-join">
-                <% if (sessionUser) { %>
-                    <input type="text" id="name" maxlength="16" size="5" value="<%= sessionUser %>" readonly>
-                    <% } else { %>
-                        <input type="text" id="name" maxlength="16" placeholder="Your name" size="5" required>
-                        <% } %>
-                            <input type="text" id="room" placeholder="Chat room" size="5" required>
-                            <button id="join" type="submit">Join</button>
-            </form>
+            <input type="text" id="name" size="5" value="<%= sessionUser %>" readonly>
+            <input type="text" id="room" placeholder="Room Code" size="5">
+            <button id="join" onclick="joinRoom()">Join</button>
 
             <button onclick="createRoom()">Create Room</button>
 
@@ -49,22 +38,13 @@ The ejs file for the chatroom.
             </select>
         </div>
 
-        <p class="room-list"></p>
-
-        <div id="chatroom-page">
-            <button onclick="leaveRoom()">Leave Room</button>
-
-            <ul class="chat-display"></ul>
-
-            <p class="user-list"></p>
-
-            <p class="activity"></p>
-
-            <form class="form-msg">
-                <input type="text" id="message" placeholder="Your message" required>
-                <button type="submit">Send</button>
-            </form>
-        </div>
+        <p> Active Rooms:
+            <% activeRooms.forEach(function(room, index) { %>
+                <%= room %>
+                    <%= index !==activeRooms.length - 1 ? ',' : '' %>
+                        <% }); %>
+        </p>
+        <button id="logout" onclick="logout()">Log Out</button>
     </main>
 </body>
 

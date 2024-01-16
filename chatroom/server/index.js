@@ -38,8 +38,6 @@ const ADMIN = "YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW
 var allActiveRooms = [];
 var allActivePublicRooms = [];
 
-var sessionUser = false;
-
 const app = express(); // Our express server is referred to as app
 
 app.set('view engine', 'ejs');
@@ -53,21 +51,62 @@ app.use(
     }));
 
 app.get('/', (req, res) => {
-    res.render('index', { sessionUser: sessionUser });
+    // Check if user is already logged in
+    if (req.session && req.session.user) {
+        // User is logged in, redirect to chatroom lobby
+        res.redirect('/lobby');
+    } else {
+        // User is not logged in, render the login page
+        res.render('login');
+    };
+});
+
+app.get('/lobby', (req, res) => {
+    // Check if user is logged in
+    if (req.session && req.session.user) {
+        // User is logged in, render the chatroom lobby with the username
+        res.render('lobby', { sessionUser: req.session.user, activeRooms: allActivePublicRooms });
+    } else {
+        // User is not logged in, redirect to login
+        res.redirect('/');
+    };
+});
+
+app.get('/chatroom', (req, res) => {
+    // Check if user is logged in
+    if (req.session && req.session.user) {
+        res.render('chatroom');
+    } else {
+        // User is not logged in, redirect to login
+        res.redirect('/');
+    };
 });
 
 app.get('/login', (req, res) => {
-    console.log("Redirecting based on login");
-    console.log(`Query Token: ${req.query.token}`);
-    if (req.query.token) {
-        let tokenData = jwt.decode(req.query.token);
-        req.session.token = tokenData;
-        req.session.user = tokenData.username;
-        sessionUser = req.session.user;
-        res.redirect('/');
+    // Check if user is already logged in
+    if (req.session && req.session.user) {
+        // User is logged in, redirect to chatroom
+        res.redirect('/lobby');
     } else {
-        res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
+        if (req.query.token) {
+            let tokenData = jwt.decode(req.query.token);
+            req.session.token = tokenData;
+            req.session.user = tokenData.username;
+            res.redirect('/lobby');
+        } else {
+            res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
+        };
     };
+});
+
+app.get('/logout', (req, res) => {
+    // Destroy the session and redirect to login
+    req.session.destroy((err) => {
+        if (err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    });
 });
 
 const expressServer = app.listen(PORT, () => {
@@ -115,8 +154,6 @@ io.on('connection', socket => {
             });
         };
 
-        allActiveRooms.push(room);
-
         // If user is creating a room, user creates and joins the room like normal
         if (method === 'create') {
             // join room
@@ -133,6 +170,7 @@ io.on('connection', socket => {
                 users: getUsersInRoom(user.room)
             });
 
+            allActiveRooms.push(room);
             allActivePublicRooms.push(room);
 
             // If a room is private, it removes it from the array
@@ -147,40 +185,48 @@ io.on('connection', socket => {
         };
 
         if (method === 'join') {
-            allActiveRooms.splice(allActiveRooms.indexOf(room), 1);
-            // Loops through the allActiveRooms array
+            console.log(getUsersInRoom(user.room).length);
+            let roomExists = false;
+
+            // Iterate over all active rooms
             for (let i = 0; i < allActiveRooms.length; i++) {
-                // Checks if any of the array items are equal to the room
-                if (room === allActiveRooms[i]) {
-                    // join room
-                    socket.join(user.room);
-
-                    // to user who joined
-                    socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
-
-                    // to everyone else
-                    socket.broadcast.to(user.room).emit('messsage', buildMsg(ADMIN, `${user.name} has joined the room`));
-
-                    // update user list for room
-                    io.to(user.room).emit('userList', {
-                        users: getUsersInRoom(user.room)
-                    });
-
-                    // If a room is private, it removes it from the array
-                    if (privacy === 'private') {
-                        allActivePublicRooms.splice(allActivePublicRooms.indexOf(room), 1);
-                    };
-
-                    // update rooms list for everyone
-                    io.emit('roomList', {
-                        rooms: allActivePublicRooms,
-                    });
-
-                    io.emit('joinConfirmation', { success: true });
-                } else {
-                    console.log('No room with that code currently active.');
+                console.log(allActiveRooms[i]);
+                if (allActiveRooms[i] === room) {
+                    roomExists = true;
+                    break;
                 };
             };
+
+            if (roomExists) {
+                // Join the room
+                socket.join(user.room);
+
+                // Send messages
+                socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
+                io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has joined the room`));
+
+                // Update user list for room
+                io.to(user.room).emit('userList', {
+                    users: getUsersInRoom(user.room)
+                });
+
+                // If a room is private, remove it from the public rooms array
+                if (privacy === 'private') {
+                    allActivePublicRooms.splice(allActivePublicRooms.indexOf(room), 1);
+                };
+
+                // Update rooms list for everyone
+                io.emit('roomList', {
+                    rooms: allActivePublicRooms,
+                });
+            } else {
+                // If the room doesn't exist, emit a 'joinError' event to the client
+                socket.emit('joinError', { error: 'This room does not exist.' });
+                return;
+            }
+
+            // Emit join confirmation regardless of whether the room exists
+            io.emit('joinConfirmation', { success: true });
         };
     });
 
@@ -188,10 +234,11 @@ io.on('connection', socket => {
     socket.on('leaveRoom', () => {
         const user = getUser(socket.id);
         userLeavesApp(socket.id);
-
+        console.log(getUsersInRoom(user.room).length);
         if (user) {
             socket.leave(user.room);
             if (getUsersInRoom(user.room).length === 0) {
+                console.log('test');
                 // Loops through the allActiveRooms array
                 for (let i = 0; i < allActiveRooms.length; i++) {
                     // If the room value of user is equal to any of the array items
@@ -229,7 +276,6 @@ io.on('connection', socket => {
     // When user disconnects - to all others
     socket.on('disconnect', () => {
         const user = getUser(socket.id);
-        userLeavesApp(socket.id);
 
         if (user) {
             if (getUsersInRoom(user.room).length === 0) {

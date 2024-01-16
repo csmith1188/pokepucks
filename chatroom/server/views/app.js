@@ -14,27 +14,27 @@ const nameInput = document.querySelector('#name');
 const chatRoom = document.querySelector('#room');
 const activity = document.querySelector('.activity');
 const usersList = document.querySelector('.user-list');
-const roomList = document.querySelector('.room-list');
 const chatDisplay = document.querySelector('.chat-display');
 
 const loginPage = document.getElementById('login-page');
 const lobbyPage = document.getElementById('lobby-page');
 const chatroomPage = document.getElementById('chatroom-page');
 
+var username = '';
+var roomCode = '';
 var privacy = '';
+var method = '';
 
 // Function used to send a message
 function sendMessage(e) { // sendMeassage recieves an event which is represented with the letter e
     // Allows you to submit the form without reloading the page
     e.preventDefault();
-    if (nameInput.value && msgInput.value && chatRoom.value) {
-        socket.emit('message', {
-            name: nameInput.value,
-            text: msgInput.value,
-        });
-        // Replace the msgInput with nothing
-        msgInput.value = "";
-    };
+    socket.emit('message', {
+        name: username,
+        text: msgInput.value,
+    });
+    // Replace the msgInput with nothing
+    msgInput.value = "";
     // Puts the focus back on the msgInput
     msgInput.focus();
 };
@@ -60,69 +60,97 @@ function login() {
     sessionStorage.setItem('isLoggedIn', 'true');
 };
 
-window.onload = function() {
-    // Check the state from sessionStorage
-    if (sessionStorage.getItem('isLoggedIn') === 'true') {
-        document.getElementById('login-page').style.display = 'none';
-        document.getElementById('lobby-page').style.display = 'block';
-    } else {
-        document.getElementById('login-page').style.display = 'block';
-        document.getElementById('lobby-page').style.display = 'none';
-    }
+function logout() {
+    window.location.href = 'http://172.16.3.162:3000/logout';
 };
 
-// Function used for when a user generates a chatroom
 function createRoom() {
-    privacy = document.getElementById('privacy').value;
     if (nameInput.value) {
+        username = nameInput.value;
         chatRoom.value = generateRoomCode();
-        socket.emit('enterRoom', {
-            name: nameInput.value,
-            room: chatRoom.value,
-            privacy: privacy,
-            method: 'create'
-        });
-        lobbyPage.style.visibility = 'hidden';
-        chatroomPage.style.visibility = 'visible';
+        roomCode = chatRoom.value;
+        privacy = document.getElementById('privacy').value;
+        method = 'create';
+
+        // Store the values in sessionStorage
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('roomCode', roomCode);
+        sessionStorage.setItem('privacy', privacy);
+        sessionStorage.setItem('method', method);
+
+        window.location.href = 'http://172.16.3.162:3000/chatroom';
     };
 };
 
-// Function used for when a user enters a chatroom
-function joinRoom(e) {
-    // Allows you to submit the form without reloading the page
-    e.preventDefault();
+// Function used for when a user generates a chatroom
+function enterRoomCreate() {
+    socket.emit('enterRoom', {
+        name: username,
+        room: roomCode,
+        privacy: privacy,
+        method: method
+    });
+    sessionStorage.setItem('method', 'join');
+};
+
+function joinRoom() {
     if (nameInput.value && chatRoom.value) {
-        socket.emit('enterRoom', {
-            name: nameInput.value,
-            room: chatRoom.value,
-            method: 'join'
-        });
-        socket.on('joinConfirmation', (data) => {
-            if (data.success) {
-                lobbyPage.style.visibility = 'hidden';
-                chatroomPage.style.visibility = 'visible';
-            } else {
-                console.log('No room with that code currently active.');
-            };
-        });
+        username = nameInput.value;
+        roomCode = chatRoom.value;
+        method = 'join';
+
+        // Store the values in sessionStorage
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('roomCode', roomCode);
+        sessionStorage.setItem('method', method);
+
+        window.location.href = 'http://172.16.3.162:3000/chatroom';
+    } else { alert('Please fill in both name and room code fields.') };
+};
+
+// Function used for when a user enters a chatroom
+function enterRoomJoin() {
+    socket.emit('enterRoom', {
+        name: username,
+        room: roomCode,
+        method: method
+    });
+};
+
+window.onload = function () {
+    if (window.location.href === 'http://172.16.3.162:3000/chatroom') {
+        // Retrieve the values from sessionStorage
+        username = sessionStorage.getItem('username');
+        roomCode = sessionStorage.getItem('roomCode');
+        privacy = sessionStorage.getItem('privacy');
+        method = sessionStorage.getItem('method');
+
+        switch (method) {
+            case 'create':
+                enterRoomCreate();
+                break;
+            case 'join':
+                enterRoomJoin();
+                break;
+            default:
+                console.log('Error: No method given');
+        };
     };
 };
 
 // Function used for when a user leaves a chatroom
 function leaveRoom() {
     socket.emit('leaveRoom');
-
     socket.on('leaveRoomConfirmation', () => {
-        lobbyPage.style.visibility = 'visible';
-        chatroomPage.style.visibility = 'hidden';
     });
+
+    window.location.href = 'http://172.16.3.162:3000/lobby';
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);
-document.querySelector('.form-join').addEventListener('submit', joinRoom);
 
 msgInput.addEventListener('keypress', () => {
-    socket.emit('activity', nameInput.value);
+    socket.emit('activity', username);
 });
 
 // Listen for messages
@@ -178,19 +206,6 @@ function showUsers(users) {
             usersList.textContent += ` ${user.name}`;
             if (users.length > 1 && i !== users.length - 1) {
                 usersList.textContent += ",";
-            };
-        });
-    };
-};
-
-function showRooms(rooms) {
-    roomList.textContent = '';
-    if (rooms) {
-        roomList.innerHTML = '<em>Active Rooms:</em>';
-        rooms.forEach((room, i) => {
-            roomList.textContent += ` ${room}`;
-            if (rooms.length > 1 && i !== rooms.length - 1) {
-                roomList.textContent += ",";
             };
         });
     };
