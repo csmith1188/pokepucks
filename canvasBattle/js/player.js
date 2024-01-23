@@ -3,5 +3,7 @@ class Player {
         this.hp = [];
         this.power = [];
         this.prize = [];
+        this.attack = 0
+        this.slammer = slammer
     }
 }
