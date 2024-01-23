@@ -5,7 +5,7 @@ Author: Brandon Camacho
 Editors: Brandon Camacho
 
 <Description>
-Filler
+The ejs file for the login page.
 \***************************************************************************/
  -->
 <html lang="en">
@@ -13,18 +13,22 @@ Filler
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokePucks Chatroom</title>
+    <title>PokePucks Login Page</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"
+        integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script defer src="app.js"></script>
     <!-- "defer" tells the file to not load the JS until everything else is essentially loaded -->
 </head>
 
 <body>
-    <form>
-        <input type="text" placeholder="Your message">
-        <button>Send</button>
-    </form>
-    <ul></ul>
+    <main>
+        <div id="login-page">
+            <button id="login" onclick="login()">Login with
+                Formbar</button>
+        </div>
+    </main>
 </body>
 
 </html>
