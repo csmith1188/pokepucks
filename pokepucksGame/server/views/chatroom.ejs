@@ -2,7 +2,7 @@
 /****************************** Script Header ******************************\
 Project: PokePucks
 Author: Brandon Camacho
-Editors: Brandon Camacho
+Editors: Brandon Camacho, Logan Cruz
 
 <Description>
 The ejs file for the chatroom.
@@ -37,6 +37,24 @@ The ejs file for the chatroom.
                 <input type="text" id="message" placeholder="Your message" required>
                 <button type="submit">Send</button>
             </form>
+        </div>
+
+        <div id="game-page">
+            <!-- <img src="img/blackSide.png" class="blackSide" id="blackSide" alt="">
+            <img src="img/whiteSide.png" alt="" class="blackSide" id="whiteSide">
+            <img src="img/whiteRotation1.png" alt="" class="blackSide" id="whiteRotation1">
+            <img src="img/whiteRotation2.png" alt="" class="blackSide" id="whiteRotation2">
+            <img src="img/whiteRotation3.png" alt="" class="blackSide" id="whiteRotation3">
+            <img src="img/blackRotation1.png" alt="" class="blackSide" id="blackRotation1">
+            <img src="img/blackRotation2.png" alt="" class="blackSide" id="blackRotation2">
+            <img src="img/blackRotation3.png" alt="" class="blackSide" id="blackRotation3"> -->
+            <canvas id="canvas"></canvas>
+            <script src="js/player.js"></script>
+            <script src="js/puck.js"></script>
+            <script src="js/slammer.js"></script>
+
+            <button onclick="startGame()">Start Game</button>
+            <button onclick="gameStart()">Start Game Socket Test</button>
         </div>
     </main>
 </body>
