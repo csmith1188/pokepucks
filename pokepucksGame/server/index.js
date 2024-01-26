@@ -4,7 +4,7 @@ Author: Brandon Camacho
 Editors: Brandon Camacho
 
 <Description>
-Code for the backend server-side for the chatroom.
+Code for the backend server-side for the PokePucks game.
 \***************************************************************************/
 /*
 // A list for all the required node modules to install
@@ -28,6 +28,7 @@ import session from 'express-session';
 
 const AUTH_URL = 'http://172.16.3.162:420/oauth';
 const THIS_URL = 'http://172.16.3.162:3000/login';
+const GAME_URL = 'http://172.16.3.162:3000/';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -125,7 +126,7 @@ const UsersState = {
 const io = new Server(expressServer, {
     cors: {
         // origin allows you to change what is accepted and what is blocked
-        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:3000", "http://172.16.3.162:3000/"] // Looks at the node environment. If the node environemnt equals production, origin is set to false because we don't want anyone outside of the domain the server is currently on to access it. If it doesn't equal production, origin is set to the address that we will allow to access our socket.io server
+        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:3000", GAME_URL] // Looks at the node environment. If the node environemnt equals production, origin is set to false because we don't want anyone outside of the domain the server is currently on to access it. If it doesn't equal production, origin is set to the address that we will allow to access our socket.io server
     }
 });
 
@@ -324,6 +325,12 @@ io.on('connection', socket => {
         if (room) {
             socket.broadcast.to(room).emit('activity', name);
         };
+    });
+
+    // Server-side game logic
+    socket.on('gameStart', ({ canvas, ctx }) => {
+        console.log(canvas, ctx);
+        console.log('test');
     });
 });
 
