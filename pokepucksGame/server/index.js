@@ -137,7 +137,7 @@ io.on('connection', socket => {
     // Upon connection - only to user
     socket.emit('message', buildMsg(ADMIN, "Welcome to Chat App!"));
 
-    socket.on('enterRoom', ({ name, room, privacy, method }) => {
+    socket.on('enterRoom', ({ name, room, privacy, method }, callback) => {
         // leave previous room
         const prevRoom = getUser(socket.id)?.room;
 
@@ -193,6 +193,7 @@ io.on('connection', socket => {
             for (let i = 0; i < allActiveRooms.length; i++) {
                 console.log(allActiveRooms[i]);
                 if (allActiveRooms[i] === room) {
+                    console.log('room exists');
                     roomExists = true;
                     break;
                 };
@@ -220,14 +221,14 @@ io.on('connection', socket => {
                 io.emit('roomList', {
                     rooms: allActivePublicRooms,
                 });
+
+                if (callback) callback(); // No error
             } else {
-                // If the room doesn't exist, emit a 'joinError' event to the client
-                socket.emit('joinError', { error: 'This room does not exist.' });
+                // The room doesn't exist, call the callback with an error message
+                callback('The room does not exist.');
                 return;
             }
 
-            // Emit join confirmation regardless of whether the room exists
-            io.emit('joinConfirmation', { success: true });
         };
     });
 

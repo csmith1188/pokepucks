@@ -40,9 +40,11 @@ The ejs file for the chatroom.
 
         <p> Active Rooms:
             <% activeRooms.forEach(function(room, index) { %>
-                <%= room %>
-                    <%= index !==activeRooms.length - 1 ? ',' : '' %>
-                        <% }); %>
+                <span class="room-code" onclick="enterRoomClicked('<%= room %>')">
+                    <%= room %>
+                </span>
+                <%= index !==activeRooms.length - 1 ? ',' : '' %>
+                    <% }); %>
         </p>
         <button id="logout" onclick="logout()">Log Out</button>
     </main>
