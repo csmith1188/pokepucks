@@ -105,8 +105,37 @@ function joinRoom() {
         sessionStorage.setItem('roomCode', roomCode);
         sessionStorage.setItem('method', method);
 
-        window.location.href = 'http://172.16.3.162:3000/chatroom';
+        // Emit 'enterRoom' event and wait for server response
+        socket.emit('enterRoom', { name: username, room: roomCode, method: method }, (error) => {
+            if (error) {
+                alert(error);
+            } else {
+                // Only navigate to the chatroom page if there is no error
+                window.location.href = 'http://172.16.3.162:3000/chatroom';
+            }
+        });
     } else { alert('Please fill in both name and room code fields.') };
+};
+
+function enterRoomClicked(roomCodeClicked) {
+    if (!nameInput.value) {
+        alert('Please fill in the name field.');
+        return;
+    }
+
+    document.getElementById('room').value = roomCodeClicked || '';
+    document.getElementById('join').click();
+
+    username = nameInput.value;
+    roomCode = roomCodeClicked;
+    method = 'join';
+
+    // Store the values in sessionStorage
+    sessionStorage.setItem('username', username);
+    sessionStorage.setItem('roomCode', roomCode);
+    sessionStorage.setItem('method', method);
+
+    window.location.href = 'http://172.16.3.162:3000/chatroom';
 };
 
 // Function used for when a user enters a chatroom
@@ -197,6 +226,10 @@ socket.on('userList', ({ users }) => {
 
 socket.on('roomList', ({ rooms }) => {
     showRooms(rooms);
+});
+
+socket.on('joinError', function (data) {
+    alert(data.message);
 });
 
 function showUsers(users) {
