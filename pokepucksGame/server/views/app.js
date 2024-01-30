@@ -1,6 +1,6 @@
 /****************************** Script Header ******************************\
 Project: PokePucks
-Author: Brandon Camacho, Logan Cruz
+Author: Brandon Camacho
 Editors: Brandon Camacho, Logan Cruz
 
 <Description>
@@ -252,15 +252,14 @@ function showUsers(users) {
     };
 };
 
-// Start Test
-// // PokePucks Game Code
-// var canvas = document.getElementById('canvas');
-// var ctx = canvas.getContext('2d');
-// ctx.font = '20px Arial';
-// document.getElementById('canvas').width = window.innerWidth
-// document.getElementById('canvas').height = window.innerHeight
-// ctx.fillStyle = 'silver';
-// ctx.fillRect(0, 0, canvas.width, canvas.height);
+// PokePucks Game Code
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+ctx.font = '20px Arial';
+document.getElementById('canvas').width = window.innerWidth
+document.getElementById('canvas').height = window.innerHeight
+ctx.fillStyle = 'silver';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 // function objectsAreEqual(a, b) {
 //     return JSON.stringify(a) === JSON.stringify(b);
@@ -578,11 +577,24 @@ function gameStart() {
     }
 };
 
-function stepGameClient() {
+function stepGameClient(room) { // pass the room as a parameter
+    console.log(room);
+    if (!room) {
+        console.error('Error: room is undefined');
+        return;
+    }
     fetch('/step-game', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ room: roomCode }) // include the room in the request body
     })
         .then(response => response.json())
         .then(data => console.log(data))
         .catch((error) => console.error('Error:', error));
 };
+
+function test() {
+    console.log('t');
+}
