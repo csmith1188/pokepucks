@@ -532,38 +532,36 @@ io.on('connection', socket => {
                 };
 
                 const game = new Game();
-                app.post('/step-game', function (req, res) {
-                    const room = req.body.room; // get the room from the request body
-                    const game = games.get(room); // get the game instance for the room
-                    if (game) {
-                        game.step();
-                        io.emit('game', game); // send the updated game to all clients
-                        res.json({ status: 'success' });
-                    } else {
-                        res.json({ status: 'error', message: 'No game found for this room' });
-                    }
-                });
+
                 function startGame() {
                     game.step();
-                    console.log(game);
+                    console.log('Game:', game);
                 };
 
                 startGame();
-                console.log('gameEnd test');
                 games.set(user.room, game);
-                console.log(user.room);
-                console.log(game);
-                console.log(games);
+                console.log('Games Map:', games);
+                console.log('gameEnd test');
+
+                socket.on('step-game', (room) => {
+                    const game = games.get(room);
+                    if (game) {
+                        game.step();
+                        io.emit('step-game-success', { status: 'success' });
+                    } else {
+                        io.emit('step-game-error', { status: 'error', message: 'No game found for this room' });
+                    };
+                });
             });
         };
 
         if (method === 'join') {
-            console.log(getUsersInRoom(user.room).length);
-            let roomExists = false;
+            console.log(`# of Users in room after Join: ${getUsersInRoom(user.room).length}`);
+            var roomExists = false;
 
             // Iterate over all active rooms
             for (let i = 0; i < allActiveRooms.length; i++) {
-                console.log(allActiveRooms[i]);
+                console.log(`Room Code: ${allActiveRooms[i]}`);
                 if (allActiveRooms[i] === room) {
                     console.log('room exists');
                     roomExists = true;
@@ -596,14 +594,10 @@ io.on('connection', socket => {
 
                 if (callback) callback(); // No error
             } else {
+                socket.emit('joinedRoomNotFound');
                 return;
-            }
-
+            };
         };
-
-        // Get the game instance for the room
-        const game = games.get(user.room);
-        // Now you can use the game instance for game-related operations
     });
 
     // When user leaves a room - to all others
@@ -611,7 +605,7 @@ io.on('connection', socket => {
         const user = getUser(socket.id);
         userLeavesApp(socket.id);
         if (user) {
-            console.log(getUsersInRoom(user.room).length);
+            console.log(`# of Users in room after Leave: ${getUsersInRoom(user.room).length}`);
             socket.leave(user.room);
             if (getUsersInRoom(user.room).length === 0) {
                 games.delete(user.room);
@@ -655,7 +649,7 @@ io.on('connection', socket => {
         const user = getUser(socket.id);
         userLeavesApp(socket.id);
         if (user) {
-            console.log(getUsersInRoom(user.room).length);
+            console.log(`# of Users in room after Disconnect: ${getUsersInRoom(user.room).length}`);
             if (getUsersInRoom(user.room).length === 0) {
                 games.delete(user.room);
                 console.log('room gone');
@@ -705,8 +699,6 @@ io.on('connection', socket => {
             socket.broadcast.to(room).emit('activity', name);
         };
     });
-
-
 });
 
 function buildMsg(name, text, id) {

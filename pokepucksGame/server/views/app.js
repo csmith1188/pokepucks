@@ -121,7 +121,7 @@ function joinRoom() {
                 window.location.href = CHATROOM_URL;
             }
         });
-    } else { alert('Please fill in both name and room code fields.') };
+    } else { alert('Please fill in the room code field.') };
 };
 
 function enterRoomClicked(roomCodeClicked) {
@@ -235,8 +235,9 @@ socket.on('roomList', ({ rooms }) => {
     showRooms(rooms);
 });
 
-socket.on('joinError', function (data) {
-    alert(data.message);
+socket.on('joinedRoomNotFound', () => {
+    alert('The room you tried to join does not exist. You might have reloaded the page while no one else was in the room which deleted the room. You will now be taken back to the lobby.');
+    window.location.href = LOBBY_URL;
 });
 
 function showUsers(users) {
@@ -578,23 +579,20 @@ function gameStart() {
 };
 
 function stepGameClient(room) { // pass the room as a parameter
-    console.log(room);
-    if (!room) {
-        console.error('Error: room is undefined');
-        return;
-    }
-    fetch('/step-game', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ room: roomCode }) // include the room in the request body
-    })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch((error) => console.error('Error:', error));
+    socket.emit('step-game', room);
+    console.log(`Room: ${room}`);
 };
 
-function test() {
-    console.log('t');
-}
+socket.on('step-game-success', (data) => {
+    console.log('Data:', data);
+    console.log('custom test success');
+});
+
+socket.on('step-game-error', (data) => {
+    console.error('Data:', data);
+    console.log('custom test error');
+});
+
+socket.on('error', (error) => {
+    console.error('An error occurred on the socket:', error);
+});
