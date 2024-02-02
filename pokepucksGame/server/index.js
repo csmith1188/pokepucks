@@ -27,9 +27,9 @@ import jwt from 'jsonwebtoken';
 import session from 'express-session';
 
 // Define the urls
-const AUTH_URL = 'http://172.16.3.162:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
-const THIS_URL = 'http://172.16.3.162:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const GAME_URL = 'http://172.16.3.162:3000/'; // 'http://ipAddressOfThisServer:port/';
+const AUTH_URL = 'http://fillerIP:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
+const THIS_URL = 'http://fillerIP:3000/login'; // 'http://ipAddressOfThisServer:port/login';
+const GAME_URL = 'http://fillerIP:3000/'; // 'http://ipAddressOfThisServer:port/';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -556,14 +556,13 @@ io.on('connection', socket => {
         };
 
         if (method === 'join') {
-            console.log(`# of Users in room after Join: ${getUsersInRoom(user.room).length}`);
-            var roomExists = false;
+            let roomExists = false;
 
             // Iterate over all active rooms
             for (let i = 0; i < allActiveRooms.length; i++) {
-                console.log(`Room Code: ${allActiveRooms[i]}`);
                 if (allActiveRooms[i] === room) {
-                    console.log('room exists');
+                    console.log("Room:", room);
+                    console.log('Room Exists');
                     roomExists = true;
                     break;
                 };
@@ -572,6 +571,8 @@ io.on('connection', socket => {
             if (roomExists) {
                 // Join the room
                 socket.join(user.room);
+
+                console.log(`# of Users in room after Join: ${getUsersInRoom(user.room).length}`);
 
                 // Send messages
                 socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
@@ -593,6 +594,7 @@ io.on('connection', socket => {
                 });
 
                 if (callback) callback(); // No error
+                return;
             } else {
                 socket.emit('joinedRoomNotFound');
                 return;
