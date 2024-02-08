@@ -244,6 +244,7 @@ io.on('connection', socket => {
             };
 
             var tempArena = [];
+            var turn;
             class Player {
                 constructor(hp, power, prize, attack, slammer) {
                     this.hp = hp;
@@ -287,7 +288,7 @@ io.on('connection', socket => {
             };
             class Game {
                 constructor() {
-                    this.players = [new Player([], [], [], 0), new Player([], [], [], 0, undefined)];
+                    this.players = [new Player([], [], [], 0), new Player([], [], [], 0)];
                     this.stage = 'setup';
                     this.phase = 0;
                     this.stepcount = 0;
@@ -315,8 +316,11 @@ io.on('connection', socket => {
                     switch (this.phase) {
                         case 0: // Decide players
                             this.phase++;
+                            this.turn = Math.floor(Math.random() * 2);
                             console.log(this.players[0]);
                             console.log(this.players[1]);
+                            this.players[0].pogsBackup = [];
+                            this.players[1].pogsBackup = [];
                             break;
                         case 1: // Decide Special Rules
                             this.phase++;
@@ -362,6 +366,14 @@ io.on('connection', socket => {
                             console.log('case 0 test');
                             console.log(this.players[0].Slammer.side);
                             console.log(this.players[1].Slammer.side);
+                            if (this.turn == 0 && this.players[0].hp.length === 0 && this.players[0].pogsBackup.length > 0) {
+                                this.players[0].hp = [...this.players[0].pogsBackup];
+                                this.players[0].pogsBackup = [];
+                            };
+                            if (this.turn == 1 && this.players[1].hp.length === 0 && this.players[1].pogsBackup.length > 0) {
+                                this.players[1].hp = [...this.players[1].pogsBackup];
+                                this.players[1].pogsBackup = [];
+                            };
                             // while arena is < 8, player pops 1 from hp to arena
                             // if player has no pogs in their stack, stop and put into critical
                             while (this.arena.length < 8) {
@@ -372,15 +384,15 @@ io.on('connection', socket => {
 
                                     if (this.players[0].hp.length > 0) {
                                         this.arena.push(this.players[0].hp.pop());
-                                        console.log('testing your mom 1');
+                                        console.log('player 1 losing hp test');
                                     };
                                 };
                                 if (this.players[1].hp.length == 0) {
                                     break;
-                                } else {
+                                } else if (this.turn == 1) {
                                     if (this.players[1].hp.length > 0) {
                                         this.arena.push(this.players[1].hp.pop());
-                                        console.log('testing your mom 2')
+                                        console.log('player 2 losing hp test');
                                     };
                                 };
                             };
@@ -391,23 +403,34 @@ io.on('connection', socket => {
                             console.log(this.players[0].Slammer.side);
                             console.log(this.players[1].Slammer.side);
                             // if player has no pogs in their stack, move that player's slammer into the center.
-                            if (this.players[0].hp.length <= 0) {
-                                console.log('this should not run');
+                            console.log('Before replacing slammer with turn:', this.arena, this.turn);
+                            // Before replacing the player's pogs with the slammer, store the pogs
+                            if (this.players[0].hp.length <= 0 && this.turn === 1) {
+                                this.players[0].pogsBackup = [...this.players[0].hp];
                                 this.players[0].hp = [];
                                 tempArena = this.arena;
                                 this.arena = [];
                                 this.arena.push(this.players[0].Slammer);
                             };
-                            if (this.players[1].hp.length <= 0) {
-                                console.log('this should not run');
+                            if (this.players[1].hp.length <= 0 && this.turn === 0) {
+                                this.players[1].pogsBackup = [...this.players[1].hp];
                                 this.players[1].hp = [];
                                 this.arena = [];
                                 this.arena.push(this.players[1].Slammer);
                             };
+                            // When it's the player's turn again, restore the pogs if the hp array is empty
+                            if (this.players[0].hp.length === 0 && this.players[0].pogsBackup.length > 0) {
+                                this.players[0].hp = [...this.players[0].pogsBackup];
+                                this.players[0].pogsBackup = [];
+                            };
+                            if (this.players[1].hp.length === 0 && this.players[1].pogsBackup.length > 0) {
+                                this.players[1].hp = [...this.players[1].pogsBackup];
+                                this.players[1].pogsBackup = [];
+                            };
                             this.phase++;
                             break;
                         case 2:// Count Attacks
-                            console.log('case 2 test');
+                            console.log('After replacing slammer with turn:', this.arena, this.turn);
                             console.log(this.players[0].Slammer.side);
                             console.log(this.players[1].Slammer.side);
                             //Each player gets the bare minimum of 1 attack, before checking for abilities, status, and other special rules.
@@ -427,7 +450,7 @@ io.on('connection', socket => {
                             let power;
                             if (this.turn == 0) {
                                 while (this.players[0].attacks > 0) {
-                                    console.log('Man Im dead');
+                                    console.log('Player attack Slammer');
                                     console.log(this.players[0].attacks);
                                     power = this.players[this.turn].Slammer.attack();
                                     let slammerInArena = false;
@@ -435,7 +458,7 @@ io.on('connection', socket => {
                                         console.log('Arena Slammer:', this.arena[i]);
                                         console.log('Player Slammer:', this.players[this.turn].Slammer);
                                         if (objectsAreEqual(this.arena[i], this.players[this.turn].Slammer)) {
-                                            console.log('test');
+                                            console.log('Slammer in Arena');
                                             slammerInArena = true;
                                             break;
                                         };
@@ -443,8 +466,8 @@ io.on('connection', socket => {
 
                                     console.log('slammerInArena:', slammerInArena);
                                     console.log('this.turn:', this.turn);
-                                    if (slammerInArena && this.turn == 0) {
-                                        console.log('slammer up maybe');
+                                    if (slammerInArena && this.players[1].hp.length == 0) {
+                                        console.log('Player 2 slammer attack test');
                                         let power1 = this.players[1].Slammer.attack();
                                         if (power > power1) {
                                             this.players[1].Slammer.side = 'up';
@@ -470,14 +493,24 @@ io.on('connection', socket => {
                                 };
                             } else {
                                 while (this.players[1].attacks > 0) {
+                                    let slammerInArena = false;
+                                    for (let i = 0; i < this.arena.length; i++) {
+                                        console.log('Arena Slammer:', this.arena[i]);
+                                        console.log('Player Slammer:', this.players[this.turn].Slammer);
+                                        if (objectsAreEqual(this.arena[i], this.players[this.turn].Slammer)) {
+                                            console.log('Slammer in Arena');
+                                            slammerInArena = true;
+                                            break;
+                                        };
+                                    }
                                     power = this.players[this.turn].Slammer.attack();
-                                    if (this.arena == this.players[this.turn].Slammer && this.turn == 1) {
+                                    if (slammerInArena && this.players[0].hp.length == 0) {
                                         let power1 = this.players[0].Slammer.attack();
                                         if (power > power1) {
                                             this.players[0].Slammer.side = 'up';
                                         };
                                     };
-                                    if (this.arena != this.players[this.turn].Slammer) {
+                                    if (!slammerInArena) {
                                         for (let i = this.arena.length - 1; i >= 0; i--) {
                                             if (this.arena[i] && typeof this.arena[i].flip === 'function') {
                                                 let flipnum = this.arena[i].flip();
@@ -494,6 +527,25 @@ io.on('connection', socket => {
                                     };
                                     this.players[this.turn].attacks--;
                                 };
+                            };
+                            if (this.turn == 0) {
+                                // Remove the slammer from the arena
+                                const slammerIndex = this.arena.findIndex(pog => pog === this.players[0].Slammer);
+                                if (slammerIndex !== -1) {
+                                    this.arena.splice(slammerIndex, 1);
+                                };
+                                // Add the pogs back into the arena from tempArena
+                                this.arena = [...this.arena, ...tempArena];
+                                tempArena = [];
+                            } else {
+                                // Remove the slammer from the arena
+                                const slammerIndex = this.arena.findIndex(pog => pog === this.players[1].Slammer);
+                                if (slammerIndex !== -1) {
+                                    this.arena.splice(slammerIndex, 1);
+                                };
+                                // Add the pogs back into the arena from tempArena
+                                this.arena = [...this.arena, ...tempArena];
+                                tempArena = [];
                             };
                             this.phase++;
                             break;
