@@ -377,11 +377,11 @@ io.on('connection', socket => {
                             // while arena is < 8, player pops 1 from hp to arena
                             // if player has no pogs in their stack, stop and put into critical
                             while (this.arena.length < 8) {
+                                console.log('Arena Length:' + this.arena.length);
+                                console.log('Arena:' + this.arena);
                                 if (this.players[0].hp.length == 0) {
-                                    break
-                                };
-                                if (this.turn == 0) {
-
+                                    break;
+                                } else if (this.turn == 0) {
                                     if (this.players[0].hp.length > 0) {
                                         this.arena.push(this.players[0].hp.pop());
                                         console.log('player 1 losing hp test');
@@ -395,6 +395,9 @@ io.on('connection', socket => {
                                         console.log('player 2 losing hp test');
                                     };
                                 };
+                                console.log('Arena Length End:' + this.arena.length);
+                                console.log('Player 1 HP:' + this.players[0].hp.length);
+                                console.log('Player 2 HP:' + this.players[1].hp.length);
                             };
                             this.phase++;
                             break;
