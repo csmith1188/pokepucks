@@ -156,6 +156,12 @@ function enterRoomJoin() {
 
 window.onload = function () {
     if (window.location.href === CHATROOM_URL) {
+        document.querySelector('.form-msg').addEventListener('submit', sendMessage);
+
+        msgInput.addEventListener('keypress', () => {
+            socket.emit('activity', username);
+        });
+
         // Retrieve the values from sessionStorage
         username = sessionStorage.getItem('username');
         roomCode = sessionStorage.getItem('roomCode');
@@ -184,36 +190,32 @@ function leaveRoom() {
     window.location.href = LOBBY_URL;
 };
 
-document.querySelector('.form-msg').addEventListener('submit', sendMessage);
-
-msgInput.addEventListener('keypress', () => {
-    socket.emit('activity', username);
-});
-
 // Listen for messages
 socket.on('message', (data) => {
-    activity.textContent = "";
-    const { name, text, id, time } = data;
+    if (window.location.href === CHATROOM_URL) {
+        activity.textContent = "";
+        const { name, text, id, time } = data;
 
-    const li = document.createElement('li');
-    li.className = 'post';
-    if (id === socket.id) li.className = 'post post--left';
-    if (id !== socket.id && name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') li.className = 'post post--right';
-    if (name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') {
-        li.innerHTML = `<div class="post__header ${id === socket.id
-            ? 'post__header--user'
-            : 'post__header--reply'
-            }">
-            <span class="post__header--name">${name}</span>
-            <span class="post__header--time">${time}</span>
-            </div>
-            <div class="post__text">${text}</div>`
-    } else {
-        li.innerHTML = `<div class ="post__text">${text}</div>`
+        const li = document.createElement('li');
+        li.className = 'post';
+        if (id === socket.id) li.className = 'post post--left';
+        if (id !== socket.id && name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') li.className = 'post post--right';
+        if (name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') {
+            li.innerHTML = `<div class="post__header ${id === socket.id
+                ? 'post__header--user'
+                : 'post__header--reply'
+                }">
+                <span class="post__header--name">${name}</span>
+                <span class="post__header--time">${time}</span>
+                </div>
+                <div class="post__text">${text}</div>`
+        } else {
+            li.innerHTML = `<div class ="post__text">${text}</div>`
+        };
+        document.querySelector('.chat-display').appendChild(li);
+
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
     };
-    document.querySelector('.chat-display').appendChild(li);
-
-    chatDisplay.scrollTop = chatDisplay.scrollHeight;
 });
 
 let activityTimer;
@@ -232,7 +234,9 @@ socket.on('userList', ({ users }) => {
 });
 
 socket.on('roomList', ({ rooms }) => {
-    showRooms(rooms);
+    if (window.location.href === LOBBY_URL) {
+        showRooms(rooms);
+    };
 });
 
 socket.on('joinedRoomNotFound', () => {
@@ -243,7 +247,7 @@ socket.on('joinedRoomNotFound', () => {
 function showUsers(users) {
     usersList.textContent = '';
     if (users) {
-        usersList.innerHTML = `<em>Users in ${chatRoom.value}:</em>`;
+        usersList.innerHTML = `<em>Users in ${roomCode}:</em>`;
         users.forEach((user, i) => {
             usersList.textContent += ` ${user.name}`;
             if (users.length > 1 && i !== users.length - 1) {
@@ -272,7 +276,7 @@ function gameStart() {
 };
 
 function stepGameClient(room) { // pass the room as a parameter
-    socket.emit('step-game', room, function(response) {
+    socket.emit('step-game', room, function (response) {
         console.log('socket emitted');
         if (response.status === 'error') {
             console.error(`Error: ${response.message}`);
