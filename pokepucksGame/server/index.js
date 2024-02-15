@@ -27,9 +27,9 @@ import jwt from 'jsonwebtoken';
 import session from 'express-session';
 
 // Define the urls
-const AUTH_URL = 'http://fillerIP:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
-const THIS_URL = 'http://fillerIP:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const GAME_URL = 'http://fillerIP:3000/'; // 'http://ipAddressOfThisServer:port/';
+const AUTH_URL = 'http://172.16.3.162:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
+const THIS_URL = 'http://172.16.3.111:3000/login'; // 'http://ipAddressOfThisServer:port/login';
+const GAME_URL = 'http://172.16.3.111:3000/'; // 'http://ipAddressOfThisServer:port/';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -279,7 +279,7 @@ io.on('connection', socket => {
                 attack() {
                     // attack
                     let power;
-                    power = Math.floor(Math.random() * 100) + 1 + this.weight;
+                    power = Math.floor(Math.random() * 100) + 1 + this.weight / 1.5;
                     if (power > 100) {
                         power = 100;
                     };
@@ -412,21 +412,7 @@ io.on('connection', socket => {
                                 this.arena = [];
                                 this.arena.push(this.players[0].Slammer);
                             };
-                            if (this.players[1].hp.length <= 0 && this.turn === 0) {
-                                this.players[1].pogsBackup = [...this.players[1].hp];
-                                this.players[1].hp = [];
-                                this.arena = [];
-                                this.arena.push(this.players[1].Slammer);
-                            };
-                            // When it's the player's turn again, restore the pogs if the hp array is empty
-                            if (this.players[0].hp.length === 0 && this.players[0].pogsBackup.length > 0) {
-                                this.players[0].hp = [...this.players[0].pogsBackup];
-                                this.players[0].pogsBackup = [];
-                            };
-                            if (this.players[1].hp.length === 0 && this.players[1].pogsBackup.length > 0) {
-                                this.players[1].hp = [...this.players[1].pogsBackup];
-                                this.players[1].pogsBackup = [];
-                            };
+                            
                             this.phase++;
                             break;
                         case 2:// Count Attacks
@@ -473,22 +459,31 @@ io.on('connection', socket => {
                                             this.players[1].Slammer.side = 'up';
                                         };
                                     };
-                                    if (!slammerInArena) {
-                                        console.log('bruh');
-                                        for (let i = this.arena.length - 1; i >= 0; i--) {
-                                            if (this.arena[i] && typeof this.arena[i].flip === 'function') {
-                                                let flipnum = this.arena[i].flip();
-                                                console.log('power:', power);
-                                                console.log('flipnum:', flipnum);
-                                                if (power > flipnum) {
-                                                    this.arena[i].side = 'up';
-                                                    this.players[this.turn].prize.push(this.arena[i]);
-                                                    this.arena.splice(i, 1);
-                                                    console.log('test');
-                                                };
-                                            };
-                                        };
-                                    };
+                                    console.log('Arena for Player 1:', this.arena);
+                                   
+                                    console.log('Slammer weight:', this.weight);
+                                    for (let i = 0; i < this.arena.length; i++) {
+                                        if (this.arena[i] && typeof this.arena[i].flip === 'function') {
+                                            console.log('Puck weight:', this.arena[i].weight);
+                                            let flipnum = this.arena[i].flip();
+                                            console.log('power:', power);
+                                            console.log('flipnum:', flipnum);
+                                            if (power > flipnum) {
+                                                
+                                                console.log('Puck is flipped');
+                                                this.arena[i].side = 'up';
+                                                console.log(this.arena[i])
+                                                this.players[this.turn].prize.push(this.arena[i]);
+                                                this.arena.splice(i, 1);
+                                                console.log(this.arena[i])
+                                            } else {
+                                                console.log(this.arena[i])
+                                                console.log('Puck is not flipped');
+                                               
+                                            }
+                                        }
+                                    }
+                                   
                                     this.players[this.turn].attacks--;
                                 };
                             } else {
@@ -510,21 +505,31 @@ io.on('connection', socket => {
                                             this.players[0].Slammer.side = 'up';
                                         };
                                     };
-                                    if (!slammerInArena) {
-                                        for (let i = this.arena.length - 1; i >= 0; i--) {
-                                            if (this.arena[i] && typeof this.arena[i].flip === 'function') {
-                                                let flipnum = this.arena[i].flip();
-                                                console.log('power:', power);
-                                                console.log('flipnum:', flipnum);
-                                                if (power > flipnum) {
-                                                    this.arena[i].side = 'up';
-                                                    this.players[this.turn].prize.push(this.arena[i]);
-                                                    this.arena.splice(i, 1);
-                                                    console.log('test');
-                                                };
-                                            };
-                                        };
-                                    };
+                                    console.log('Arena for Player 2:', this.arena);
+                                    
+                                    console.log('Slammer weight:', this.weight);
+                                    for (let i = 0; i<this.arena.length; i++) {
+                                        if (this.arena[i] && typeof this.arena[i].flip === 'function') {
+                                            console.log('Puck weight:', this.arena[i].weight);
+                                            let flipnum = this.arena[i].flip();
+                                            console.log('power:', power);
+                                            console.log('flipnum:', flipnum);
+                                            if (power > flipnum) {
+                                                
+                                                console.log('Puck is flipped');
+                                                this.arena[i].side = 'up';
+                                                console.log(this.arena[i])
+                                                this.players[this.turn].prize.push(this.arena[i]);
+                                                this.arena.splice(i, 1);
+                                                console.log(this.arena[i])
+                                            } else {
+                                                console.log(this.arena[i])
+                                                console.log('Puck is not flipped');
+                                                ;
+                                            }
+                                        }
+                                    }
+                                    
                                     this.players[this.turn].attacks--;
                                 };
                             };
@@ -544,9 +549,10 @@ io.on('connection', socket => {
                                     this.arena.splice(slammerIndex, 1);
                                 };
                                 // Add the pogs back into the arena from tempArena
-                                this.arena = [...this.arena, ...tempArena];
+                                this.arena = [...this.arena, tempArena];
                                 tempArena = [];
                             };
+                            console.log('Arena:', this.arena.hp);
                             this.phase++;
                             break;
                         case 4://Discard pucks
