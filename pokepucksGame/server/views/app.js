@@ -229,21 +229,6 @@ socket.on('activity', (name) => {
     }, 3000);
 });
 
-socket.on('userList', ({ users }) => {
-    showUsers(users);
-});
-
-socket.on('roomList', ({ rooms }) => {
-    if (window.location.href === LOBBY_URL) {
-        showRooms(rooms);
-    };
-});
-
-socket.on('joinedRoomNotFound', () => {
-    alert('The room you tried to join does not exist. You might have reloaded the page while no one else was in the room which deleted the room. You will now be taken back to the lobby.');
-    window.location.href = LOBBY_URL;
-});
-
 function showUsers(users) {
     usersList.textContent = '';
     if (users) {
@@ -257,6 +242,20 @@ function showUsers(users) {
     };
 };
 
+socket.on('userList', ({ users }) => {
+    showUsers(users);
+});
+
+socket.on('joinedRoomFull', () => {
+    alert('The room you tried to join is full.');
+    window.location.href = LOBBY_URL;
+});
+
+socket.on('joinedRoomNotFound', () => {
+    alert('The room you tried to join does not exist. You might have reloaded the page while no one else was in the room which deleted the room. You will now be taken back to the lobby.');
+    window.location.href = LOBBY_URL;
+});
+
 // PokePucks Game Code
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -266,19 +265,52 @@ document.getElementById('canvas').height = window.innerHeight;
 ctx.fillStyle = 'silver';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-let gameStarted = false;
+document.getElementById('ready-checkbox').addEventListener('change', function (e) {
+    if (e.target.checked) {
+        console.log('Ready checkbox checked. Emitting player ready event.');
+        socket.emit('player ready', roomCode);
+    }
+});
 
-function gameStart() {
-    if (!gameStarted) {
-        socket.emit('gameStart');
-        gameStarted = true;
+socket.on('all players ready', function () {
+    console.log('Received all players ready event. Enabling start game button.');
+    document.getElementById('start-game-button').disabled = false;
+});
+
+socket.on('game started', function () {
+    document.getElementById('ready-checkbox').style.display = 'none';
+
+    // Disable the start game button
+    const startGameButton = document.getElementById('start-game-button');
+    if (startGameButton) {
+        startGameButton.disabled = true;
     };
+});
+
+function startGameClient(room) {
+    // Disable the start game button
+    const startGameButton = document.getElementById('start-game-button');
+    if (startGameButton) {
+        startGameButton.disabled = true;
+    };
+
+    socket.emit('gameStart', room, function (error, response) {
+        if (error) {
+            console.error(`Error: ${error}`);
+        } else {
+            console.log('Game started');
+        };
+    });
 };
 
 function stepGameClient(room) { // pass the room as a parameter
-    socket.emit('step-game', room, function (response) {
+    // Check that the socket is connected
+    console.log(`Socket connected: ${socket.connected}`);
+    socket.emit('step-game', room, function (error, response) {
         console.log('socket emitted');
-        if (response.status === 'error') {
+        if (error) {
+            console.error(`Error: ${error}`);
+        } else if (response.status === 'error') {
             console.error(`Error: ${response.message}`);
         } else {
             console.log(`Step game success for room: ${room}`);

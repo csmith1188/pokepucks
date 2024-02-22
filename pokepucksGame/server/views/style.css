@@ -146,6 +146,14 @@ button {
     font-style: italic;
 }
 
+#ready-checkbox {
+    margin-left: 10px;
+}
+
+label[for="ready-checkbox"] {
+    font-size: 16px;
+}
+
 /* Game CSS */
 .blackSide {
     image-rendering: auto;
