@@ -663,19 +663,26 @@ io.on('connection', socket => {
 
     socket.on('player ready', function (room, callback) {
         if (!readyPlayers.has(room)) {
-            readyPlayers.set(room, new Set());
+            readyPlayers.set(room, []);
         };
 
-        let roomReadyPlayers = readyPlayers.get(room);
-        roomReadyPlayers.add(socket.id);
+        readyPlayers.get(room).push(socket.id);
 
-        console.log(`Player ${socket.id} is ready in room ${room}. Total ready players: ${roomReadyPlayers.size}`);
+        console.log(readyPlayers.get(room));
+        console.log(readyPlayers);
+        console.log(`Player ${socket.id} is ready in room ${room}. Total ready players: ${readyPlayers.get(room).length}`);
 
         let roomSize = getUsersInRoom(room).length;
-        if (roomReadyPlayers.size === roomSize) {
+        if (readyPlayers.get(room).length === roomSize) {
             console.log(`All players are ready in room ${room}. Starting game.`);
             io.to(room).emit('all players ready');
-        }
+        };
+    });
+
+    socket.on('disconnect', function () {
+        readyPlayers.forEach((value, key) => {
+            value.delete(socket.id);
+        });
     });
 
     // When user leaves a room - to all others
