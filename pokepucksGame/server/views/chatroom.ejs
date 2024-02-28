@@ -65,9 +65,11 @@ The ejs file for the chatroom.
             <img src="img/blackRotation3.png" alt="" class="blackSide" id="blackRotation3">
             -->
             <canvas id="canvas"></canvas>
-             
-            <button id='ranBut' onclick="stepGameClient(roomCode)">Step Game</button>
-            <button onclick="gameStart()">Start Game Socket Test</button>
+
+            <button onclick="stepGameClient(roomCode)">Step Game</button>
+            <button id="start-game-button" disabled="true" onclick="startGameClient(roomCode)">Start Game</button>
+            <label for="ready-checkbox">I'm ready:</label>
+            <input type="checkbox" id="ready-checkbox">
         </div>
     </main>
 </body>
