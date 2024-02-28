@@ -27,9 +27,9 @@ import jwt from 'jsonwebtoken';
 import session from 'express-session';
 
 // Define the urls
-const AUTH_URL = 'http://172.16.3.162:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
-const THIS_URL = 'http://172.16.3.116:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const GAME_URL = 'http://172.16.3.116:3000/'; // 'http://ipAddressOfThisServer:port/';
+const AUTH_URL = 'http://fillerIP:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
+const THIS_URL = 'http://fillerIP:3000/login'; // 'http://ipAddressOfThisServer:port/login';
+const GAME_URL = 'http://fillerIP:3000/'; // 'http://ipAddressOfThisServer:port/';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -204,40 +204,73 @@ io.on('connection', socket => {
             };
 
             if (roomExists) {
-                // Join the room
-                socket.join(user.room);
+                if (getUsersInRoom(user.room).length <= 2) {
+                    // Join the room
+                    socket.join(user.room);
 
-                console.log(`# of Users in room after Join: ${getUsersInRoom(user.room).length}`);
+                    console.log(`# of Users in room after Join: ${getUsersInRoom(user.room).length}`);
 
-                // Send messages
-                socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
-                io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has joined the room`));
+                    // Send messages
+                    socket.emit('message', buildMsg(ADMIN, `You have joined the ${user.room} chat room`));
+                    io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has joined the room`));
 
-                // Update user list for room
-                io.to(user.room).emit('userList', {
-                    users: getUsersInRoom(user.room)
-                });
+                    // Update user list for room
+                    io.to(user.room).emit('userList', {
+                        users: getUsersInRoom(user.room)
+                    });
 
-                // If a room is private, remove it from the public rooms array
-                if (privacy === 'private') {
-                    allActivePublicRooms.splice(allActivePublicRooms.indexOf(room), 1);
+                    // If a room is private, remove it from the public rooms array
+                    if (privacy === 'private') {
+                        allActivePublicRooms.splice(allActivePublicRooms.indexOf(room), 1);
+                    };
+
+                    // Update rooms list for everyone
+                    io.emit('roomList', {
+                        rooms: allActivePublicRooms,
+                    });
+
+                    if (callback) callback(); // No error
+                } else { // Room is full
+                    socket.emit('joinedRoomFull');
+                    return;
                 };
-
-                // Update rooms list for everyone
-                io.emit('roomList', {
-                    rooms: allActivePublicRooms,
-                });
-
-                if (callback) callback(); // No error
-                return;
-            } else {
+            } else { // Room does not exist
                 socket.emit('joinedRoomNotFound');
                 return;
             };
         };
+      
         // Server-side game logic
+      let gameStarted = new Map();
+      
+        // Goes through the steps of the games
+        socket.on('step-game', function (room, callback) {
+            console.log('step-game test');
+            const game = games.get(room);
+            if (game) {
+                try {
+                    game.step();
+                    let gameData = {
+                        game: game,
+                    };
+                    callback(null, { status: 'success' });
+                    io.to(room).emit('step-game-success', { status: 'success' }, gameData);
+                } catch (error) {
+                    callback(error.message);
+                };
+            } else {
+                callback('No game found for this room');
+            };
+        });
+      
         socket.on('gameStart', () => {
-            console.log('gameStart test');
+            // Logic for starting the game
+            if (gameStarted.get(room)) {
+                callback('Game already started');
+            } else {
+                gameStarted.set(room, true);
+                io.to(room).emit('game started');
+                console.log('gameStart test');
 
             function objectsAreEqual(a, b) {
                 return JSON.stringify(a) === JSON.stringify(b);
@@ -607,42 +640,54 @@ io.on('connection', socket => {
                 };
             };
 
-            const game = new Game();
+                const game = new Game();
 
-            function startGame() {
-                const game = games.get(room);
-                if (game) {
-                    game.step();
-                    let gameData = {
-                        tempArena: tempArena,
-                        game: game,
+                function startGame() {
+                    const game = games.get(room);
+                    if (game) {
+                        try {
+                            game.step();
+                            callback(null, { status: 'success' });
+                        } catch (error) {
+                            callback(error.message);
+                        };
+                    } else {
+                        callback('No game found for this room');
                     };
-                    io.emit('step-game-success', { status: 'success' }, gameData);
+                    console.log('Game:', game);
                 };
-                console.log('Game:', game);
+
+                startGame();
+                games.set(user.room, game);
+                console.log('Games Map:', games);
+                console.log('gameEnd test');
             };
+        });
+    });
+  
+      let readyPlayers = new Map();
 
-            startGame();
-            games.set(user.room, game);
-            console.log('Games Map:', games);
-            console.log('gameEnd test');
+    socket.on('player ready', function (room, callback) {
+        if (!readyPlayers.has(room)) {
+            readyPlayers.set(room, []);
+        };
 
-            socket.on('step-game', (room, callback) => {
-                console.log('step-game test');
-                const game = games.get(room);
-                if (game) {
-                    game.step();
-                    let gameData = {
-                        tempArena: tempArena,
-                        game: game,
-                    };
-                    callback({ status: 'success', gameData: gameData });
-                    io.emit('step-game-success', { status: 'success' }, gameData);
-                } else {
-                    callback({ status: 'error', message: 'No game found for this room' });
-                    io.emit('step-game-error', { status: 'error', message: 'No game found for this room' });
-                };
-            });
+        readyPlayers.get(room).push(socket.id);
+
+        console.log(readyPlayers.get(room));
+        console.log(readyPlayers);
+        console.log(`Player ${socket.id} is ready in room ${room}. Total ready players: ${readyPlayers.get(room).length}`);
+
+        let roomSize = getUsersInRoom(room).length;
+        if (readyPlayers.get(room).length === roomSize) {
+            console.log(`All players are ready in room ${room}. Starting game.`);
+            io.to(room).emit('all players ready');
+        };
+    });
+
+    socket.on('disconnect', function () {
+        readyPlayers.forEach((value, key) => {
+            value.delete(socket.id);
         });
     });
 
@@ -650,6 +695,9 @@ io.on('connection', socket => {
     socket.on('leaveRoom', () => {
         const user = getUser(socket.id);
         userLeavesApp(socket.id);
+              readyPlayers.forEach((value, key) => {
+            value.delete(socket.id);
+        });
         if (user) {
             console.log(`# of Users in room after Leave: ${getUsersInRoom(user.room).length}`);
             socket.leave(user.room);
@@ -694,6 +742,9 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         const user = getUser(socket.id);
         userLeavesApp(socket.id);
+              readyPlayers.forEach((value, key) => {
+            value.delete(socket.id);
+        });
         if (user) {
             console.log(`# of Users in room after Disconnect: ${getUsersInRoom(user.room).length}`);
             if (getUsersInRoom(user.room).length === 0) {
