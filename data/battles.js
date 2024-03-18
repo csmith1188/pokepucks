@@ -24,72 +24,80 @@ const Battles = [
             {
                 text: "Players may not use Special Rules of pucks in a Prize stack.",
                 notes: []
+            },
+            {
+                text: "If a player must move a puck from their Health Stack to another stack, but cannot because their Health Stack has no pucks in it, then their current Slammer gains the Critical Status.",
+                notes: []
             }
         ],
         setup: [
             {
-                text: "Decide how many players are playing",
-                description: [],
+                text: "Decide Players",
+                description: [
+                    "Decide how many players are playing",
+                    "Flip coins, rock/paper/scissors, and smash pucks to decide who goes first.",
+                    "Decide who who take their turn clockwise from the first player",
+                    "The first player will take their next turn after the last player's turn, making an infinite loop."
+                ],
                 notes: [
                     "PokéPucks is designed for 2 to 4 players, but can support more."
                 ]
             },
             {
-                text: "Decide which Special Rules to add to this battle",
+                text: "Special Rules",
                 description: [
-                    "Will you use Pokeball Slammer or Pokemon Slammer Abilities? Will you use Pokemon Slammer Types?"
+                    "Decide which Special Rules to add to this battle"
                 ],
                 notes: [
+                    "For example, will you use Pokeball Slammer or Pokemon Slammer Abilities? Will you use Pokemon Slammer Types?",
                     "It is good to add in a few rules from the Ante Battle and Core Rules as you play more games to get used to the game."
                 ]
             },
             {
-                text: "Determine the turn order of all players",
+                text: "Build Health Stack",
                 description: [
-                    "Flip coins, rock/paper/scissors, and smash pucks to decide who goes first.",
-                    "The first player will take their next turn after the last player's turn, making an infinite loop."
+                    "Each player puts 10 Sandbag Item Pucks in their Health Stack.",
+                    "If they players agree, any puck can be used as a Sandbag Item Proxy."
                 ],
-                notes: []
-            },
-            {
-                text: "Each player puts 10 Sandbag Item Pucks in their Health Stack",
-                description: [],
                 notes: [
                     "These Sandbag Item Pucks should be from a neutral collection that one, all, or none of the players owns. This way nobody can lose any pucks."
                 ]
             },
             {
-                text: "Place 8 Sandbag Item Pucks in the Arena Stack",
-                description: [],
+                text: "Build Arena",
+                description: [
+                    "Place 8 Sandbag Item Pucks in the Arena Stack",
+                    "If they players agree, any puck can be used as a Sandbag Item Proxy."
+                ],
                 notes: [
                     "These Sandbag Item Pucks should be from a neutral collection that one, all, or none of the players owns. This way nobody can lose any pucks."
                 ]
             },
             {
-                text: "Each player selects a Slammer",
+                text: "Pick a Slammer",
                 description: ["In the turn order, each player selects a legal puck from their collection to be their slammer."],
                 notes: []
             },
             {
-                text: "Begin the battle by the first player in the turn order taking their turn in the Battle Loop.",
-                description: [],
+                text: "Begin",
+                description: ["Begin the battle by the first player in the turn order taking their turn in the Battle Loop."],
                 notes: []
             }
         ],
         loop: [
             {
-                text: "Top off the Arena Stack",
+                text: "Top Off",
                 description: ["The current player tops-off the Arena Stack from their Health Stack."],
                 notes: [
-                    "Check the Previous Player for Critical Status before topping off",
+                    "Check the Previous Player for Critical Status before topping off. This may reduce the number of pucks you need to Top Off.",
                     "If the previous player did well and picked up a lot of pucks, they have \"damaged\" your slammer by forcing you to top off more pucks from your Health stack."
                 ]
             },
             {
-                text: "Attempt a Knock Out",
+                text: "Knock Out",
                 description: [
-                    "Set aside the pucks in the Arena stack. Move the current player's slammer into the Arena stack.",
-                    "The previous player makes one attack. If the current player's slammer is flipped, do not pick up; the current player is out of the battle. Move their slammer and all of the pucks in their Health, Power, and Prize stacks to their collection. Skip to the end of this turn."
+                    "If the current player's Slammer has the Critical Status, the previous player may attempt a Knock Out against their Slammer.",
+                    "If the Knock Out succeeds, the current player is out of the battle. Move their slammer and all of the pucks in their Health, Power, and Prize stacks to their collection. Skip to the end of this turn."
                 ],
                 notes: [
                     "Flipping slammers with other slammers is like the classic Japanse game of Menko, which predates pucks."
@@ -116,7 +124,8 @@ const Battles = [
                     "The current player restacks the pucks that were not picked up."
                 ],
                 notes: [
-                    "Many Special Rules change the number of pucks you can pick up."
+                    "Many Special Rules change the number of pucks you can pick up.",
+                    "In an Ante Battle, you would pick up a different amount of pucks. Counting pucks seems pointless in a Training Battle, but it will help you learn to play Ante Battles if you choose to."
                 ]
             },
             {
@@ -180,15 +189,17 @@ const Battles = [
                 notes: []
             },
             {
-                text: "Players may not use Special Rules of pucks in a Prize stack.",
+                text: "Players may not use Special Rules of pucks in a Prize stack, unless otherwise stated on the puck..",
                 notes: []
             }
         ],
         setup: [
             {
-                text: "Determine the number of players and their turn order",
+                text: "Decide Players",
                 description: [
-                    "Flip coins, rock/paper/scissors, draw strawsm, or smash pucks to decide who goes first.",
+                    "Decide how many players are playing",
+                    "Flip coins, rock/paper/scissors, and smash pucks to decide who goes first.",
+                    "Decide who who take their turn clockwise from the first player",
                     "The first player will take their next turn after the last player's turn, making an infinite loop."
                 ],
                 notes: [
@@ -196,7 +207,7 @@ const Battles = [
                 ]
             },
             {
-                text: "Select legal pucks and suitable proxies",
+                text: "Legal pucks",
                 description: [
                     "Decide which pucks can or can not be used, and how many.",
                     "Decide which pucks can be used to represent another puck for rules purposes, in case you do not have enough of the correct type."
@@ -206,51 +217,51 @@ const Battles = [
                 ]
             },
             {
-                text: "Decide which Special Rules to add to this battle",
+                text: "Special Rules",
                 description: [
-                    "Pokeball Slammers cannot use their Slammer Abilities, unless all players agree now."
+                    "Decide which Special Rules to add to this battle, or which rules to remove.",
+                    "All players must agree to the rules before continuing."
                 ],
                 notes: [
+                    "Feel free to make up totally new rules, or take rules away.",
                     "If you do not want your opponents to be able to take your slammer, do not agree to play with Pokeball Slammer Slammer Abilities."
                 ]
             },
             {
-                text: "Add pucks to the Battle",
-                description: ["Each player moves 8 to 20 Pucks from their Collection to their Health Stack."],
+                text: "Add Pucks",
+                description: [
+                    "In the turn order, each player moves a Slammer from their Collection to their Bench Stack. If a player does not wish to add another slammer after the first, they may pass their turn to the next player.",
+                    "Repeat until every Player has either passed, or already added 3 Slammers to their Bench Stack.",
+                    "Each player moves 10 to 16 Pucks from their Collection to their Health Stack. Subtract 1 from each of these numbers for each player in the Battle. to a minimum of 5."
+                ],
                 notes: [
-                    "Once you move a puck from your Collection to the Health Stack, it is no longer your puck. It belongs to all players in the Battle until the Battle is over",
-                    "Never move a puck from your Collection to the Health stack if you wish to keep that puck."
+                    "Once you move a puck or slammer from your Collection to the Battle, it is no longer your puck. It belongs to all players in the Battle until the Battle is over",
+                    "Never move a puck from your Collection to the Battle if you wish to keep that puck."
                 ]
             },
             {
-                text: "Build the Arena Stack",
+                text: "Build Arena",
                 description: [
                     "Starting with the first player, each player moves one puck from their Health Stack to the top of the Arena stack.",
                     "Once every player has done this, if the Arena Stack has less than 8 pucks in it, repeat the above.",
                     "If the Arena Stack has 8 or more pucks in it, the Arena Stack Size now equals the number of Pucks in the Arena Stack.",
+                    "Each player's Health Stack Size becomes 10."
                 ],
                 notes: [
                     "Three player games will have 9 pucks in the arena stack. Seven player games will have 14. Twenty player games will have 20."
                 ]
             },
             {
-                text: "Select Slammers",
+                text: "Begin",
                 description: [
-                    "In the turn order, each player moves 1 to 3 Slammers from their Collection to their Bench Stack.",
-                    "The Bench Stack Size is 3.",
-                    "If any player has less Slammers in the Bench Stack than the Bench Stack size, they may move a number of pogs from their Health Stack to their Power Stack equal to the difference."
+                    "Begin the battle by the first player in the turn order taking their turn in the Battle Loop."
                 ],
-                notes: ["For example, if you choose to only use 1 Slammer, you may move 2 pucks from your Health Stack to your Power Stack."]
-            },
-            {
-                text: "Start the Loop.",
-                description: ["Begin the battle by the first player in the turn order taking their turn in the Battle Loop."],
                 notes: []
             }
         ],
         loop: [
             {
-                text: "Top Off the Arena Stack",
+                text: "Top Off",
                 description: [
                     "The current player tops off the Arena Stack from their Health Stack.",
                     "If the player fails to top off the Arena Stack, there Slammer gains the \"Critical\" Status."
@@ -261,18 +272,18 @@ const Battles = [
                 ]
             },
             {
-                text: "Attempt a Knock Out",
+                text: "Knock Out",
                 description: [
                     "If the current player has the Critical Status, the previous player may attempt a Knock Out.",
                     "Set aside the pucks in the Arena stack. Move the current player's slammer into the Arena stack.",
-                    "The previous player makes one attack. If the current player's slammer is flipped, do not pick up; the current player is out of the battle. Move their slammer and all of the pucks in their Health, Power, and Prize stacks to their collection. Skip to the end of this turn."
+                    "The previous player makes 1 attack. If the current player's slammer is flipped, do not pick up; the current player is out of the battle. Move their slammer and all of the pucks in their Health, Power, and Prize stacks to their collection. Skip to the end of this turn."
                 ],
                 notes: [
                     "Flipping slammers with other slammers is like the classic Japanse game of Menko, which predates pucks."
                 ]
             },
             {
-                text: "Pick a Slammer",
+                text: "Select Slammer",
                 description: [
                     "You may put your current slammer onto your Bench Stack, and select a different slammer to use.",
                     "If you do, your Slammer gains the Switch Sick Status."
@@ -311,7 +322,7 @@ const Battles = [
                 ]
             },
             {
-                text: "End of Turn",
+                text: "End Turn",
                 description: [
                     "If the current player is the only player still in the battle, the battle ends.",
                     "Move the Arena Stack, their Health Stack, their Power Stack, and their Prize Stack, and their Bench Stack to their Collection.",

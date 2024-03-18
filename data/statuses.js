@@ -32,7 +32,7 @@ const Statuses = [
     {
         name: "Confused",
         description: "Your Pokemon does not know whats going on anymore.",
-        text: "After you make your last throw on your turn, if you do not pick up any pucks, you are considered to be the current player during the next players top-off.",
+        text: "After making all of your attacks on your turn, if you did not pick up any pucks, you must move 1 puck from your Health Stack to the Arena Stack.",
         notes: []
     }
 ]

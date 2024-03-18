@@ -1,0 +1,77 @@
+<!-- 
+/****************************** Script Header ******************************\
+Project: PokePucks
+Author: Brandon Camacho
+Editors: Brandon Camacho, Logan Cruz
+
+<Description>
+The ejs file for the chatroom.
+\***************************************************************************/
+ -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokePucks Chatroom</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="img\blueAndYellowPokeBallFaviconPlaceholder.png" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"
+        integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="app.js"></script>
+    <!-- "defer" tells the file to not load the JS until everything else is essentially loaded -->
+</head>
+
+<body>
+    <main>
+        <div id="chatroom-page">
+            <button onclick="leaveRoom()">Leave Room</button>
+
+            <ul class="chat-display"></ul>
+
+            <p class="user-list"></p>
+
+            <p class="activity"></p>
+
+            <form class="form-msg">
+                <input type="text" id="message" placeholder="Your message" required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        <div id="game-page">
+            <img src="img/blackSide.png" class="blackSide" id="blackSide" alt="">
+            <img src="img/bulbasaur.svg"
+            id="bulbasaur"
+            class="pokemon"
+            height="100"
+            width="100"
+            />
+            <img src="img/squirtle.svg"
+            id="squirtle"
+            class="pokemon"
+            height="100"
+            width="100"
+            />
+            <img src="img/whiteSide.png" alt="" class="blackSide" id="whiteSide">
+            <!--
+
+            
+            <img src="img/whiteRotation1.png" alt="" class="blackSide" id="whiteRotation1">
+            <img src="img/whiteRotation2.png" alt="" class="blackSide" id="whiteRotation2">
+            <img src="img/whiteRotation3.png" alt="" class="blackSide" id="whiteRotation3">
+            <img src="img/blackRotation1.png" alt="" class="blackSide" id="blackRotation1">
+            <img src="img/blackRotation2.png" alt="" class="blackSide" id="blackRotation2">
+            <img src="img/blackRotation3.png" alt="" class="blackSide" id="blackRotation3">
+            -->
+            <canvas id="canvas"></canvas>
+
+            <button onclick="stepGameClient(roomCode)">Step Game</button>
+            <button id="start-game-button" disabled="true" onclick="startGameClient(roomCode)">Start Game</button>
+            <label for="ready-checkbox">I'm ready:</label>
+            <input type="checkbox" id="ready-checkbox">
+        </div>
+    </main>
+</body>
+
+</html>
