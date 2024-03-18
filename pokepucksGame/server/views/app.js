@@ -156,6 +156,12 @@ function enterRoomJoin() {
 
 window.onload = function () {
     if (window.location.href === CHATROOM_URL) {
+        document.querySelector('.form-msg').addEventListener('submit', sendMessage);
+
+        msgInput.addEventListener('keypress', () => {
+            socket.emit('activity', username);
+        });
+
         // Retrieve the values from sessionStorage
         username = sessionStorage.getItem('username');
         roomCode = sessionStorage.getItem('roomCode');
@@ -184,36 +190,32 @@ function leaveRoom() {
     window.location.href = LOBBY_URL;
 };
 
-document.querySelector('.form-msg').addEventListener('submit', sendMessage);
-
-msgInput.addEventListener('keypress', () => {
-    socket.emit('activity', username);
-});
-
 // Listen for messages
 socket.on('message', (data) => {
-    activity.textContent = "";
-    const { name, text, id, time } = data;
+    if (window.location.href === CHATROOM_URL) {
+        activity.textContent = "";
+        const { name, text, id, time } = data;
 
-    const li = document.createElement('li');
-    li.className = 'post';
-    if (id === socket.id) li.className = 'post post--left';
-    if (id !== socket.id && name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') li.className = 'post post--right';
-    if (name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') {
-        li.innerHTML = `<div class="post__header ${id === socket.id
-            ? 'post__header--user'
-            : 'post__header--reply'
-            }">
-            <span class="post__header--name">${name}</span>
-            <span class="post__header--time">${time}</span>
-            </div>
-            <div class="post__text">${text}</div>`
-    } else {
-        li.innerHTML = `<div class ="post__text">${text}</div>`
+        const li = document.createElement('li');
+        li.className = 'post';
+        if (id === socket.id) li.className = 'post post--left';
+        if (id !== socket.id && name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') li.className = 'post post--right';
+        if (name !== 'YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW0_R2EuZ7XVXAAAD') {
+            li.innerHTML = `<div class="post__header ${id === socket.id
+                ? 'post__header--user'
+                : 'post__header--reply'
+                }">
+                <span class="post__header--name">${name}</span>
+                <span class="post__header--time">${time}</span>
+                </div>
+                <div class="post__text">${text}</div>`
+        } else {
+            li.innerHTML = `<div class ="post__text">${text}</div>`
+        };
+        document.querySelector('.chat-display').appendChild(li);
+
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
     };
-    document.querySelector('.chat-display').appendChild(li);
-
-    chatDisplay.scrollTop = chatDisplay.scrollHeight;
 });
 
 let activityTimer;
@@ -227,23 +229,10 @@ socket.on('activity', (name) => {
     }, 3000);
 });
 
-socket.on('userList', ({ users }) => {
-    showUsers(users);
-});
-
-socket.on('roomList', ({ rooms }) => {
-    showRooms(rooms);
-});
-
-socket.on('joinedRoomNotFound', () => {
-    alert('The room you tried to join does not exist. You might have reloaded the page while no one else was in the room which deleted the room. You will now be taken back to the lobby.');
-    window.location.href = LOBBY_URL;
-});
-
 function showUsers(users) {
     usersList.textContent = '';
     if (users) {
-        usersList.innerHTML = `<em>Users in ${chatRoom.value}:</em>`;
+        usersList.innerHTML = `<em>Users in ${roomCode}:</em>`;
         users.forEach((user, i) => {
             usersList.textContent += ` ${user.name}`;
             if (users.length > 1 && i !== users.length - 1) {
@@ -253,7 +242,23 @@ function showUsers(users) {
     };
 };
 
+socket.on('userList', ({ users }) => {
+    showUsers(users);
+});
+
+socket.on('joinedRoomFull', () => {
+    alert('The room you tried to join is full.');
+    window.location.href = LOBBY_URL;
+});
+
+socket.on('joinedRoomNotFound', () => {
+    alert('The room you tried to join does not exist. You might have reloaded the page while no one else was in the room which deleted the room. You will now be taken back to the lobby.');
+    window.location.href = LOBBY_URL;
+});
+
 // PokePucks Game Code
+var blackSide = document.getElementById('blackSide');
+var whiteSide = document.getElementById('whiteSide');
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 ctx.font = '20px Arial';
@@ -262,19 +267,52 @@ document.getElementById('canvas').height = window.innerHeight;
 ctx.fillStyle = 'silver';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-let gameStarted = false;
+document.getElementById('ready-checkbox').addEventListener('change', function (e) {
+    if (e.target.checked) {
+        console.log('Ready checkbox checked. Emitting player ready event.');
+        socket.emit('player ready', roomCode);
+    }
+});
 
-function gameStart() {
-    if (!gameStarted) {
-        socket.emit('gameStart');
-        gameStarted = true;
+socket.on('all players ready', function () {
+    console.log('Received all players ready event. Enabling start game button.');
+    document.getElementById('start-game-button').disabled = false;
+});
+
+socket.on('game started', function () {
+    document.getElementById('ready-checkbox').style.display = 'none';
+
+    // Disable the start game button
+    const startGameButton = document.getElementById('start-game-button');
+    if (startGameButton) {
+        startGameButton.disabled = true;
     };
+});
+
+function startGameClient(room) {
+    // Disable the start game button
+    const startGameButton = document.getElementById('start-game-button');
+    if (startGameButton) {
+        startGameButton.disabled = true;
+    };
+
+    socket.emit('gameStart', room, function (error, response) {
+        if (error) {
+            console.error(`Error: ${error}`);
+        } else {
+            console.log('Game started');
+        };
+    });
 };
 
 function stepGameClient(room) { // pass the room as a parameter
-    socket.emit('step-game', room, function(response) {
+    // Check that the socket is connected
+    console.log(`Socket connected: ${socket.connected}`);
+    socket.emit('step-game', room, function (error, response) {
         console.log('socket emitted');
-        if (response.status === 'error') {
+        if (error) {
+            console.error(`Error: ${error}`);
+        } else if (response.status === 'error') {
             console.error(`Error: ${response.message}`);
         } else {
             console.log(`Step game success for room: ${room}`);
@@ -318,7 +356,7 @@ socket.on('step-game-success', (data, gameData) => {
                 if (gameData.game.players[0].hp.length == 0 && gameData.game.players[1].hp.length == 0) {
                     for (let i = 0; i < gameData.game.players.length; i++) {
                         for (let j = 0; j < 15; j++) {
-                            console.log(gameData.game.players[i].hp);
+                            console.log(gameData.game.players[i].hp.length);
                         };
                     };
                 };
@@ -328,6 +366,8 @@ socket.on('step-game-success', (data, gameData) => {
                 ctx.font = '40px Arial';
                 ctx.fillText(`Player 1 Hp Stack ${gameData.game.players[0].hp.length}`, 100, 100);
                 ctx.fillText(`Player 2 Hp Stack ${gameData.game.players[1].hp.length}`, 100, 200);
+            
+                
                 ctx.fillText(gameData.game.stage, 20, 50);
                 break;
             case 3: // Build arena
@@ -347,6 +387,7 @@ socket.on('step-game-success', (data, gameData) => {
         switch (gameData.game.phase) {
             case 0: // Top off
                 console.log('case 0 test');
+                
                 console.log(gameData.game.players[0].Slammer.side);
                 console.log(gameData.game.players[1].Slammer.side);
                 // while arena is < 8, player pops 1 from hp to arena
@@ -369,6 +410,25 @@ socket.on('step-game-success', (data, gameData) => {
                 //         }
                 //     }
                 // }
+                let c
+                for (let i = 0; i < gameData.game.players[0].hp.length; i++) {
+                    c += 15
+                    ctx.drawImage(blackSide, 100, 100 , 100, 100);
+                    console.log('testing for loop 1')
+                }
+                ctx.drawImage(document.getElementById('squirtle'),500,80,100,100)
+                for(let i=0; i<gameData.game.players[0].prize.length; i++){
+                    ctx.drawImage(whiteSide, 200, 100 , 100, 100);
+                }
+                for (let i = 0; i < gameData.game.players[1].hp.length; i++) {
+                    c += 15
+                    ctx.drawImage(blackSide, 100, 200 , 100, 100); 
+                    console.log('testing for loop 2')
+                }
+                ctx.drawImage(document.getElementById('bulbasaur'),500,200, 100, 100) 
+                for(let i=0; i<gameData.game.players[1].prize.length; i++){
+                    ctx.drawImage(whiteSide, 200, 200 , 100, 100);
+                }
                 break;
             case 1:// Knockout
                 console.log('case 1 test');
@@ -393,7 +453,29 @@ socket.on('step-game-success', (data, gameData) => {
                 ctx.font = '40px Arial';
                 ctx.fillText(`Player 1 Hp Stack ${gameData.game.players[0].hp.length}`, 100, 100);
                 ctx.fillText(`Player 2 Hp Stack ${gameData.game.players[1].hp.length}`, 100, 200);
+                
                 ctx.fillText(gameData.game.stage, 20, 50);
+               
+                let y
+                for (let i = 0; i < gameData.game.players[0].hp.length; i++) {
+                    
+                    y += 15
+                    ctx.drawImage(blackSide, 100, 100  , 100, 100);
+                    console.log('testing for loop 1')
+                }
+                ctx.drawImage(document.getElementById('squirtle'),500,80,100,100)
+                for(let i=0; i<gameData.game.players[0].prize.length; i++){
+                    ctx.drawImage(whiteSide, 200, 100 , 100, 100);
+                }
+                
+                for (let i = 0; i < gameData.game.players[1].hp.length; i++) {
+                    ctx.drawImage(blackSide, 100, 200 , 100, 100);
+                    console.log('testing for loop 2')
+                }
+                ctx.drawImage(document.getElementById('bulbasaur'),500,200, 100, 100) 
+                for(let i=0; i<gameData.game.players[1].prize.length; i++){
+                    ctx.drawImage(whiteSide, 200, 200 , 100, 100);
+                }
                 break;
             case 3://Make Attacks
                 console.log('case 3 test');
