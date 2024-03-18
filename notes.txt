@@ -2,7 +2,7 @@
 •	Squirtle: After making all your attacks on your turn, if you did not pick up any pucks this turn, the next time the previous player picks up, they must pick up 1 less puck in each of their attacks.
 •	Scyther: You may pick up one additional puck in each time you attack on your turn. 
 •	Pidgeot: When counting attacks on your turn, if the next player’s slammer Energy Type is Grass, may treat your slammer as having the Energy Type that matches their weakness.
-•	Aerodactyl: After counting your attacks on your turn, you may choose to increase the number by 2. If you do, after counting your attacks on your next turn, reduce the number to 1.
+•	Aerodactyl: When counting attacks on your turn, you may choose to increase that number by 2. If you do, after counting your attacks on your next turn, reduce that number to 1.
 •	Flareon: After making your last attack on your turn, if you flipped any pucks this turn, in the previous player’s next turn, they must select the slammer they selected in their previous turn.
 •	Eevee: When counting attacks on your turn, if there is only 1 Energy Puck in your Power Stack that is not a Focus Energy, you may change this slammer’s Energy Type to match that Energy Puck. (This gives the additional attack from having matching energy type pucks)
 •	Meowth: After making an attack on your turn, after you pick up, you may pick up a flipped Item puck.
