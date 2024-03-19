@@ -8,11 +8,11 @@ Code for the frontend side for the PokePucks game.
 \***************************************************************************/
 // Chatroom Code
 // Define the urls
-const ROOT_URL = 'http://fillerIP:3000/'; // 'http://ipAddressOfThisServer:port/';
-const LOGIN_URL = 'http://fillerIP:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const LOGOUT_URL = 'http://fillerIP:3000/logout'; // 'http://ipAddressOfThisServer:port/logout';
-const LOBBY_URL = 'http://fillerIP:3000/lobby'; // 'http://ipAddressOfThisServer:port/lobby';
-const CHATROOM_URL = 'http://fillerIP:3000/chatroom'; // 'http://ipAddressOfThisServer:port/chatroom';
+const ROOT_URL = 'http://172.16.3.124:3000/'; // 'http://ipAddressOfThisServer:port/';
+const LOGIN_URL = 'http://172.16.3.124:3000/login'; // 'http://ipAddressOfThisServer:port/login';
+const LOGOUT_URL = 'http://172.16.3.124:3000/logout'; // 'http://ipAddressOfThisServer:port/logout';
+const LOBBY_URL = 'http://172.16.3.124:3000/lobby'; // 'http://ipAddressOfThisServer:port/lobby';
+const CHATROOM_URL = 'http://172.16.3.124:3000/chatroom'; // 'http://ipAddressOfThisServer:port/chatroom';
 
 // Defines socket = to a new websocket
 const socket = io(ROOT_URL);
@@ -280,7 +280,7 @@ socket.on('all players ready', function () {
 });
 
 socket.on('game started', function () {
-    document.getElementById('ready-checkbox').style.display = 'none';
+    document.getElementById('ready-checkbox').disabled = true;
 
     // Disable the start game button
     const startGameButton = document.getElementById('start-game-button');
@@ -366,8 +366,8 @@ socket.on('step-game-success', (data, gameData) => {
                 ctx.font = '40px Arial';
                 ctx.fillText(`Player 1 Hp Stack ${gameData.game.players[0].hp.length}`, 100, 100);
                 ctx.fillText(`Player 2 Hp Stack ${gameData.game.players[1].hp.length}`, 100, 200);
-            
-                
+
+
                 ctx.fillText(gameData.game.stage, 20, 50);
                 break;
             case 3: // Build arena
@@ -387,7 +387,7 @@ socket.on('step-game-success', (data, gameData) => {
         switch (gameData.game.phase) {
             case 0: // Top off
                 console.log('case 0 test');
-                
+
                 console.log(gameData.game.players[0].Slammer.side);
                 console.log(gameData.game.players[1].Slammer.side);
                 // while arena is < 8, player pops 1 from hp to arena
@@ -413,21 +413,21 @@ socket.on('step-game-success', (data, gameData) => {
                 let c
                 for (let i = 0; i < gameData.game.players[0].hp.length; i++) {
                     c += 15
-                    ctx.drawImage(blackSide, 100, 100 , 100, 100);
+                    ctx.drawImage(blackSide, 100, 100, 100, 100);
                     console.log('testing for loop 1')
                 }
-                ctx.drawImage(document.getElementById('squirtle'),500,80,100,100)
-                for(let i=0; i<gameData.game.players[0].prize.length; i++){
-                    ctx.drawImage(whiteSide, 200, 100 , 100, 100);
+                ctx.drawImage(document.getElementById('squirtle'), 500, 80, 100, 100)
+                for (let i = 0; i < gameData.game.players[0].prize.length; i++) {
+                    ctx.drawImage(whiteSide, 200, 100, 100, 100);
                 }
                 for (let i = 0; i < gameData.game.players[1].hp.length; i++) {
                     c += 15
-                    ctx.drawImage(blackSide, 100, 200 , 100, 100); 
+                    ctx.drawImage(blackSide, 100, 200, 100, 100);
                     console.log('testing for loop 2')
                 }
-                ctx.drawImage(document.getElementById('bulbasaur'),500,200, 100, 100) 
-                for(let i=0; i<gameData.game.players[1].prize.length; i++){
-                    ctx.drawImage(whiteSide, 200, 200 , 100, 100);
+                ctx.drawImage(document.getElementById('bulbasaur'), 500, 200, 100, 100)
+                for (let i = 0; i < gameData.game.players[1].prize.length; i++) {
+                    ctx.drawImage(whiteSide, 200, 200, 100, 100);
                 }
                 break;
             case 1:// Knockout
@@ -453,28 +453,28 @@ socket.on('step-game-success', (data, gameData) => {
                 ctx.font = '40px Arial';
                 ctx.fillText(`Player 1 Hp Stack ${gameData.game.players[0].hp.length}`, 100, 100);
                 ctx.fillText(`Player 2 Hp Stack ${gameData.game.players[1].hp.length}`, 100, 200);
-                
+
                 ctx.fillText(gameData.game.stage, 20, 50);
-               
+
                 let y
                 for (let i = 0; i < gameData.game.players[0].hp.length; i++) {
-                    
+
                     y += 15
-                    ctx.drawImage(blackSide, 100, 100  , 100, 100);
+                    ctx.drawImage(blackSide, 100, 100, 100, 100);
                     console.log('testing for loop 1')
                 }
-                ctx.drawImage(document.getElementById('squirtle'),500,80,100,100)
-                for(let i=0; i<gameData.game.players[0].prize.length; i++){
-                    ctx.drawImage(whiteSide, 200, 100 , 100, 100);
+                ctx.drawImage(document.getElementById('squirtle'), 500, 80, 100, 100)
+                for (let i = 0; i < gameData.game.players[0].prize.length; i++) {
+                    ctx.drawImage(whiteSide, 200, 100, 100, 100);
                 }
-                
+
                 for (let i = 0; i < gameData.game.players[1].hp.length; i++) {
-                    ctx.drawImage(blackSide, 100, 200 , 100, 100);
+                    ctx.drawImage(blackSide, 100, 200, 100, 100);
                     console.log('testing for loop 2')
                 }
-                ctx.drawImage(document.getElementById('bulbasaur'),500,200, 100, 100) 
-                for(let i=0; i<gameData.game.players[1].prize.length; i++){
-                    ctx.drawImage(whiteSide, 200, 200 , 100, 100);
+                ctx.drawImage(document.getElementById('bulbasaur'), 500, 200, 100, 100)
+                for (let i = 0; i < gameData.game.players[1].prize.length; i++) {
+                    ctx.drawImage(whiteSide, 200, 200, 100, 100);
                 }
                 break;
             case 3://Make Attacks

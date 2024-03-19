@@ -27,9 +27,9 @@ import jwt from 'jsonwebtoken';
 import session from 'express-session';
 
 // Define the urls
-const AUTH_URL = 'http://fillerIP:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
-const THIS_URL = 'http://fillerIP:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const GAME_URL = 'http://fillerIP:3000/'; // 'http://ipAddressOfThisServer:port/';
+const AUTH_URL = 'http://172.16.3.162:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
+const THIS_URL = 'http://172.16.3.124:3000/login'; // 'http://ipAddressOfThisServer:port/login';
+const GAME_URL = 'http://172.16.3.124:3000/'; // 'http://ipAddressOfThisServer:port/';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +39,8 @@ const ADMIN = "YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW
 
 var allActiveRooms = [];
 var allActivePublicRooms = [];
+var readyPlayers = new Map();
+
 
 const app = express(); // Our express server is referred to as app
 
@@ -672,8 +674,6 @@ io.on('connection', socket => {
             };
         });
     });
-
-    let readyPlayers = new Map();
 
     socket.on('player ready', function (room, callback) {
         if (!readyPlayers.has(room)) {
