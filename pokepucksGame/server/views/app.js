@@ -8,11 +8,11 @@ Code for the frontend side for the PokePucks game.
 \***************************************************************************/
 // Chatroom Code
 // Define the urls
-const ROOT_URL = 'http://fillerIP:3000/'; // 'http://ipAddressOfThisServer:port/';
-const LOGIN_URL = 'http://fillerIP:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const LOGOUT_URL = 'http://fillerIP:3000/logout'; // 'http://ipAddressOfThisServer:port/logout';
-const LOBBY_URL = 'http://fillerIP:3000/lobby'; // 'http://ipAddressOfThisServer:port/lobby';
-const CHATROOM_URL = 'http://fillerIP:3000/chatroom'; // 'http://ipAddressOfThisServer:port/chatroom';
+const ROOT_URL = 'http://fillerip:3000/'; // 'http://ipAddressOfThisServer:port/';
+const LOGIN_URL = 'http://fillerip:3000/login'; // 'http://ipAddressOfThisServer:port/login';
+const LOGOUT_URL = 'http://fillerip:3000/logout'; // 'http://ipAddressOfThisServer:port/logout';
+const LOBBY_URL = 'http://fillerip:3000/lobby'; // 'http://ipAddressOfThisServer:port/lobby';
+const CHATROOM_URL = 'http://fillerip:3000/chatroom'; // 'http://ipAddressOfThisServer:port/chatroom';
 
 // Defines socket = to a new websocket
 const socket = io(ROOT_URL);

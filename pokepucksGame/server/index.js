@@ -27,9 +27,9 @@ import jwt from 'jsonwebtoken';
 import session from 'express-session';
 
 // Define the urls
-const AUTH_URL = 'http://fillerIP:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
-const THIS_URL = 'http://fillerIP:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const GAME_URL = 'http://fillerIP:3000/'; // 'http://ipAddressOfThisServer:port/';
+const AUTH_URL = 'http://fillerIp:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
+const THIS_URL = 'http://fillerIp:3000/login'; // 'http://ipAddressOfThisServer:port/login';
+const GAME_URL = 'http://fillerIp:3000/'; // 'http://ipAddressOfThisServer:port/';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -309,14 +309,15 @@ io.on('connection', socket => {
                         this.weight = weight;
                         this.side = side;
                     };
+
                     attack() {
                         // attack
-                        let power;
-                        power = Math.floor(Math.random() * 100) + 1 + this.weight / 1.5;
-                        if (power > 100) {
-                            power = 100;
+                        let att;
+                        att = Math.floor(Math.random() * 100) 
+                        if (att > 100) {
+                            att = 100;
                         };
-                        return power;
+                        return att;
                     };
                 };
                 class Game {
@@ -396,6 +397,7 @@ io.on('connection', socket => {
                     stage_loop() {
                         switch (this.phase) {
                             case 0: // Top off
+                            console.log('Arena:', this.arena);
                                 console.log('case 0 test');
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
@@ -464,6 +466,7 @@ io.on('connection', socket => {
                                 break;
                             case 3://Make Attacks
                                 console.log('case 3 test');
+                                console.log('Arena:', this.arena.hp);
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
                                 //The current player makes an attack, then the other player makes an attack. Repeat until all attacks have been made. 
@@ -617,7 +620,13 @@ io.on('connection', socket => {
                                     this.stage = 'end';
                                     console.log('player 1 wins');
                                 };
-                                this.arena = tempArena;
+                                if(this.arena.length == 0 && this.players[0].hp.length > 0 && this.players[1].hp.length > 0){
+                                    let num = Math.floor(Math.random() * 8); + 1;
+                                    for(let i = 0; i < num; i++){
+                                        this.arena.push(new Puck('pog', 1, 'down'));
+                                    }
+                                }
+                                console.log('Arena:', this.arena);
                                 this.phase++;
                                 break;
                         };
