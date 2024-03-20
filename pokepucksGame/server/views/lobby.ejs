@@ -2,7 +2,7 @@
 /****************************** Script Header ******************************\
 Project: PokePucks
 Author: Brandon Camacho
-Editors: Brandon Camacho
+Editors: Brandon Camacho, Antonio Cruz
 
 <Description>
 The ejs file for the chatroom.
@@ -26,7 +26,7 @@ The ejs file for the chatroom.
 <body>
     <main>
         <div id="lobby-page">
-            <input type="text" id="name" size="5" value="<%= sessionUser %>" readonly>
+            <input type="text" class="set" id="name" size="5" value="<%= sessionUser %>" readonly>
             <input type="text" id="room" placeholder="Room Code" size="5" maxlength="5">
             <button id="join" onclick="joinRoom()">Join</button>
 

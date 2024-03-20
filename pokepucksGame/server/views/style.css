@@ -1,22 +1,31 @@
 /****************************** Script Header ******************************\
 Project: PokePucks
 Author: Brandon Camacho
-Editors: Brandon Camacho
+Editors: Brandon Camacho, Antonio Cruz
 
 <Description>
 The css for the chatroom.
 \***************************************************************************/
 * {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     box-sizing: border-box;
     font-size: 1rem;
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.set{
+    text-align: center;
+    margin-top: 25px;
+    margin-left: 250px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+}
+
 body {
-    background-color: #000000;
-    color: #fff;
+    background-color: #0084ff;
+    color: black;
 }
 
 main {
