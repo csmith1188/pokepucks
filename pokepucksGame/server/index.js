@@ -7,17 +7,18 @@ Editors: Brandon Camacho, Logan Cruz
 Code for the backend server-side for the PokePucks game.
 \***************************************************************************/
 /*
-// A list for all the required node modules to install
+// A list for all the required node modules to install or just use npm i by itself to install all of them since they are all listed in the package.json file
 // Make sure terminal is in the server folder
 npm i socket.io
 npm i express
 npm i jsonwebtoken
 npm i express-session
 npm i ejs
+npm i os
 npm i -D nodemon (Not required but makes editing this file much more convenient. Nodemon will restart the server automatically every time you save the server.)
 // Start the server by using 'npm start' while in the server folder
 // Start the server for testing by using 'npm run dev' while in the server folder
-// Remember to change the ip address in both this file and the app.js file to the ip address of the computer you are using to run the server
+// Remember to change the ip address for your formbar instance in the AUTH_URL variable
 */
 import express from 'express';
 import { Server } from 'socket.io';
@@ -25,11 +26,26 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 import session from 'express-session';
+import os from 'os';
+
+function getLocalIP() {
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            };
+        };
+    };
+    return 'localhost';
+};
+
+const IP_ADDRESS = getLocalIP();
 
 // Define the urls
-const AUTH_URL = 'http://fillerIp:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
-const THIS_URL = 'http://fillerIp:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const GAME_URL = 'http://fillerIp:3000/'; // 'http://ipAddressOfThisServer:port/';
+const AUTH_URL = `http://172.16.3.162:420/oauth`; // `http://ipAddressOfFormbarInstance:port/oauth`;
+const THIS_URL = `http://${IP_ADDRESS}:3000/login`; // `http://ipAddressOfThisServer:port/login`;
+const GAME_URL = `http://${IP_ADDRESS}:3000/`; // `http://ipAddressOfThisServer:port/`;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,7 +56,6 @@ const ADMIN = "YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW
 var allActiveRooms = [];
 var allActivePublicRooms = [];
 var readyPlayers = new Map();
-
 
 const app = express(); // Our express server is referred to as app
 
@@ -54,6 +69,10 @@ app.use(
         resave: false,
         saveUninitialized: false
     }));
+
+app.get('/get-ip', (req, res) => {
+    res.json({ ip: IP_ADDRESS });
+});
 
 app.get('/', (req, res) => {
     // Check if user is already logged in
@@ -145,6 +164,7 @@ io.on('connection', socket => {
     socket.emit('message', buildMsg(ADMIN, "Welcome to Chat App!"));
 
     socket.on('enterRoom', ({ name, room, privacy, method }, callback) => {
+        console.log(`${name} is entering room: ${room}`);
         // leave previous room
         const prevRoom = getUser(socket.id)?.room;
 
@@ -164,6 +184,7 @@ io.on('connection', socket => {
 
         // If user is creating a room, user creates and joins the room like normal
         if (method === 'create') {
+            console.log('create room start test');
             // join room
             socket.join(user.room);
 
@@ -190,9 +211,14 @@ io.on('connection', socket => {
             io.emit('roomList', {
                 rooms: allActivePublicRooms,
             });
+
+            console.log(`# of Users in room after create: ${getUsersInRoom(user.room).length}`);
+
+            console.log('create room end test');
         };
 
         if (method === 'join') {
+            console.log('join room start test');
             let roomExists = false;
 
             // Iterate over all active rooms
@@ -206,6 +232,7 @@ io.on('connection', socket => {
             };
 
             if (roomExists) {
+                console.log('Room Exists');
                 if (getUsersInRoom(user.room).length <= 2) {
                     // Join the room
                     socket.join(user.room);
@@ -237,9 +264,11 @@ io.on('connection', socket => {
                     return;
                 };
             } else { // Room does not exist
+                console.log('Room does not exist');
                 socket.emit('joinedRoomNotFound');
                 return;
             };
+            console.log('join room end test');
         };
 
         // Server-side game logic
@@ -510,7 +539,6 @@ io.on('connection', socket => {
                                                 console.log('power:', power);
                                                 console.log('flipnum:', flipnum);
                                                 if (power > flipnum) {
-
                                                     console.log('Puck is flipped');
                                                     this.arena[i].side = 'up';
                                                     console.log(this.arena[i])
@@ -704,6 +732,7 @@ io.on('connection', socket => {
 
     // When user leaves a room - to all others
     socket.on('leaveRoom', () => {
+        console.log('leaveRoom test');
         const user = getUser(socket.id);
         userLeavesApp(socket.id);
         readyPlayers.forEach((value, key) => {
@@ -751,6 +780,7 @@ io.on('connection', socket => {
 
     // When user disconnects - to all others
     socket.on('disconnect', () => {
+        console.log('disconnect test');
         const user = getUser(socket.id);
         userLeavesApp(socket.id);
         readyPlayers.forEach((value, key) => {

@@ -7,12 +7,14 @@ Editors: Brandon Camacho, Logan Cruz
 Code for the frontend side for the PokePucks game.
 \***************************************************************************/
 // Chatroom Code
+// Gets the ip address of the server
+const IP_ADDRESS = window.location.hostname;
 // Define the urls
-const ROOT_URL = 'http://fillerip:3000/'; // 'http://ipAddressOfThisServer:port/';
-const LOGIN_URL = 'http://fillerip:3000/login'; // 'http://ipAddressOfThisServer:port/login';
-const LOGOUT_URL = 'http://fillerip:3000/logout'; // 'http://ipAddressOfThisServer:port/logout';
-const LOBBY_URL = 'http://fillerip:3000/lobby'; // 'http://ipAddressOfThisServer:port/lobby';
-const CHATROOM_URL = 'http://fillerip:3000/chatroom'; // 'http://ipAddressOfThisServer:port/chatroom';
+const ROOT_URL = `http://${IP_ADDRESS}:3000/`; // `http://ipAddressOfThisServer:port/`;
+const LOGIN_URL = `http://${IP_ADDRESS}:3000/login`; // `http://ipAddressOfThisServer:port/login`;
+const LOGOUT_URL = `http://${IP_ADDRESS}:3000/logout`; // `http://ipAddressOfThisServer:port/logout`;
+const LOBBY_URL = `http://${IP_ADDRESS}:3000/lobby`; // `http://ipAddressOfThisServer:port/lobby`;
+const CHATROOM_URL = `http://${IP_ADDRESS}:3000/chatroom`; // `http://ipAddressOfThisServer:port/chatroom`;
 
 // Defines socket = to a new websocket
 const socket = io(ROOT_URL);
@@ -34,7 +36,7 @@ var privacy = '';
 var method = '';
 
 // Function used to send a message
-function sendMessage(e) { // sendMessage recieves an event which is represented with the letter e
+window.sendMessage = function (e) { // sendMessage recieves an event which is represented with the letter e
     // Allows you to submit the form without reloading the page
     e.preventDefault();
     socket.emit('message', {
@@ -61,18 +63,18 @@ function generateRoomCode() {
 };
 
 // Function used for pressing the login button
-function login() {
+window.login = function () {
     window.location.href = LOGIN_URL;
 
     // Store the state in sessionStorage
     sessionStorage.setItem('isLoggedIn', 'true');
 };
 
-function logout() {
+window.logout = function () {
     window.location.href = LOGOUT_URL;
 };
 
-function createRoom() {
+window.createRoom = function () {
     if (nameInput.value) {
         username = nameInput.value;
         chatRoom.value = generateRoomCode();
@@ -92,16 +94,18 @@ function createRoom() {
 
 // Function used for when a user generates a chatroom
 function enterRoomCreate() {
+    console.log('Entering room');
+    console.log(username);
+    console.log(roomCode);
     socket.emit('enterRoom', {
         name: username,
         room: roomCode,
         privacy: privacy,
         method: method
     });
-    sessionStorage.setItem('method', 'join');
 };
 
-function joinRoom() {
+window.joinRoom = function () {
     if (nameInput.value && chatRoom.value) {
         username = nameInput.value;
         roomCode = chatRoom.value;
@@ -124,7 +128,7 @@ function joinRoom() {
     } else { alert('Please fill in the room code field.') };
 };
 
-function enterRoomClicked(roomCodeClicked) {
+window.enterRoomClicked = function (roomCodeClicked) {
     if (!nameInput.value) {
         alert('Please fill in the name field.');
         return;
@@ -146,7 +150,7 @@ function enterRoomClicked(roomCodeClicked) {
 };
 
 // Function used for when a user enters a chatroom
-function enterRoomJoin() {
+window.enterRoomJoin = function () {
     socket.emit('enterRoom', {
         name: username,
         room: roomCode,
@@ -154,8 +158,11 @@ function enterRoomJoin() {
     });
 };
 
-window.onload = function () {
+console.log('Setting window.onload');
+window.addEventListener('load', () => {
+    console.log('Page loaded');
     if (window.location.href === CHATROOM_URL) {
+        console.log('Chatroom page loaded');
         document.querySelector('.form-msg').addEventListener('submit', sendMessage);
 
         msgInput.addEventListener('keypress', () => {
@@ -170,19 +177,22 @@ window.onload = function () {
 
         switch (method) {
             case 'create':
+                console.log('Create method');
                 enterRoomCreate();
                 break;
             case 'join':
+                console.log('Join method');
                 enterRoomJoin();
                 break;
             default:
                 console.log('Error: No method given');
         };
     };
-};
+});
+console.log('Setting window.onload done');
 
 // Function used for when a user leaves a chatroom
-function leaveRoom() {
+window.leaveRoom = function () {
     socket.emit('leaveRoom');
     socket.on('leaveRoomConfirmation', () => {
     });
@@ -205,10 +215,10 @@ socket.on('message', (data) => {
                 ? 'post__header--user'
                 : 'post__header--reply'
                 }">
-                <span class="post__header--name">${name}</span>
-                <span class="post__header--time">${time}</span>
-                </div>
-                <div class="post__text">${text}</div>`
+                    <span class="post__header--name">${name}</span>
+                    <span class="post__header--time">${time}</span>
+                    </div>
+                    <div class="post__text">${text}</div>`
         } else {
             li.innerHTML = `<div class ="post__text">${text}</div>`
         };
@@ -229,7 +239,7 @@ socket.on('activity', (name) => {
     }, 3000);
 });
 
-function showUsers(users) {
+window.showUsers = function (users) {
     usersList.textContent = '';
     if (users) {
         usersList.innerHTML = `<em>Users in ${roomCode}:</em>`;
@@ -271,7 +281,7 @@ document.getElementById('ready-checkbox').addEventListener('change', function (e
     if (e.target.checked) {
         console.log('Ready checkbox checked. Emitting player ready event.');
         socket.emit('player ready', roomCode);
-    }
+    };
 });
 
 socket.on('all players ready', function () {
@@ -289,7 +299,8 @@ socket.on('game started', function () {
     };
 });
 
-function startGameClient(room) {
+window.startGameClient = function () {
+    const room = sessionStorage.getItem('roomCode');
     // Disable the start game button
     const startGameButton = document.getElementById('start-game-button');
     if (startGameButton) {
@@ -305,7 +316,8 @@ function startGameClient(room) {
     });
 };
 
-function stepGameClient(room) { // pass the room as a parameter
+window.stepGameClient = function () { // pass the room as a parameter
+    const room = sessionStorage.getItem('roomCode');
     // Check that the socket is connected
     console.log(`Socket connected: ${socket.connected}`);
     socket.emit('step-game', room, function (error, response) {
