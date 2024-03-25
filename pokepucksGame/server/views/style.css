@@ -1,22 +1,115 @@
 /****************************** Script Header ******************************\
 Project: PokePucks
 Author: Brandon Camacho
-Editors: Brandon Camacho
-
+Editors: Brandon Camacho, Antonio Cruz
+{172.16.3.124:3000}
 <Description>
 The css for the chatroom.
 \***************************************************************************/
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
     font-size: 1rem;
+    box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-    background-color: #000000;
-    color: #fff;
+section{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100vh;
+    background: url(img/PB2.webp);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button{
+    background-color: yellow;
+    width: 200px;
+    height: 60px
+}
+
+.tet{
+    color: black;
+    font-size: 150px;
+    margin-top: 50px;
+    border-width: 25px;
+    margin-left: 585px;
+    width: fit-content;
+    text-align: center;
+    font-weight: lighter;
+    border-style: groove;
+    border-color: yellow;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.set{
+    width: 10%;
+    padding: 10px;
+    font-size: 25px;
+    margin-top: 40px;
+    border-width: 15px;
+    margin-left: 850px;
+    text-align: center;
+    border-style: groove;
+    border-color: rgb(241, 52, 52);
+    
+}
+
+.bet{
+    width: 10%;
+    padding: 10px;
+    font-size: 25px;
+    margin-top: 15px;
+    border-width: 15px;
+    margin-left: 850px;
+    text-align: center;
+    border-style: groove;
+    border-color: rgb(252, 60, 60);
+}
+
+.het{
+    color: black;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.ket{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.qet{
+    color: black;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.det{
+    width: 25%;
+    margin-top: 15px;
+    margin-left: 710px;
+    border-style: solid;
+}
+
+.yet{
+    border: none;
+    padding: 10px;
+    margin-top: 15px;
+    margin-left: 700px;
+}
+
+.uet{
+    margin-top: 15px;
+    margin-left: 835px;
+}
+
+body{
+    color: black;
+    background-image: url("img/bc.ng");
 }
 
 main {
@@ -28,12 +121,12 @@ main {
 
 form {
     width: 100%;
+    gap: .25rem;
     margin: auto;
-    max-width: 600px;
     display: flex;
+    max-width: 600px;
     flex-flow: row nowrap;
     justify-content: center;
-    gap: .25rem;
 }
 
 select {
@@ -51,8 +144,8 @@ button {
 
 input,
 button {
-    border-radius: 10px;
     padding: .5rem;
+    border-radius: 10px;
 }
 
 #login-page {
@@ -68,18 +161,18 @@ button {
 }
 
 .chat-display {
-    background-color: #333;
-    list-style-type: none;
     width: 100%;
     max-width: 600px;
-    border-radius: 10px;
     margin: 1rem auto;
     padding: 0;
     display: flex;
-    flex-flow: column;
-    justify-content: left;
     overflow: auto;
     flex-grow: 1;
+    flex-flow: column;
+    border-radius: 10px;
+    list-style-type: none;
+    justify-content: left;
+    background-color: #333;
 }
 
 .post {
