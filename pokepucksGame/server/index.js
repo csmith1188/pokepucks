@@ -39,6 +39,8 @@ const ADMIN = "YrXoETWEMg5_jKLdAAADtkKSWJqh33L2lrcXAAABWbFLr2OR7EHk719MAAABxkXxW
 
 var allActiveRooms = [];
 var allActivePublicRooms = [];
+var readyPlayers = new Map();
+
 
 const app = express(); // Our express server is referred to as app
 
@@ -681,8 +683,6 @@ io.on('connection', socket => {
             };
         });
     });
-
-    let readyPlayers = new Map();
 
     socket.on('player ready', function (room, callback) {
         if (!readyPlayers.has(room)) {

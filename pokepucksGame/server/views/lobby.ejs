@@ -2,7 +2,7 @@
 /****************************** Script Header ******************************\
 Project: PokePucks
 Author: Brandon Camacho
-Editors: Brandon Camacho
+Editors: Brandon Camacho, Antonio Cruz
 
 <Description>
 The ejs file for the chatroom.
@@ -22,32 +22,69 @@ The ejs file for the chatroom.
     <script defer src="app.js"></script>
     <!-- "defer" tells the file to not load the JS until everything else is essentially loaded -->
 </head>
+<style>
+    body {
+        background-image: url("img/ad.ng");
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script>
+    function changeBg() {
+        const images = [url("img/ad.png"), url("img/PB2.png")]
+        const section = document.querySelector('section')
+        const bg = images[Math.floor(Math.random() * images.length)];
+        section.style.backgroundImage = bg;
+    }
 
+    setInterval(changeBg, 1000)
+
+</script>
 <body>
     <main>
+        <div class="tet" id="lobby-page">
+            PokePucks
+        </div>
+
         <div id="lobby-page">
-            <input type="text" id="name" size="5" value="<%= sessionUser %>" readonly>
-            <input type="text" id="room" placeholder="Room Code" size="5" maxlength="5">
-            <button id="join" onclick="joinRoom()">Join</button>
+            <input type="text" class="set" id="name" size="5" value="<%= sessionUser %>" readonly>
+        </div>
 
-            <button onclick="createRoom()">Create Room</button>
+        <div id="lobby-page">
+            <input type="text" class="bet" id="room" placeholder="Room Code" size="5" maxlength="5">
+        </div>
 
-            <label for="privacy">Choose Room Privacy:</label>
+        <div class="het" id="lobby-page">
+            <label for="privacy">Choose Room Privacy</label>
+        </div>
+
+        <div class="ket" id="lobby-page">
             <select id="privacy">
                 <option value="public">Public</option>
                 <option value="private">Private</option>
             </select>
         </div>
 
-        <p> Active Rooms:
+        <p class="qet"> Active Rooms</p>
+
+        <div class="det" id="lobby-page">
             <% activeRooms.forEach(function(room, index) { %>
                 <span class="room-code" onclick="enterRoomClicked('<%= room %>')">
                     <%= room %>
                 </span>
                 <%= index !==activeRooms.length - 1 ? ',' : '' %>
                     <% }); %>
-        </p>
-        <button id="logout" onclick="logout()">Log Out</button>
+        </div>
+
+        <div class="yet" id="lobby-page">
+            <button id="join" onclick="joinRoom()">Join</button>
+            <button id="logout" onclick="logout()">Log Out</button>
+        </div>
+
+        <div class="uet" id="lobby-page">
+            <button onclick="createRoom()">Create Room</button>
+        </div>
     </main>
 </body>
 
