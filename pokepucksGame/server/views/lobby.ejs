@@ -24,12 +24,23 @@ The ejs file for the chatroom.
 </head>
 <style>
     body {
-        background-image: url("img/ad.png");
+        background-image: url("img/ad.ng");
         background-size: cover;
         width: 100%;
         height: 100%;
     }
 </style>
+<script>
+    function changeBg() {
+        const images = [url("img/ad.png"), url("img/PB2.png")]
+        const section = document.querySelector('section')
+        const bg = images[Math.floor(Math.random() * images.length)];
+        section.style.backgroundImage = bg;
+    }
+
+    setInterval(changeBg, 1000)
+
+</script>
 <body>
     <main>
         <div class="tet" id="lobby-page">

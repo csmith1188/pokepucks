@@ -27,7 +27,7 @@ import jwt from 'jsonwebtoken';
 import session from 'express-session';
 
 // Define the urls
-const AUTH_URL = 'http://172.16.3.162:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
+const AUTH_URL = 'http://172.16.3.116:420/oauth'; // 'http://ipAddressOfFormbarInstance:port/oauth';
 const THIS_URL = 'http://172.16.3.124:3000/login'; // 'http://ipAddressOfThisServer:port/login';
 const GAME_URL = 'http://172.16.3.124:3000/'; // 'http://ipAddressOfThisServer:port/';
 
