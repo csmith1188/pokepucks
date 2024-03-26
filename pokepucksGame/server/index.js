@@ -306,7 +306,32 @@ io.on('connection', socket => {
                 function objectsAreEqual(a, b) {
                     return JSON.stringify(a) === JSON.stringify(b);
                 };
-
+/**************************************************************
+ * This is the code for the game side of PokePucks. 
+ * The classes create the player, Pucks, slammers, and the game between code lines 328 and 369.
+ * The Game has three stages. Setup, Loop, and End.
+ * Setup is where the players are decided, special rules are decided, health stacks are built, the arena is built, and the slammers are picked,between code lines 371 and 442.
+ * Loop is where the game is played. 
+ * Loop has 6 phases. Top off, Knockout, Count Attacks, Make Attacks, Discard Pucks, and Check for Winner.
+ * Top off is where the arena is filled with pucks from the player's health stacks, in code lines 444 to 490
+ * Knockout is where the player's slammers are placed in the center if they have no pucks in their health stacks, in code lines 492 to 507.
+ * Count Attacks is where the players get the minimum of 1 attack in code lines 509 to 518.
+ * Make Attacks is where the players make their attacks and flip pucks in the arena, in code lines 520 to 617.
+ * Discard Pucks is where the players can use pucks and remove them from the arena and place them in the discard pile, in code lines 619 to 631.
+ * Check for Winner is where the game checks if a player has won, in code lines 633 to 654.
+ * End is where the game ends and the winner is displayed.in code lines 656 to 673.
+ * 
+ * 
+ * Future Plans:
+ * -Have a unique way of allowing the players to throw their slammers at the stack of pucks.
+ * -Have special abilities for slammers.
+ * -Have special abilities for pucks.
+ * -Show the custom pogs in canvas.
+ * -Have more than two players play the game
+ * -Optimize the code
+ * -Make the game more visually appealing
+ * -Add more features to the game
+ */
                 var tempArena = [];
                 var turn;
                 class Player {
@@ -380,6 +405,12 @@ io.on('connection', socket => {
                     stage_setup() {
                         switch (this.phase) {
                             case 0: // Decide players
+                            /****************************************
+                             * This is where the players are decided.
+                             * The turns are decided randomly.
+                             * The players are given a backup of their pogs, just in case their health stack goes undefinded.
+                             * The phase is increased by 1.
+                             */
                                 this.phase++;
                                 this.turn = Math.floor(Math.random() * 2);
                                 console.log(this.players[0]);
@@ -388,9 +419,19 @@ io.on('connection', socket => {
                                 this.players[1].pogsBackup = [];
                                 break;
                             case 1: // Decide Special Rules
+                            /*`***************************************
+                                * This is where the special rules are decided.
+                                * To be added later.
+                                * The phase is increased by 1.
+                            */
                                 this.phase++;
                                 break;
                             case 2: // Build health stack
+                                /****************************************
+                                 * This is where the health stacks are built.
+                                 * The health stacks are built with 14 pogs.
+                                 * The phase is increased by 1.
+                                */
                                 // for each player, add 14 pogs to their health stack
                                 if (this.players[0].hp.length == 0 && this.players[1].hp.length == 0) {
                                     for (let i = 0; i < this.players.length; i++) {
@@ -406,6 +447,11 @@ io.on('connection', socket => {
                                 break;
                             case 3: // Build arena
                                 // while arena is < 8, each player pops 1 from hp to arena
+                                /***************************************
+                                 * This is where the arena is built.
+                                 * The arena is built with 8 pogs, by the players health stack, reducing theirs to 11 pogs.
+                                 * The phase is increased by 1.
+                                */
                                 while (this.arena.length < 8) {
                                     this.arena.push(this.players[0].hp.pop());
                                     this.arena.push(this.players[1].hp.pop());
@@ -414,6 +460,12 @@ io.on('connection', socket => {
                                 break;
                             case 4: // Pick a slammer
                                 // each player picks a slammer
+                                /**************************************
+                                 * This is where the slammers are picked.
+                                 * The slammers are picked by the players.
+                                 * The phase is increased by 1.
+                                 * The game is set to the loop stage.
+                                */
                                 this.players[0].Slammer = new Slammer('slammer', 1, 'down');
                                 this.players[1].Slammer = new Slammer('slammer', 1, 'down');
                                 this.phase++;
@@ -428,8 +480,20 @@ io.on('connection', socket => {
                     stage_loop() {
                         switch (this.phase) {
                             case 0: // Top off
+                            /**************************************
+                             * This is where the arena is topped off.
+                             * The arena is topped off with pogs from the players health stacks.
+                             * If a player has no pogs in their health stack, they are placed in critical.
+                             * The phase is increased by 1.
+                            */
                             console.log('Arena:', this.arena);
                                 console.log('case 0 test');
+                                if(this.arena === undefined && this.players[0].hp.length > 0 && this.players[1].hp.length > 0){
+                                    this.arena = [];
+                                    for(let i = 0; i < Math.floor(Math.random() * 8) + 1; i++){
+                                        this.arena.push(new Puck('pog', 1, 'down'));
+                                    }
+                                }
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
                                 if (this.turn == 0 && this.players[0].hp.length === 0 && this.players[0].pogsBackup.length > 0) {
@@ -468,6 +532,11 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 1:// Knockout
+                            /*************************************
+                             * This is where the players are knocked out.
+                             * If a player has no pogs in their stack, move that player's slammer into the center.
+                             * The phase is increased by 1.
+                            */
                                 console.log('case 1 test');
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
@@ -485,6 +554,10 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 2:// Count Attacks
+                            /************************************
+                             * This is where the players get the minimum of 1 attack.
+                             * The phase is increased by 1.
+                            */
                                 console.log('After replacing slammer with turn:', this.arena, this.turn);
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
@@ -496,6 +569,12 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 3://Make Attacks
+                            /***********************************
+                             * This is where the players make their attacks.
+                             * The players make their attacks and flip pucks in the arena.
+                             * If a player has no pogs in their stack, the slammer is placed for the attack to see if it flips or not.
+                             * The phase is increased by 1.
+                            */
                                 console.log('case 3 test');
                                 console.log('Arena:', this.arena.hp);
                                 console.log(this.players[0].Slammer.side);
@@ -625,11 +704,15 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 4://Discard pucks
+                            /**********************************
+                             * This is where the players can use pucks.
+                             * If a player wants to use a puck, remove that puck from the power stack and place it in the discard pile, while
+                             * checking rules for that puck, and special rules.
+                             * The phase is increased by 1.
+                            */
                                 console.log('case 4 test');
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
-                                //If a player wants to use a puck, remove that puck from the power stack and place it in the discard pile, while
-                                //checking rules for that puck, and special rules.
                                 if (this.turn == 0) {
                                     this.turn = 1;
                                 } else {
@@ -638,9 +721,21 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 5://Check for winner
+                            /*********************************
+                             * This is where the game checks for a winner.
+                             * If a player is the only player remaining with either pogs or non flipped slammer, they win.
+                             * The phase is increased by 1.
+                            */
                                 console.log('case 5 test');
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
+                                if(this.arena.length == 0 && this.players[0].hp.length > 0 && this.players[1].hp.length > 0){
+                                    let num = Math.floor(Math.random() * 8); + 1;   
+                                    for(let i = 0; i < num; i++){
+                                        this.arena.push(new Puck('pog', 1, 'down'));
+                                    }
+                                }
+                                
                                 //If player is the only player remaining with either hp or non flipped slammer, they win.
                                 if (this.players[0].hp.length == 0 && this.players[0].Slammer.side == 'up') {
                                     this.stage = 'end';
@@ -650,12 +745,9 @@ io.on('connection', socket => {
                                     this.stage = 'end';
                                     console.log('player 1 wins');
                                 };
-                                if(this.arena.length == 0 && this.players[0].hp.length > 0 && this.players[1].hp.length > 0){
-                                    let num = Math.floor(Math.random() * 8); + 1;
-                                    for(let i = 0; i < num; i++){
-                                        this.arena.push(new Puck('pog', 1, 'down'));
-                                    }
-                                }
+
+                                
+                                
                                 console.log('Arena:', this.arena);
                                 this.phase++;
                                 break;
@@ -669,7 +761,11 @@ io.on('connection', socket => {
                         };
                     };
                     stage_end() {
-                        // if player 1 wins, display player 1 wins
+                        /********************
+                         * This is where the game ends.
+                         * The game ends and the winner is displayed.
+                         * The game is reset.
+                         */
                         if (this.players[1].hp.length == 0 && this.players[1].Slammer.side == 'up') {
                             console.log('P1 wins');
                         };
