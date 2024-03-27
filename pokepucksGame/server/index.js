@@ -306,7 +306,32 @@ io.on('connection', socket => {
                 function objectsAreEqual(a, b) {
                     return JSON.stringify(a) === JSON.stringify(b);
                 };
-
+                /**************************************************************
+                 * This is the code for the game side of PokePucks. 
+                 * The classes create the player, Pucks, slammers, and the game between code lines 328 and 369.
+                 * The Game has three stages. Setup, Loop, and End.
+                 * Setup is where the players are decided, special rules are decided, health stacks are built, the arena is built, and the slammers are picked,between code lines 371 and 442.
+                 * Loop is where the game is played. 
+                 * Loop has 6 phases. Top off, Knockout, Count Attacks, Make Attacks, Discard Pucks, and Check for Winner.
+                 * Top off is where the arena is filled with pucks from the player's health stacks, in code lines 444 to 490
+                 * Knockout is where the player's slammers are placed in the center if they have no pucks in their health stacks, in code lines 492 to 507.
+                 * Count Attacks is where the players get the minimum of 1 attack in code lines 509 to 518.
+                 * Make Attacks is where the players make their attacks and flip pucks in the arena, in code lines 520 to 617.
+                 * Discard Pucks is where the players can use pucks and remove them from the arena and place them in the discard pile, in code lines 619 to 631.
+                 * Check for Winner is where the game checks if a player has won, in code lines 633 to 654.
+                 * End is where the game ends and the winner is displayed.in code lines 656 to 673.
+                 * 
+                 * 
+                 * Future Plans:
+                 * -Have a unique way of allowing the players to throw their slammers at the stack of pucks.
+                 * -Have special abilities for slammers.
+                 * -Have special abilities for pucks.
+                 * -Show the custom pogs in canvas.
+                 * -Have more than two players play the game
+                 * -Optimize the code
+                 * -Make the game more visually appealing
+                 * -Add more features to the game
+                 */
                 var tempArena = [];
                 var turn;
                 class Player {
@@ -334,6 +359,613 @@ io.on('connection', socket => {
                         return power;
                     };
                 };
+
+
+                // Initialize the game 
+                const Pucks = [
+                    {
+                        name: "You",
+                        ids: [],
+                        type: "Trainer",
+                        subtype: "",
+                        found: "lottery",
+                        img: "",
+                        description: "This is you",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "If this is the only trainer Puck in your Power stack when you finish an attack, if that throw didn't hit, you make 1 additional attack.",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Officer Hicks",
+                        ids: [],
+                        type: "Trainer",
+                        subtype: "",
+                        found: "lottery",
+                        img: "",
+                        description: "Officer Hicks is tasked with finding students leaving school early to have Pokemon battles.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After the previous player makes an attack on their turn, before picking up pucks, if any pucks landed outside of the Arena, the previous player must move 1 puck from their Health Stack to the Arena Stack.",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Mr. Merkert",
+                        ids: [],
+                        type: "Trainer",
+                        subtype: "",
+                        found: "lottery",
+                        img: "",
+                        description: "One of the trainers you will find along your way.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "if this is the only Trainer Puck in your Power stack after you have made your last attack and you did not pick up and pucks this turn, you may make 1 additional attack",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Mr. Saia",
+                        ids: [],
+                        type: "Trainer",
+                        subtype: "",
+                        found: "lottery",
+                        img: "",
+                        description: "One of the trainers you will find along your way.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "If this is the only Trainer Puck in your Power stack when previous player finishes making a throw, you may move a flipped puck to your Health stack and move a puck from your Health stack into the Arena face-up. ",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Mr. Smith",
+                        ids: [],
+                        type: "Trainer",
+                        subtype: "",
+                        found: "lottery",
+                        img: "",
+                        description: "One of the trainers you will find along your way.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "If this is the only Trainer Puck in your Power stack when you finish topping-off, you may rearrange the Arena stack. ",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Bike",
+                        ids: [],
+                        type: "Item", // Item, Trainer, Energy, Pokemon
+                        subtype: "", // Unofficial category of puck
+                        found: "mart", // Mart, Discovery, Lottery
+                        img: "",
+                        description: "A little pricey, but there's no better way for a trainer to zip around the world.",
+                        se: {
+                            adventure: [{
+                                text: "When you make a move action, you may make one additional move action at no cost.",
+                                notes: ["Obviously, the free move action does not receive another free move."]
+                            }],
+                            battle: [{
+                                text: "After making a throw, if this puck is flipped, the current player moves it to their prize stack.",
+                                notes: ["This does not count towards the number of pucks the player is allowed to pick up."]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Fishing Rod",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "discovery",
+                        img: "",
+                        description: "A superb tool for relaxation, unless you are a hungry and unwitting water type Pokemon",
+                        se: {
+                            adventure: [{
+                                text: "You require a Fishing Rod to start a Catch Pokemon action for a Pokemon Slammer Type of Water. In addition, you may start said Catch Action if you are in a Zone with a connection that requires 'Surf' to get to the Zone where the Pokemon is located.",
+                                notes: ["Example: If you are in Route 19, you may catch a Pokemon located in Route 20 if you possess this puck, even if you do not have Surf and a Water Type Pokemon.", "Vaporeon may be evolved from Eevee with Water Stones without a Fishing Rod, because it is not a Catch Action."]
+                            }],
+                            battle: [{
+                                text: "After making a throw, if this puck is flipped, the current player moves it to their prize stack.",
+                                notes: ["This does not count towards the number of pucks the player is allowed to pick up."]
+                            }]
+                        }
+                    },
+
+                    {
+                        name: "Potions",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "mart",
+                        img: "",
+                        description: "Brings 2 pokemon into your deck to battle.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "Before you top-off, you may move up to 2 pucks from Prize stack onto your Health stack without going over the max size, then discard this puck. ",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Switch",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "mart",
+                        img: "",
+                        description: "Switch's out your current pokemon for another.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "Before determining the number of attacks to make on your turn, you may move your current Slammer to your Bench Stack, and select a different Slammer.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Berry",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "mart",
+                        img: "",
+                        description: "Rejuvanates your pokemon to keep them in the fight.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When you pick up this puck, if your Health stack has less pucks than its max size, you may move this puck to your Health stack. ",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Focus Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "mart",
+                        img: "",
+                        description: "A blast of type energy that powers up you Pokemon a lot for a short bit.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, you may discard this puck. If you do, add 2 to that number.",
+                                notes: ["A Focus Energy is any other Energy subtype puck with a fully transparent bottom."]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Electric Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up your Pokemon's attacks.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Electric, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Water Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up your Pokemon's attacks.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Water, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Fire Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up your Pokemon's attacks.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fire, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Grass Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up your Pokemon's attacks.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Grass, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Fighting Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up your Pokemon's attacks.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fighting, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Psychic Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up your Pokemon's attacks.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Psychic, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Normal Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up your Pokemon's attacks.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Normal, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Fairy Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up attacks of many different types of Pokemon.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Water, Grass, or Normal, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Dark Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up attacks of many different types of Pokemon.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Psychic, Fire, or Normal, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Steel Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up attacks of many different types of Pokemon.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "When counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Electric, Fighting, or Normal, add 1 to that number",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "Dragon Energy",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Energy",
+                        found: "mart",
+                        img: "",
+                        description: "Type energy that powers up attacks of all different types of Pokemon.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "If there is another Energy puck in your Power Stack whose type that matches your current Pokemon Slammer's Energy Type, in each attack in your turn, when counting the number of pucks to pick up, add 1 to that number. Otherwise, when counting the number of attacks to make on your turn, add 1 to that number.",
+                                notes: [
+                                    "A Squirtle with a Dragon Energy makes two attacks. A Squirtle with a Water Energy and Dragon Energy makes two attacks and picks up two pucks from each."
+                                ]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Full Heal",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "mart",
+                        img: "",
+                        description: "Removes all statuses from one of your pokemon.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "At the beginning of your Count Attacks phase, you may discard this puck. If you do, choose one Status your current Slammer has. Your current Slammer loses that Status.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Focus Sash",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "mart",
+                        img: "",
+                        description: "A good tool to make sure your pokemon will keep fighting",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "Before you top-off, if this item is in your Power stack, you may reduce the max size of the Arena stack to equal the number of pucks in the Arena stack plus the number of pucks in your Health stack, then discard this puck.",
+                                notes: []
+                            }]
+                        }
+                    },
+                    {
+                        name: "PokeFlute",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "Discovery",
+                        img: "",
+                        description: "Awakens your pokemon.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "At the beginning of your Count Attacks phase, if your current Slammer has the Sleep Status, it loses the Sleep Status.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Moon Stone",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Power Stone",
+                        found: "mart",
+                        img: "",
+                        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Normal, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Thunder Stone",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Power Stone",
+                        found: "mart",
+                        img: "",
+                        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Electric, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Leaf Stone",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Power Stone",
+                        found: "mart",
+                        img: "",
+                        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Grass, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Water Stone",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Power Stone",
+                        found: "mart",
+                        img: "",
+                        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Water, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Fire Stone",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Power Stone",
+                        found: "mart",
+                        img: "",
+                        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fire, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Old Amber",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Power Stone",
+                        found: "mart",
+                        img: "",
+                        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Fighting, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Dusk Stone",
+                        ids: [],
+                        type: "Item",
+                        subtype: "Power Stone",
+                        found: "mart",
+                        img: "",
+                        description: "If the power stone is the same type as your pokemon, it makes those moves stronger.",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks to make on your turn, if your current Pokemon Slammer's Energy Type is Psychic, you may choose to discard this puck. If you do, in each attack this turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "Silph Scope",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "discovery",
+                        img: "",
+                        description: "",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "After counting the number of attacks you can make on your turn, if you can only make 1 attack that turn, when counting the numebr of pucks you can pick up in that attack, increase that number by 1.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "HM01 Cut",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "discovery",
+                        img: "",
+                        description: "",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "If your current Slammer's Energy Type is Grass, in each of your attacks on your turn, when counting the number of pucks to pick up, add 1 to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "HM02 Fly",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "discovery",
+                        img: "",
+                        description: "",
+                        se: {
+                            adventure: [{
+                                text: "Each time you make a Move Action, if you possess a Pokemon Slammer with a Wing Tag, you may move up to 4 times, but you must finish your Move Action in a City Zone.",
+                                notes: [""]
+                            }],
+                            battle: []
+                        }
+                    },
+                    {
+                        name: "HM03 Surf",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "discovery",
+                        img: "",
+                        description: "",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "Support: Once in your turn, if a Slammer in your Bench Stack has a Water Energy Type, when counting the number of pucks to pick up in the first attack made on your turn, add that Slammer's Ball Strength to that number.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                    {
+                        name: "HM04 Dig",
+                        ids: [],
+                        type: "Item",
+                        subtype: "",
+                        found: "discovery",
+                        img: "",
+                        description: "",
+                        se: {
+                            adventure: [],
+                            battle: [{
+                                text: "If your current Slammer's Energy Type is Fighting, when counting attacks on your turn, you may choose to reduce that number to 1. If you do, you may pick up an additional puck in each of your attacks during your next turn.",
+                                notes: [""]
+                            }]
+                        }
+                    },
+                ];
+
                 class Slammer {
                     constructor(name, weight, side) {
                         this.name = name;
@@ -344,7 +976,7 @@ io.on('connection', socket => {
                     attack() {
                         // attack
                         let att;
-                        att = Math.floor(Math.random() * 100) 
+                        att = Math.floor(Math.random() * 100)
                         if (att > 100) {
                             att = 100;
                         };
@@ -359,6 +991,7 @@ io.on('connection', socket => {
                         this.stepcount = 0;
                         this.arena = [];
                         this.turn = 0;
+                        this.pickedPucks = [];
                     };
 
                     step() {
@@ -380,6 +1013,12 @@ io.on('connection', socket => {
                     stage_setup() {
                         switch (this.phase) {
                             case 0: // Decide players
+                                /****************************************
+                                 * This is where the players are decided.
+                                 * The turns are decided randomly.
+                                 * The players are given a backup of their pogs, just in case their health stack goes undefinded.
+                                 * The phase is increased by 1.
+                                 */
                                 this.phase++;
                                 this.turn = Math.floor(Math.random() * 2);
                                 console.log(this.players[0]);
@@ -388,9 +1027,19 @@ io.on('connection', socket => {
                                 this.players[1].pogsBackup = [];
                                 break;
                             case 1: // Decide Special Rules
+                                /*`***************************************
+                                    * This is where the special rules are decided.
+                                    * To be added later.
+                                    * The phase is increased by 1.
+                                */
                                 this.phase++;
                                 break;
                             case 2: // Build health stack
+                                /****************************************
+                                 * This is where the health stacks are built.
+                                 * The health stacks are built with 14 pogs.
+                                 * The phase is increased by 1.
+                                */
                                 // for each player, add 14 pogs to their health stack
                                 if (this.players[0].hp.length == 0 && this.players[1].hp.length == 0) {
                                     for (let i = 0; i < this.players.length; i++) {
@@ -406,6 +1055,11 @@ io.on('connection', socket => {
                                 break;
                             case 3: // Build arena
                                 // while arena is < 8, each player pops 1 from hp to arena
+                                /***************************************
+                                 * This is where the arena is built.
+                                 * The arena is built with 8 pogs, by the players health stack, reducing theirs to 11 pogs.
+                                 * The phase is increased by 1.
+                                */
                                 while (this.arena.length < 8) {
                                     this.arena.push(this.players[0].hp.pop());
                                     this.arena.push(this.players[1].hp.pop());
@@ -414,6 +1068,12 @@ io.on('connection', socket => {
                                 break;
                             case 4: // Pick a slammer
                                 // each player picks a slammer
+                                /**************************************
+                                 * This is where the slammers are picked.
+                                 * The slammers are picked by the players.
+                                 * The phase is increased by 1.
+                                 * The game is set to the loop stage.
+                                */
                                 this.players[0].Slammer = new Slammer('slammer', 1, 'down');
                                 this.players[1].Slammer = new Slammer('slammer', 1, 'down');
                                 this.phase++;
@@ -428,8 +1088,20 @@ io.on('connection', socket => {
                     stage_loop() {
                         switch (this.phase) {
                             case 0: // Top off
-                            console.log('Arena:', this.arena);
+                                /**************************************
+                                 * This is where the arena is topped off.
+                                 * The arena is topped off with pogs from the players health stacks.
+                                 * If a player has no pogs in their health stack, they are placed in critical.
+                                 * The phase is increased by 1.
+                                */
+                                console.log('Arena:', this.arena);
                                 console.log('case 0 test');
+                                if (this.arena === undefined && this.players[0].hp.length > 0 && this.players[1].hp.length > 0) {
+                                    this.arena = [];
+                                    for (let i = 0; i < Math.floor(Math.random() * 8) + 1; i++) {
+                                        this.arena.push(new Puck('pog', 1, 'down'));
+                                    }
+                                }
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
                                 if (this.turn == 0 && this.players[0].hp.length === 0 && this.players[0].pogsBackup.length > 0) {
@@ -442,6 +1114,8 @@ io.on('connection', socket => {
                                 };
                                 // while arena is < 8, player pops 1 from hp to arena
                                 // if player has no pogs in their stack, stop and put into critical
+                                // Assuming this.players[0].hp and this.players[1].hp are arrays
+
                                 while (this.arena.length < 8) {
                                     console.log('Arena Length:' + this.arena.length);
                                     console.log('Arena:' + this.arena);
@@ -449,16 +1123,22 @@ io.on('connection', socket => {
                                         break;
                                     } else if (this.turn == 0) {
                                         if (this.players[0].hp.length > 0) {
-                                            this.arena.push(this.players[0].hp.pop());
-                                            console.log('player 1 losing hp test');
+                                            let randomIndex = Math.floor(Math.random() * Pucks.length);
+                                            let lostPuck = Pucks[randomIndex];
+                                            this.players[0].hp.pop();
+                                            this.arena.push(lostPuck);
+                                            console.log('Player 1 lost puck:', lostPuck.name);
                                         };
                                     };
                                     if (this.players[1].hp.length == 0) {
                                         break;
                                     } else if (this.turn == 1) {
                                         if (this.players[1].hp.length > 0) {
-                                            this.arena.push(this.players[1].hp.pop());
-                                            console.log('player 2 losing hp test');
+                                            let randomIndex = Math.floor(Math.random() * Pucks.length);
+                                            let lostPuck = Pucks[randomIndex];
+                                            this.players[1].hp.pop();
+                                            this.arena.push(lostPuck);
+                                            console.log('Player 2 lost puck:', lostPuck.name);
                                         };
                                     };
                                     console.log('Arena Length End:' + this.arena.length);
@@ -468,6 +1148,11 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 1:// Knockout
+                                /*************************************
+                                 * This is where the players are knocked out.
+                                 * If a player has no pogs in their stack, move that player's slammer into the center.
+                                 * The phase is increased by 1.
+                                */
                                 console.log('case 1 test');
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
@@ -485,6 +1170,10 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 2:// Count Attacks
+                                /************************************
+                                 * This is where the players get the minimum of 1 attack.
+                                 * The phase is increased by 1.
+                                */
                                 console.log('After replacing slammer with turn:', this.arena, this.turn);
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
@@ -496,6 +1185,12 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 3://Make Attacks
+                                /***********************************
+                                 * This is where the players make their attacks.
+                                 * The players make their attacks and flip pucks in the arena.
+                                 * If a player has no pogs in their stack, the slammer is placed for the attack to see if it flips or not.
+                                 * The phase is increased by 1.
+                                */
                                 console.log('case 3 test');
                                 console.log('Arena:', this.arena.hp);
                                 console.log(this.players[0].Slammer.side);
@@ -625,11 +1320,15 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 4://Discard pucks
+                                /**********************************
+                                 * This is where the players can use pucks.
+                                 * If a player wants to use a puck, remove that puck from the power stack and place it in the discard pile, while
+                                 * checking rules for that puck, and special rules.
+                                 * The phase is increased by 1.
+                                */
                                 console.log('case 4 test');
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
-                                //If a player wants to use a puck, remove that puck from the power stack and place it in the discard pile, while
-                                //checking rules for that puck, and special rules.
                                 if (this.turn == 0) {
                                     this.turn = 1;
                                 } else {
@@ -638,9 +1337,21 @@ io.on('connection', socket => {
                                 this.phase++;
                                 break;
                             case 5://Check for winner
+                                /*********************************
+                                 * This is where the game checks for a winner.
+                                 * If a player is the only player remaining with either pogs or non flipped slammer, they win.
+                                 * The phase is increased by 1.
+                                */
                                 console.log('case 5 test');
                                 console.log(this.players[0].Slammer.side);
                                 console.log(this.players[1].Slammer.side);
+                                if (this.arena.length == 0 && this.players[0].hp.length > 0 && this.players[1].hp.length > 0) {
+                                    let num = Math.floor(Math.random() * 8); + 1;
+                                    for (let i = 0; i < num; i++) {
+                                        this.arena.push(new Puck('pog', 1, 'down'));
+                                    }
+                                }
+
                                 //If player is the only player remaining with either hp or non flipped slammer, they win.
                                 if (this.players[0].hp.length == 0 && this.players[0].Slammer.side == 'up') {
                                     this.stage = 'end';
@@ -650,12 +1361,9 @@ io.on('connection', socket => {
                                     this.stage = 'end';
                                     console.log('player 1 wins');
                                 };
-                                if(this.arena.length == 0 && this.players[0].hp.length > 0 && this.players[1].hp.length > 0){
-                                    let num = Math.floor(Math.random() * 8); + 1;
-                                    for(let i = 0; i < num; i++){
-                                        this.arena.push(new Puck('pog', 1, 'down'));
-                                    }
-                                }
+
+
+
                                 console.log('Arena:', this.arena);
                                 this.phase++;
                                 break;
@@ -669,7 +1377,11 @@ io.on('connection', socket => {
                         };
                     };
                     stage_end() {
-                        // if player 1 wins, display player 1 wins
+                        /********************
+                         * This is where the game ends.
+                         * The game ends and the winner is displayed.
+                         * The game is reset.
+                         */
                         if (this.players[1].hp.length == 0 && this.players[1].Slammer.side == 'up') {
                             console.log('P1 wins');
                         };
