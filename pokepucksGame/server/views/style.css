@@ -118,13 +118,13 @@ body{
 }
 
 canvas{
-    margin-left: 30px;
+    margin-left: 250px;
     height: 500px;
-    width: 1200px
+    width: 1400px
 }
 
 .strste{
-    margin-left: 700px;
+    margin-left: 500px;
 }
 
 main {
@@ -175,15 +175,19 @@ button {
     visibility: visible;
 }
 
+.grayBox{
+    margin-left: 0px;
+}
+
 .welcome {
-    width: 500px;
     padding: 0;
+    width: 500px;
     flex-grow: 1;
     display: flex;
     overflow: auto;
     max-width: 600px;
     flex-flow: column;
-    margin-left: 1300px;
+    margin-left: 700px;
     border-radius: 10px;
     list-style-type: none;
     justify-content: left;
@@ -244,14 +248,16 @@ button {
 .user-list,
 .room-list,
 .activity {
+    color: white;
     width: 100%;
     min-height: 2.65rem;
-    margin: 0 auto;
+    margin-left: 850px;
     max-width: 600px;
     padding: .75rem .25rem;
 }
 
 .activity {
+    margin-left: 5px;
     font-style: italic;
 }
 
