@@ -25,10 +25,9 @@ The ejs file for the chatroom.
 
 <body>
     <main>
-        <div id="chatroom-page">
+        <div class="welcome"><ul class="chat-display"></ul></div>
+        <div class="leaveButton" id="chatroom-page">
             <button onclick="leaveRoom()">Leave Room</button>
-
-            <ul class="chat-display"></ul>
 
             <p class="user-list"></p>
 
@@ -56,11 +55,15 @@ The ejs file for the chatroom.
             -->
             <canvas id="canvas"></canvas>
 
+        </div>
+
+        <div class="strste">
             <button onclick="stepGameClient()">Step Game</button>
             <button id="start-game-button" disabled="true" onclick="startGameClient()">Start Game</button>
             <label for="ready-checkbox">I'm ready:</label>
             <input type="checkbox" id="ready-checkbox">
         </div>
+
     </main>
 </body>
 

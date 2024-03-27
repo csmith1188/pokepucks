@@ -15,14 +15,14 @@ The css for the chatroom.
 }
 
 section{
-    position: absolute;
     top: 0px;
     left: 0px;
     width: 100%;
     height: 100vh;
     display: flex;
-    justify-content: center;
+    position: absolute;
     align-items: center;
+    justify-content: center;
 }
 
 button{
@@ -31,7 +31,7 @@ button{
     height: 60px
 }
 
-.tet{
+.title{
     color: black;
     font-size: 150px;
     margin-top: 50px;
@@ -45,7 +45,7 @@ button{
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-.set{
+.username{
     width: 10%;
     padding: 10px;
     font-size: 25px;
@@ -58,7 +58,7 @@ button{
     
 }
 
-.bet{
+.code{
     width: 10%;
     padding: 10px;
     font-size: 25px;
@@ -70,45 +70,61 @@ button{
     border-color: rgb(252, 60, 60);
 }
 
-.het{
+.text1{
     color: black;
     margin-top: 15px;
     text-align: center;
 }
 
-.ket{
+.pubpriv{
     margin-top: 10px;
     text-align: center;
 }
 
-.qet{
+.active{
     color: black;
     margin-top: 15px;
     text-align: center;
 }
 
-.det{
+.rooms{
     width: 25%;
     margin-top: 15px;
     margin-left: 710px;
     border-style: solid;
 }
 
-.yet{
+.jout{
     border: none;
     padding: 10px;
     margin-top: 15px;
     margin-left: 700px;
 }
 
-.uet{
+.craroo{
     margin-top: 15px;
     margin-left: 835px;
 }
 
+.music{
+    margin-top: 15px;
+    margin-left: 835px;
+}
+
+/*PastPoint ChatRoom CSS*/
 body{
     color: black;
-    background-image: url("img/bc.png");
+    background-image: url("img/ad.png");
+}
+
+canvas{
+    margin-left: 30px;
+    height: 500px;
+    width: 1200px
+}
+
+.strste{
+    margin-left: 700px;
 }
 
 main {
@@ -159,15 +175,15 @@ button {
     visibility: visible;
 }
 
-.chat-display {
-    width: 100%;
-    max-width: 600px;
-    margin: 1rem auto;
+.welcome {
+    width: 500px;
     padding: 0;
+    flex-grow: 1;
     display: flex;
     overflow: auto;
-    flex-grow: 1;
+    max-width: 600px;
     flex-flow: column;
+    margin-left: 1300px;
     border-radius: 10px;
     list-style-type: none;
     justify-content: left;
@@ -219,6 +235,7 @@ button {
 }
 
 .post__text {
+    text-align: center;
     margin-top: 5px;
     color: #333;
     padding: .25rem .5rem;

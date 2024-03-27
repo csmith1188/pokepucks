@@ -33,32 +33,32 @@ The ejs file for the chatroom.
 
 <body>
     <main>
-        <div class="tet" id="lobby-page">
+        <div class="title" id="lobby-page">
             PokePucks
         </div>
 
         <div id="lobby-page">
-            <input type="text" class="set" id="name" size="5" value="<%= sessionUser %>" readonly>
+            <input type="text" class="username" id="name" size="5" value="<%= sessionUser %>" readonly>
         </div>
 
         <div id="lobby-page">
-            <input type="text" class="bet" id="room" placeholder="Room Code" size="5" maxlength="5">
+            <input type="text" class="code" id="room" placeholder="Room Code" size="5" maxlength="5">
         </div>
 
-        <div class="het" id="lobby-page">
+        <div class="text1" id="lobby-page">
             <label for="privacy">Choose Room Privacy</label>
         </div>
 
-        <div class="ket" id="lobby-page">
+        <div class="pubpriv" id="lobby-page">
             <select id="privacy">
                 <option value="public">Public</option>
                 <option value="private">Private</option>
             </select>
         </div>
 
-        <p class="qet"> Active Rooms</p>
+        <p class="active"> Active Rooms</p>
 
-        <div class="det" id="lobby-page">
+        <div class="rooms" id="lobby-page">
             <% activeRooms.forEach(function(room, index) { %>
                 <span class="room-code" onclick="enterRoomClicked('<%= room %>')">
                     <%= room %>
@@ -67,26 +67,37 @@ The ejs file for the chatroom.
                     <% }); %>
         </div>
 
-        <div class="yet" id="lobby-page">
+        <div class="jout" id="lobby-page">
             <button id="join" onclick="joinRoom()">Join</button>
             <button id="logout" onclick="logout()">Log Out</button>
         </div>
 
-        <div class="uet" id="lobby-page">
+        <div class="craroo" id="lobby-page">
             <button onclick="createRoom()">Create Room</button>
         </div>
+
+        <div class="music"><button onclick="play()">music</button></div>
     </main>
 </body>
 <script>
-    function changeBg() {
-        const images = ["url('img/ad.png')", "url('img/PB2.webp')"]
-        const body = document.querySelector('body')
-        const bg = images[Math.floor(Math.random() * images.length)];
-        body.style.backgroundImage = bg;
-    };
-    changeBg();
+    function play() {
+        var audio = new Audio('music/intro.mp3')
+        audio.play()
+    }
 
-    setInterval(changeBg, 5000) // Change this to 2000 for 2 seconds
+    let currentIndex = 0;
+    const images = ["url('img/fhc.png')", "url('img/fgh.png')", "url('img/jfh.png')", "url('img/gren.png')"]
+    const body = document.querySelector('body')
+
+    function changeBg() {
+        const bg = images[currentIndex];
+        body.style.backgroundImage = bg;
+        currentIndex = (currentIndex + 1) % images.length;
+        console.log(currentIndex);
+    };
+
+    changeBg();
+    setInterval(changeBg, 3000) // Change this to 2000 for 2 seconds
 
 </script>
 
